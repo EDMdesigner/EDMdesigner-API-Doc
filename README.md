@@ -3,7 +3,7 @@ EDMdesigner-API
 
 [EDMdesigner](http://www.edmdesigner.com) is a drag and drop tool for creating responsive HTML e-mail templates very fast and painlessly, by which your click-through rate will radically increase. This documentation is intended to give you a detailed description about the EDMdesigner-API with which you can integrate our editor into arbitrary web-based systems. (For example a CRM, CMS, WebShop or anything else what you can imagine.)
 
-To start developing with our api, please require an API_KEY at info@edmdesigner.com.
+To start developing with our api, please require an API_KEY (and a corresponding magic word) at info@edmdesigner.com.
 
 Basically, the only thing you have to do is, to implement one side of the handshaking on your server. When the handshaking is done, you can use sent object, on which you can find the functions which are communicating with our server.
 
@@ -56,7 +56,6 @@ Lists projects of the actual user.
 		});
 	</script>
 	
-This snippet writes the projects of the TestUser to the console.
 
 ### edmDesignerApi.createProject(data, callback)
 Creates a new project. (A new e-mail template.)
@@ -72,14 +71,12 @@ Creates a new project. (A new e-mail template.)
 	
 	<script>
 		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
-			edmDesignerApi.listProjects(function(result) {
+			edmDesignerApi.createProject(function({title: "test-title", description: "test-desc"}, result) {
 				console.log(result._id);
 			});
 		});
 	</script>
 	
-
-The snippet above creates a new e-mail template and the _id of the newly created project is written to the console.
 	
 ### edmDesignerApi.duplicateProject(projectId, callback)
 Creates the exact copy to the project with projectId.
@@ -91,67 +88,71 @@ Creates the exact copy to the project with projectId.
 	
 	<script>
 		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
-			edmDesignerApi.listProjects(function(result) {
-				console.log(result);
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				edmDesignerApi.duplicateProject(result._id, function(result) {
+					//callback hell...
+				});
 			});
 		});
 	</script>
 	
-This.
 
 ### edmDesignerApi.removeProject(projectId, callback)
 Removes a project.
 #### Parameters:
-  * projectId
+  * projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
   * callback
 
 #### Example:
 	
 	<script>
 		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
-			edmDesignerApi.listProjects(function(result) {
-				console.log(result);
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				edmDesignerApi.removeProject(result._id, function(result) {
+					//callback hell...
+				});
 			});
 		});
 	</script>
 	
-This.
 
 ### edmDesignerApi.openProject(projectId, callback)
 Opens a project.
 #### Parameters:
-  * projectId
+  * projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
   * callback
 
 #### Example:
 	
 	<script>
 		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
-			edmDesignerApi.listProjects(function(result) {
-				console.log(result);
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				edmDesignerApi.openProject(result._id, function(result) {
+					$("body").append(result.iframe);
+				});
 			});
 		});
 	</script>
 	
-This.
 
 ### edmDesignerApi.generateProject(projectId, callback)
 Generates the bulletproof responsive HTML e-mail based on the projectId.
 #### Parameters:
-  * projectId
+  * projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
   * callback
 
 #### Example:
 	
 	<script>
 		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
-			edmDesignerApi.listProjects(function(result) {
-				console.log(result);
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				edmDesignerApi.generateProject(result._id, function(result) {
+					//the result is a robust responsive HTML e-mail code.
+				});
 			});
 		});
 	</script>
 	
-This.
 
 Example implementations
 -----------------------
