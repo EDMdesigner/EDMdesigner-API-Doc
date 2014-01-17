@@ -1,49 +1,44 @@
 EDMdesigner-API
 ===============
 
-Documentation of the EDMdesigner API for integration projects. By using our API you can easily integrate EDMdesigner's editor to any web based environment.
+[EDMdesigner](http://www.edmdesigner.com) is a drag and drop tool for creating responsive HTML e-mail templates very fast and painlessly, by which your click-through rate will radically increase. This documentation is intended to give you a detailed description about the EDMdesigner-API with which you can integrate our editor into arbitrary web-based systems. (For example a CRM, CMS, WebShop or anything else what you can imagine.)
 
-Dependencies
-------------
-jQuery
+To start developing with our api, please require an API_KEY at info@edmdesigner.com.
 
-Handshaking
------------
+Basically, the only thing you have to do is, to implement one side of the handshaking on your server. When the handshaking is done, you can use sent object, on which you can find the functions which are communicating with our server.
 
-Figure about the handshaking process
-Ide kell a nodejs-es és a php-s példa
+The handshaking is built into the initialization process, so if you implemented the handshaking on your side, everything goes automatically.
 
-initEDMdesignerPlugin
-
+We provide example implementations which include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.
 
 Initializing
 ------------
 	
-	
-	<script src="http://api.edmdesigner.com/EDMdesignerAPI.js"></script>
+	<script src="path_to_your_jquery.js"></script>
+	<script src="http://api.edmdesigner.com/EDMdesignerAPI.js?route=##handshaking_route##"></script>
 	<script>
-		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+		initEDMdesignerPlugin("##userId##", function(edmDesignerApi) {
 			...
 		});
 	</script>
 	
-Itt lehet beszélni arról, hogy Testuser stb.
+First of all, jQuery has to be loaded before you load our API. In the second line you can see a route parameter in the script's src. By that, you can tell the script where to look for the handshaking implementation. For example if you implemented it in your index.php, you have to replace ##handshaking_route## with index.php.
+The first parameter is an user id from your system. It can be any string. If you don't want to handle separate user accounts, just pass there your API_KEY.
+
+On the resulting object (edmDesignerApi) you will find some functions through which you can interact our system.
 
 ### Handshaking
-api.edmdesigner.com/api/token
+To implement the handshaking on your server, you need an API_KEY, a magic word (wich is delivered with your API_KEY), your user's ipv4 address and a timestamp. The logic which handles handshaking has to get the userId as well, because it has to be sent to our server as well. Our API implementation automatically sends the userId in a POST HTTP request. You set this user id by the first parameter of the initEDMdesignerPlugin.
+
+After concatenating the API_KEY, the ipv4 address of your user, the timestamp (as string) and your magic word, you have to create an md5 hash of the resulting string.
+
 	
-createProject
+	hash = md5(API_KEY + ipv4 + timestamp + magic)
 
-	return {
-		listProjects:		function(callback) { ... },
-		createProject:		function(data, callback) { ... },
-		duplicateProject:	function(projectId, callback) { ... },
-		removeProject:		function(projectId, callback) { ... },
-		openProject:		function(projectId, callback) { ... },
-		generateProject:	function(projectId, callback) { ... }
-	};
 
-User azonosítás!
+After this you have to send the API_KEY, the userId, the ipv4 address, the timestamp and the generated md5 hash to our server at: api.edmdesigner.com/api/token through http.
+
+If everything goes well, you get back a token, with which your user can be identified.
 
 ## API functions	
 ### edmDesignerApi.listProjects(callback)
@@ -162,3 +157,8 @@ Example implementations
 -----------------------
   * [Node.js example](https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js)
   * [PHP example](https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP)
+  
+Dependencies
+------------
+jQuery
+
