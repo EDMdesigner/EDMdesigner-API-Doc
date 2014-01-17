@@ -28,25 +28,220 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <p>Handshaking</p>
+          <h1>
+<a name="edmdesigner-api" class="anchor" href="#edmdesigner-api"><span class="octicon octicon-link"></span></a>EDMdesigner-API</h1>
 
-<p>initEDMdesignerPlugin</p>
+<p><a href="http://www.edmdesigner.com">EDMdesigner</a> is a drag and drop tool for creating responsive HTML e-mail templates very fast and painlessly, by which your click-through rate will radically increase. This documentation is intended to give you a detailed description about the EDMdesigner-API with which you can integrate our editor into arbitrary web-based systems. (For example a CRM, CMS, WebShop or anything else what you can imagine.)</p>
 
-<p>Routes
-api.edmdesigner.com/EDMdesignerAPI.js
-api.edmdesigner.com/api/token
-api.edmdesigner.com/api/listProjects
-api.edmdesigner.com/api/createProject
-api.edmdesigner.com/api/openProject/:id
-api.edmdesigner.com/api/duplicateProject/:id
-api.edmdesigner.com/api/updateProjectInfo/:id
-api.edmdesigner.com/api/removeProject/:id
-api.edmdesigner.com/api/generateProject/:id</p>
+<p>To start developing with our api, please require an API_KEY (and a corresponding magic word) at <a href="mailto:info@edmdesigner.com">info@edmdesigner.com</a>.</p>
 
-<p>`</p>
+<p>Basically, the only thing you have to do is, to implement one side of the handshaking on your server. When the handshaking is done, you can use sent object, on which you can find the functions which are communicating with our server.</p>
 
-<p>`
-</p>
+<p>The handshaking is built into the initialization process, so if you implemented the handshaking on your side, everything goes automatically.</p>
+
+<p>We provide example implementations which include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.</p>
+
+<h2>
+<a name="initializing" class="anchor" href="#initializing"><span class="octicon octicon-link"></span></a>Initializing</h2>
+
+<pre><code>&lt;script src="path_to_your_jquery.js"&gt;&lt;/script&gt;
+&lt;script src="http://api.edmdesigner.com/EDMdesignerAPI.js?route=##handshaking_route##"&gt;&lt;/script&gt;
+&lt;script&gt;
+    initEDMdesignerPlugin("##userId##", function(edmDesignerApi) {
+        ...
+    });
+&lt;/script&gt;
+</code></pre>
+
+<p>First of all, jQuery has to be loaded before you load our API. In the second line you can see a route parameter in the script's src. By that, you can tell the script where to look for the handshaking implementation. For example if you implemented it in your index.php, you have to replace ##handshaking_route## with index.php.
+The first parameter is an user id from your system. It can be any string. If you don't want to handle separate user accounts, just pass there your API_KEY.</p>
+
+<p>On the resulting object (edmDesignerApi) you will find some functions through which you can interact our system.</p>
+
+<h3>
+<a name="handshaking" class="anchor" href="#handshaking"><span class="octicon octicon-link"></span></a>Handshaking</h3>
+
+<p>To implement the handshaking on your server, you need an API_KEY, a magic word (wich is delivered with your API_KEY), your user's ipv4 address and a timestamp. The logic which handles handshaking has to get the userId as well, because it has to be sent to our server as well. Our API implementation automatically sends the userId in a POST HTTP request. You set this user id by the first parameter of the initEDMdesignerPlugin.</p>
+
+<p>After concatenating the API_KEY, the ipv4 address of your user, the timestamp (as string) and your magic word, you have to create an md5 hash of the resulting string.</p>
+
+<pre><code>hash = md5(API_KEY + ipv4 + timestamp + magic)
+</code></pre>
+
+<p>After this you have to send the API_KEY, the userId, the ipv4 address, the timestamp and the generated md5 hash to our server at: api.edmdesigner.com/api/token through http.</p>
+
+<p>If everything goes well, you get back a token, with which your user can be identified.</p>
+
+<h2>
+<a name="api-functions" class="anchor" href="#api-functions"><span class="octicon octicon-link"></span></a>API functions</h2>
+
+<h3>
+<a name="edmdesignerapilistprojectscallback" class="anchor" href="#edmdesignerapilistprojectscallback"><span class="octicon octicon-link"></span></a>edmDesignerApi.listProjects(callback)</h3>
+
+<p>Lists projects of the actual user.</p>
+
+<h4>
+<a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>callback</li>
+</ul><h4>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+        edmDesignerApi.listProjects(function(result) {
+            console.log(result);
+        });
+    });
+&lt;/script&gt;
+</code></pre>
+
+<h3>
+<a name="edmdesignerapicreateprojectdata-callback" class="anchor" href="#edmdesignerapicreateprojectdata-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.createProject(data, callback)</h3>
+
+<p>Creates a new project. (A new e-mail template.)</p>
+
+<h4>
+<a name="parameters-1" class="anchor" href="#parameters-1"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>data {Object}
+
+<ul>
+<li>data.title {String} The title of the new project.</li>
+<li>data.description {String} The description of the new project.</li>
+</ul>
+</li>
+<li>callback(result) {Function}
+
+<ul>
+<li>the result param is an object on which you can find an _id property, which identifies the newly created project</li>
+<li>result._id {String} The id of the new project. (This is a <a href="http://www.mongodb.org/">MongoDB</a> id.)</li>
+</ul>
+</li>
+</ul><h4>
+<a name="example-1" class="anchor" href="#example-1"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+        edmDesignerApi.createProject(function({title: "test-title", description: "test-desc"}, result) {
+            console.log(result._id);
+        });
+    });
+&lt;/script&gt;
+</code></pre>
+
+<h3>
+<a name="edmdesignerapiduplicateprojectprojectid-callback" class="anchor" href="#edmdesignerapiduplicateprojectprojectid-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.duplicateProject(projectId, callback)</h3>
+
+<p>Creates the exact copy to the project with projectId.</p>
+
+<h4>
+<a name="parameters-2" class="anchor" href="#parameters-2"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
+<li>callback</li>
+</ul><h4>
+<a name="example-2" class="anchor" href="#example-2"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+        edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+            edmDesignerApi.duplicateProject(result._id, function(result) {
+                //callback hell...
+            });
+        });
+    });
+&lt;/script&gt;
+</code></pre>
+
+<h3>
+<a name="edmdesignerapiremoveprojectprojectid-callback" class="anchor" href="#edmdesignerapiremoveprojectprojectid-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.removeProject(projectId, callback)</h3>
+
+<p>Removes a project.</p>
+
+<h4>
+<a name="parameters-3" class="anchor" href="#parameters-3"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
+<li>callback</li>
+</ul><h4>
+<a name="example-3" class="anchor" href="#example-3"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+        edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+            edmDesignerApi.removeProject(result._id, function(result) {
+                //callback hell...
+            });
+        });
+    });
+&lt;/script&gt;
+</code></pre>
+
+<h3>
+<a name="edmdesignerapiopenprojectprojectid-callback" class="anchor" href="#edmdesignerapiopenprojectprojectid-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.openProject(projectId, callback)</h3>
+
+<p>Opens a project.</p>
+
+<h4>
+<a name="parameters-4" class="anchor" href="#parameters-4"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
+<li>callback</li>
+</ul><h4>
+<a name="example-4" class="anchor" href="#example-4"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+        edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+            edmDesignerApi.openProject(result._id, function(result) {
+                $("body").append(result.iframe);
+            });
+        });
+    });
+&lt;/script&gt;
+</code></pre>
+
+<h3>
+<a name="edmdesignerapigenerateprojectprojectid-callback" class="anchor" href="#edmdesignerapigenerateprojectprojectid-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.generateProject(projectId, callback)</h3>
+
+<p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
+
+<h4>
+<a name="parameters-5" class="anchor" href="#parameters-5"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
+<li>callback</li>
+</ul><h4>
+<a name="example-5" class="anchor" href="#example-5"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+        edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+            edmDesignerApi.generateProject(result._id, function(result) {
+                //the result is a robust responsive HTML e-mail code.
+            });
+        });
+    });
+&lt;/script&gt;
+</code></pre>
+
+<h2>
+<a name="example-implementations" class="anchor" href="#example-implementations"><span class="octicon octicon-link"></span></a>Example implementations</h2>
+
+<ul>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js">Node.js example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP">PHP example</a></li>
+</ul><h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<p>jQuery</p>
         </section>
 
         <aside id="sidebar">
