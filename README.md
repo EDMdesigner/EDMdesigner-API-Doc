@@ -22,27 +22,27 @@ Initializing
 		});
 	</script>
 	
-First of all, jQuery has to be loaded before you load our API. In the second line you can see a route parameter in the script's src. By that, you can tell the script where to look for the handshaking implementation. For example if you implemented it in your index.php, you have to replace ##handshaking_route## with index.php.
-The first parameter is an user id from your system. It can be any string. If you don't want to handle separate user accounts, just pass there your API_KEY.
+First of all, jQuery has to be loaded before you load our API. In the second line you can see a route parameter in the script's src. By that you can tell the script where to look for the handshaking implementation. For example, if you implemented it in your index.php, you have to replace ##handshaking_route## with index.php.
+The first parameter is a user id from your system. It can be any string. If you don't want to handle separate user accounts, just pass there your API_KEY.
 
-On the resulting object (edmDesignerApi) you will find some functions through which you can interact our system.
+In the resulting object (edmDesignerApi) you will find some functions through which you can interact with our system.
 
 ### Handshaking
-To implement the handshaking on your server, you need an API_KEY, a magic word (wich is delivered with your API_KEY), your user's ipv4 address and a timestamp. The logic which handles handshaking has to get the userId as well, because it has to be sent to our server as well. Our API implementation automatically sends the userId in a POST HTTP request. You set this user id by the first parameter of the initEDMdesignerPlugin.
+To implement the handshaking on your server, you need an API_KEY, a magic word (wich is delivered with your API_KEY), your user's IPv4 address and a timestamp. The logic that handles handshaking has to receive the userId too, because it has to be sent to our server as well. Our API implementation automatically sends the userId in a POST HTTP request. You can set this user id by the first parameter of the initEDMdesignerPlugin.
 
-After concatenating the API_KEY, the ipv4 address of your user, the timestamp (as string) and your magic word, you have to create an md5 hash of the resulting string.
+After concatenating the API_KEY, the IPv4 address of your user, the timestamp (as a string) and your magic word, you have to create an md5 hash of the resulting string.
 
 	
 	hash = md5(API_KEY + ipv4 + timestamp + magic)
 
 
-After this you have to send the API_KEY, the userId, the ipv4 address, the timestamp and the generated md5 hash to our server at: api.edmdesigner.com/api/token through http.
+After this, you have to send the API_KEY, the userId, the IPv4 address, the timestamp and the generated md5 hash to our server at api.edmdesigner.com/api/token through HTTP.
 
 If everything goes well, you get back a token, with which your user can be identified.
 
 ## API functions	
 ### edmDesignerApi.listProjects(callback)
-Lists projects of the actual user.
+Lists the projects of the actual user.
 #### Parameters:
   * callback
 
@@ -58,13 +58,13 @@ Lists projects of the actual user.
 	
 
 ### edmDesignerApi.createProject(data, callback)
-Creates a new project. (A new e-mail template.)
+Creates a new project (a new e-mail template).
 #### Parameters:
   * data {Object}
     * data.title {String} The title of the new project.
     * data.description {String} The description of the new project.
   * callback(result) {Function}
-    * the result param is an object on which you can find an _id property, which identifies the newly created project
+    * the result param is an object in which you can find an _id property, which identifies the newly created project
     * result._id {String} The id of the new project. (This is a [MongoDB](http://www.mongodb.org/) id.)
 
 #### Example:
@@ -79,9 +79,9 @@ Creates a new project. (A new e-mail template.)
 	
 	
 ### edmDesignerApi.duplicateProject(projectId, callback)
-Creates the exact copy to the project with projectId.
+Creates the exact copy of the project with the ID specified in projectId.
 #### Parameters:
-  * projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
   * callback
 
 #### Example:
@@ -100,7 +100,7 @@ Creates the exact copy to the project with projectId.
 ### edmDesignerApi.removeProject(projectId, callback)
 Removes a project.
 #### Parameters:
-  * projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
   * callback
 
 #### Example:
@@ -119,7 +119,7 @@ Removes a project.
 ### edmDesignerApi.openProject(projectId, callback)
 Opens a project.
 #### Parameters:
-  * projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
   * callback
 
 #### Example:
@@ -138,7 +138,7 @@ Opens a project.
 ### edmDesignerApi.generateProject(projectId, callback)
 Generates the bulletproof responsive HTML e-mail based on the projectId.
 #### Parameters:
-  * projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
   * callback
 
 #### Example:
