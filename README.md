@@ -1,15 +1,15 @@
 EDMdesigner-API
 ===============
 
-[EDMdesigner](http://www.edmdesigner.com) is a drag and drop tool for creating responsive HTML e-mail templates very fast and painlessly, by which your click-through rate will radically increase. This documentation is intended to give you a detailed description about the EDMdesigner-API with which you can integrate our editor into arbitrary web-based systems. (For example a CRM, CMS, WebShop or anything else what you can imagine.)
+[EDMdesigner](http://www.edmdesigner.com) is a drag and drop tool for creating responsive HTML e-mail templates very quickly and painlessly, radically increasing your click-through rate. This documentation is to give you a detailed description about the EDMdesigner-API with which you can integrate our editor into any web-based system (e.g. a CRM, CMS, WebShop or anything else you can imagine).
 
-To start developing with our api, please require an API_KEY (and a corresponding magic word) at info@edmdesigner.com.
+To start developing with our api, please request an API_KEY (and a corresponding magic word) at info@edmdesigner.com.
 
-Basically, the only thing you have to do is, to implement one side of the handshaking on your server. When the handshaking is done, you can use sent object, on which you can find the functions which are communicating with our server.
+Basically, the only thing you have to do is to implement one side of the handshaking on your server. When the handshaking is done, you can use the sent object, in which you can find the functions that are communicating with our server.
 
-The handshaking is built into the initialization process, so if you implemented the handshaking on your side, everything goes automatically.
+The handshaking is built into the initialization process, so if you implemented the handshaking on your side, everything will work automatically.
 
-We provide example implementations which include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.
+We provide example implementations that include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.
 
 Initializing
 ------------
