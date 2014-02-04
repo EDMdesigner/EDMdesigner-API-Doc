@@ -154,6 +154,24 @@ Generates the bulletproof responsive HTML e-mail based on the projectId.
 		});
 	</script>
 	
+	
+### edmDesignerApi.getDefaultTemplates(callback)
+You can get the default templates povided by EDMdesigner by calling this funciton.
+#### Parameters:
+  * callback
+  * 
+ 
+#### Example:
+	
+	<script>
+		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+			edmDesignerApi.getDefaultTemplates(function(result) {
+				//the result is an array, containing the default projects, provided by EDMdesigner
+			});
+		});
+	</script>
+
+	
 
 Example implementations
 -----------------------
