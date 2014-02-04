@@ -159,7 +159,6 @@ Generates the bulletproof responsive HTML e-mail based on the projectId.
 You can get the default templates povided by EDMdesigner by calling this funciton.
 #### Parameters:
   * callback
-  * 
  
 #### Example:
 	
