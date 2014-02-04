@@ -63,6 +63,7 @@ Creates a new project (a new e-mail template).
   * data {Object}
     * data.title {String} The title of the new project.
     * data.description {String} The description of the new project.
+    * data.document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.
   * callback(result) {Function}
     * the result param is an object in which you can find an _id property, which identifies the newly created project
     * result._id {String} The id of the new project. (This is a [MongoDB](http://www.mongodb.org/) id.)
@@ -71,7 +72,7 @@ Creates a new project (a new e-mail template).
 	
 	<script>
 		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
-			edmDesignerApi.createProject(function({title: "test-title", description: "test-desc"}, result) {
+			edmDesignerApi.createProject(function({title: "test-title", description: "test-desc", document: {}}, result) {
 				console.log(result._id);
 			});
 		});
