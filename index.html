@@ -16,14 +16,14 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/EDMdesigner/EDMdesigner-API">View on GitHub</a>
+          <a id="forkme_banner" href="https://github.com/EDMdesigner/EDMdesigner-API-Doc">View on GitHub</a>
 
           <h1 id="project_title">EDMdesigner-API</h1>
           <h2 id="project_tagline">Documentation of the EDMdesigner API for integration projects</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/EDMdesigner/EDMdesigner-API/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/EDMdesigner/EDMdesigner-API/tarball/master">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/EDMdesigner/EDMdesigner-API-Doc/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/EDMdesigner/EDMdesigner-API-Doc/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -34,15 +34,15 @@
         <h1>
 <a name="edmdesigner-api" class="anchor" href="#edmdesigner-api"><span class="octicon octicon-link"></span></a>EDMdesigner-API</h1>
 
-<p><a href="http://www.edmdesigner.com">EDMdesigner</a> is a drag and drop tool for creating responsive HTML e-mail templates very fast and painlessly, by which your click-through rate will radically increase. This documentation is intended to give you a detailed description about the EDMdesigner-API with which you can integrate our editor into arbitrary web-based systems. (For example a CRM, CMS, WebShop or anything else what you can imagine.)</p>
+<p><a href="http://www.edmdesigner.com">EDMdesigner</a> is a drag and drop tool for creating responsive HTML e-mail templates very quickly and painlessly, radically increasing your click-through rate. This documentation is to give you a detailed description about the EDMdesigner-API with which you can integrate our editor into any web-based system (e.g. a CRM, CMS, WebShop or anything else you can imagine).</p>
 
-<p>To start developing with our api, please require an API_KEY (and a corresponding magic word) at <a href="mailto:info@edmdesigner.com">info@edmdesigner.com</a>.</p>
+<p>To start developing with our api, please request an API_KEY (and a corresponding magic word) at <a href="mailto:info@edmdesigner.com">info@edmdesigner.com</a>.</p>
 
-<p>Basically, the only thing you have to do is, to implement one side of the handshaking on your server. When the handshaking is done, you can use sent object, on which you can find the functions which are communicating with our server.</p>
+<p>Basically, the only thing you have to do is to implement one side of the handshaking on your server. When the handshaking is done, you can use the sent object, in which you can find the functions that are communicating with our server.</p>
 
-<p>The handshaking is built into the initialization process, so if you implemented the handshaking on your side, everything goes automatically.</p>
+<p>The handshaking is built into the initialization process, so if you implemented the handshaking on your side, everything will work automatically.</p>
 
-<p>We provide example implementations which include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.</p>
+<p>We provide example implementations that include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.</p>
 
 <h2>
 <a name="initializing" class="anchor" href="#initializing"><span class="octicon octicon-link"></span></a>Initializing</h2>
@@ -52,42 +52,49 @@
 &lt;script&gt;
     initEDMdesignerPlugin("##userId##", function(edmDesignerApi) {
         ...
-    });
+    }, onErrorCB);
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
 &lt;/script&gt;
 </code></pre>
 
-<p>First of all, jQuery has to be loaded before you load our API. In the second line you can see a route parameter in the script's src. By that, you can tell the script where to look for the handshaking implementation. For example if you implemented it in your index.php, you have to replace ##handshaking_route## with index.php.
-The first parameter is an user id from your system. It can be any string. If you don't want to handle separate user accounts, just pass there your API_KEY.</p>
+<p>First of all, jQuery has to be loaded before you load our API. In the second line you can see a route parameter in the script's src. By that you can tell the script where to look for the handshaking implementation. For example, if you implemented it in your index.php, you have to replace ##handshaking_route## with index.php. The first parameter is a user id from your system. It can be any string. In case you don't want to handle separate user accounts, just pass there your API_KEY. The last parameter is an error callback which will be called in every request if the request fails. This is not required thus you can set an error callback in one of your function calls (see later) and in that case it will be called instead of this one.</p>
 
-<p>On the resulting object (edmDesignerApi) you will find some functions through which you can interact our system.</p>
+<p>In the resulting object (edmDesignerApi) you will find some functions through which you can interact with our system.</p>
 
 <h3>
 <a name="handshaking" class="anchor" href="#handshaking"><span class="octicon octicon-link"></span></a>Handshaking</h3>
 
-<p>To implement the handshaking on your server, you need an API_KEY, a magic word (wich is delivered with your API_KEY), your user's ipv4 address and a timestamp. The logic which handles handshaking has to get the userId as well, because it has to be sent to our server as well. Our API implementation automatically sends the userId in a POST HTTP request. You set this user id by the first parameter of the initEDMdesignerPlugin.</p>
+<p>To implement the handshaking on your server, you need an API_KEY, a magic word (wich is delivered with your API_KEY), your user's IPv4 address and a timestamp. The logic that handles handshaking has to receive the userId too, because it has to be sent to our server as well. Our API implementation automatically sends the userId in a POST HTTP request. You can set this user id by the first parameter of the initEDMdesignerPlugin.</p>
 
-<p>After concatenating the API_KEY, the ipv4 address of your user, the timestamp (as string) and your magic word, you have to create an md5 hash of the resulting string.</p>
+<p>After concatenating the API_KEY, the IPv4 address of your user, the timestamp (as a string) and your magic word, you have to create an md5 hash of the resulting string.</p>
 
 <pre><code>hash = md5(API_KEY + ipv4 + timestamp + magic)
 </code></pre>
 
-<p>After this you have to send the API_KEY, the userId, the ipv4 address, the timestamp and the generated md5 hash to our server at: api.edmdesigner.com/api/token through http.</p>
+<p>After this, you have to send the API_KEY, the userId, the IPv4 address, the timestamp and the generated md5 hash to our server at api.edmdesigner.com/api/token through HTTP.</p>
 
 <p>If everything goes well, you get back a token, with which your user can be identified.</p>
 
+<h1>
+<a name="api-functions" class="anchor" href="#api-functions"><span class="octicon octicon-link"></span></a>API functions</h1>
+
 <h2>
-<a name="api-functions" class="anchor" href="#api-functions"><span class="octicon octicon-link"></span></a>API functions</h2>
+<a name="user-functions" class="anchor" href="#user-functions"><span class="octicon octicon-link"></span></a>User functions</h2>
 
 <h3>
-<a name="edmdesignerapilistprojectscallback" class="anchor" href="#edmdesignerapilistprojectscallback"><span class="octicon octicon-link"></span></a>edmDesignerApi.listProjects(callback)</h3>
+<a name="edmdesignerapilistprojectscallback-onerrorcb" class="anchor" href="#edmdesignerapilistprojectscallback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.listProjects(callback, onErrorCB)</h3>
 
-<p>Lists projects of the actual user.</p>
+<p>Lists the projects of the actual user.</p>
 
 <h4>
 <a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
-<li>callback</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
 <a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example:</h4>
 
@@ -96,14 +103,18 @@ The first parameter is an user id from your system. It can be any string. If you
         edmDesignerApi.listProjects(function(result) {
             console.log(result);
         });
-    });
+    }, onErrorCB);
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
 &lt;/script&gt;
 </code></pre>
 
-<h3>
-<a name="edmdesignerapicreateprojectdata-callback" class="anchor" href="#edmdesignerapicreateprojectdata-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.createProject(data, callback)</h3>
+<hr><h3>
+<a name="edmdesignerapicreateprojectdata-callback-onerrorcb" class="anchor" href="#edmdesignerapicreateprojectdata-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createProject(data, callback, onErrorCB)</h3>
 
-<p>Creates a new project. (A new e-mail template.)</p>
+<p>Creates a new project (a new e-mail template).</p>
 
 <h4>
 <a name="parameters-1" class="anchor" href="#parameters-1"><span class="octicon octicon-link"></span></a>Parameters:</h4>
@@ -114,38 +125,45 @@ The first parameter is an user id from your system. It can be any string. If you
 <ul>
 <li>data.title {String} The title of the new project.</li>
 <li>data.description {String} The description of the new project.</li>
+<li>data.document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.</li>
 </ul>
 </li>
-<li>callback(result) {Function}
+<li>callback {Function} A function to be called if the request succeeds
 
 <ul>
-<li>the result param is an object on which you can find an _id property, which identifies the newly created project</li>
+<li>the result param is an object in which you can find an _id property, which identifies the newly created project</li>
 <li>result._id {String} The id of the new project. (This is a <a href="http://www.mongodb.org/">MongoDB</a> id.)</li>
 </ul>
 </li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
 <a name="example-1" class="anchor" href="#example-1"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
-        edmDesignerApi.createProject(function({title: "test-title", description: "test-desc"}, result) {
+        edmDesignerApi.createProject(function({title: "test-title", description: "test-desc", document: {}}, result) {
             console.log(result._id);
         });
-    });
+    }, onErrorCB);
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
 &lt;/script&gt;
 </code></pre>
 
-<h3>
-<a name="edmdesignerapiduplicateprojectprojectid-callback" class="anchor" href="#edmdesignerapiduplicateprojectprojectid-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.duplicateProject(projectId, callback)</h3>
+<hr><h3>
+<a name="edmdesignerapiduplicateprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapiduplicateprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.duplicateProject(projectId, callback, onErrorCB)</h3>
 
-<p>Creates the exact copy to the project with projectId.</p>
+<p>Creates the exact copy of the project with the ID specified in projectId.</p>
 
 <h4>
 <a name="parameters-2" class="anchor" href="#parameters-2"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
-<li>projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
-<li>callback</li>
+<li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
 <a name="example-2" class="anchor" href="#example-2"><span class="octicon octicon-link"></span></a>Example:</h4>
 
@@ -156,12 +174,16 @@ The first parameter is an user id from your system. It can be any string. If you
                 //callback hell...
             });
         });
-    });
+    }, onErrorCB);
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
 &lt;/script&gt;
 </code></pre>
 
-<h3>
-<a name="edmdesignerapiremoveprojectprojectid-callback" class="anchor" href="#edmdesignerapiremoveprojectprojectid-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.removeProject(projectId, callback)</h3>
+<hr><h3>
+<a name="edmdesignerapiremoveprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapiremoveprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.removeProject(projectId, callback, onErrorCB)</h3>
 
 <p>Removes a project.</p>
 
@@ -169,8 +191,9 @@ The first parameter is an user id from your system. It can be any string. If you
 <a name="parameters-3" class="anchor" href="#parameters-3"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
-<li>projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
-<li>callback</li>
+<li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
 <a name="example-3" class="anchor" href="#example-3"><span class="octicon octicon-link"></span></a>Example:</h4>
 
@@ -181,12 +204,16 @@ The first parameter is an user id from your system. It can be any string. If you
                 //callback hell...
             });
         });
-    });
+    }, onErrorCB);
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
 &lt;/script&gt;
 </code></pre>
 
-<h3>
-<a name="edmdesignerapiopenprojectprojectid-callback" class="anchor" href="#edmdesignerapiopenprojectprojectid-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.openProject(projectId, callback)</h3>
+<hr><h3>
+<a name="edmdesignerapiopenprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapiopenprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.openProject(projectId, callback, onErrorCB)</h3>
 
 <p>Opens a project.</p>
 
@@ -194,8 +221,9 @@ The first parameter is an user id from your system. It can be any string. If you
 <a name="parameters-4" class="anchor" href="#parameters-4"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
-<li>projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
-<li>callback</li>
+<li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
 <a name="example-4" class="anchor" href="#example-4"><span class="octicon octicon-link"></span></a>Example:</h4>
 
@@ -206,12 +234,16 @@ The first parameter is an user id from your system. It can be any string. If you
                 $("body").append(result.iframe);
             });
         });
-    });
+    }, onErrorCB);
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
 &lt;/script&gt;
 </code></pre>
 
-<h3>
-<a name="edmdesignerapigenerateprojectprojectid-callback" class="anchor" href="#edmdesignerapigenerateprojectprojectid-callback"><span class="octicon octicon-link"></span></a>edmDesignerApi.generateProject(projectId, callback)</h3>
+<hr><h3>
+<a name="edmdesignerapigenerateprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapigenerateprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.generateProject(projectId, callback, onErrorCB)</h3>
 
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
@@ -219,8 +251,9 @@ The first parameter is an user id from your system. It can be any string. If you
 <a name="parameters-5" class="anchor" href="#parameters-5"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
-<li>projectId {String} The id of the project. Note that, it has to be a valid MongoDB _id. It's best if you use the values what you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
-<li>callback</li>
+<li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
 <a name="example-5" class="anchor" href="#example-5"><span class="octicon octicon-link"></span></a>Example:</h4>
 
@@ -231,16 +264,1445 @@ The first parameter is an user id from your system. It can be any string. If you
                 //the result is a robust responsive HTML e-mail code.
             });
         });
+    }, onErrorCB);
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapigetdefaulttemplatescallback-onerrorcb" class="anchor" href="#edmdesignerapigetdefaulttemplatescallback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.getDefaultTemplates(callback, onErrorCB)</h3>
+
+<p>You can get the default templates povided by EDMdesigner by calling this funciton.</p>
+
+<h4>
+<a name="parameters-6" class="anchor" href="#parameters-6"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-6" class="anchor" href="#example-6"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+        edmDesignerApi.getDefaultTemplates(function(result) {
+        //the result is an array, containing the default projects, provided by EDMdesigner
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h2>
+<a name="admin-functions" class="anchor" href="#admin-functions"><span class="octicon octicon-link"></span></a>Admin functions</h2>
+
+<h3>
+<a name="edmdesignerapilistgroupscallback-onerrorcb" class="anchor" href="#edmdesignerapilistgroupscallback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.listGroups(callback, onErrorCB)</h3>
+
+<p>Lists the groups you have</p>
+
+<h4>
+<a name="parameters-7" class="anchor" href="#parameters-7"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-7" class="anchor" href="#example-7"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.listGroups(function(result) {
+            //the result is an array, containing your groups
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapicreategroupdata-callback-onerrorcb" class="anchor" href="#edmdesignerapicreategroupdata-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createGroup(data, callback, onErrorCB)</h3>
+
+<p>Creates a new group</p>
+
+<h4>
+<a name="parameters-8" class="anchor" href="#parameters-8"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>data {Object}
+
+<ul>
+<li>data.name {String} /REQUIRED/ The name you want to give to the new group</li>
+<li>data.featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.</li>
+</ul>
+</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-8" class="anchor" href="#example-8"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {exampleFeature1: true, exampleFeature3: true}}, function(result) {
+            //the resultGroup is an object with
+            //name {String} (the new group's name)
+            //_id  {String} (the new group's id) and
+            //featureSwitch {Object} (the group's features) properties
+            console.log(result);
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapigetgroupgroupid-callback-onerrorcb" class="anchor" href="#edmdesignerapigetgroupgroupid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.getGroup(groupId, callback, onErrorCB)</h3>
+
+<p>Gets a specified group</p>
+
+<h4>
+<a name="parameters-9" class="anchor" href="#parameters-9"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.
+
+<ul>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul>
+</li>
+</ul><h4>
+<a name="example-9" class="anchor" href="#example-9"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(result) {
+
+            edmDesignerApi.getGroup(result._id, function(resultGroup) { 
+                //the resultGroup is an object with
+                //name {String} (the new group's name)
+                //_id  {String} (the new group's id) and
+                //featureSwitch {Object} (the group's features) properties
+                console.log(resultGroup);
+            }, onErrorCB);
+
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapiupdategroupgroupid-data-callback-onerrorcb" class="anchor" href="#edmdesignerapiupdategroupgroupid-data-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.updateGroup(groupId, data, callback, onErrorCB)</h3>
+
+<p>Updates a specified group's name or the features it provides or both of these two at the same time.</p>
+
+<h4>
+<a name="parameters-10" class="anchor" href="#parameters-10"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.</li>
+<li>data {Object}
+
+<ul>
+<li>data.name {String} The name you want to give to the group</li>
+<li>data.featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
+
+<ul>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><h4>
+<a name="example-10" class="anchor" href="#example-10"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {feature1: true}}, function(result) {
+
+            edmDesignerApi.updateGroup(result._id, {name: "newName"}, function(resultGroup) {   
+                //the resultGroup is an object with
+                //name {String} (the new group's name)
+                //_id  {String} (the new group's id) and
+                //featureSwitch {Object} (the group's features) properties
+                console.log(resultGroup);
+            }, onErrorCB);
+
+        }, onErrorCB);
+
+        edmDesignerApi.createGroup({name: "exampleGroup2", featureSwitch: {feature1: true}}, function(result) {
+
+            edmDesignerApi.updateGroup(result._id, {featureSwitch: {feature1: true, newFeature: true}}, function(resultGroup) { 
+                //the resultGroup is an object with
+                //name {String} (the new group's name)
+                //_id  {String} (the new group's id) and
+                //featureSwitch {Object} (the group's features) properties
+                console.log(resultGroup);
+            }, onErrorCB);
+
+        }, onErrorCB);
+
+        edmDesignerApi.createGroup({name: "exampleGroup3", featureSwitch: {feature1: true}}, function(result) {
+
+            edmDesignerApi.updateGroup(result._id, {name: "newExampleName", featureSwitch: {feature1: true, newFeature: true}}, function(resultGroup) { 
+                //the resultGroup is an object with
+                //name {String} (the new group's name)
+                //_id  {String} (the new group's id) and
+                //featureSwitch {Object} (the group's features) properties
+                console.log(resultGroup);
+            }, onErrorCB);
+
+        }, onErrorCB);
+
+        function onErrorCB(error) {
+            console.log(error);
+        }
     });
 &lt;/script&gt;
 </code></pre>
 
+<hr><h3>
+<a name="edmdesignerapilistuserscallback-onerrorcb" class="anchor" href="#edmdesignerapilistuserscallback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.listUsers(callback, onErrorCB)</h3>
+
+<p>Lists the users you have</p>
+
+<h4>
+<a name="parameters-11" class="anchor" href="#parameters-11"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-11" class="anchor" href="#example-11"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.listUsers(function(result) {
+            //the result is an array, containing your users
+            //A user is an object with
+            //id (the user's id)
+            //group (The group which the user belongs) and
+            //createTime (Time of creation) properties
+            console.log(result);
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapicreateuserdata-callback-onerrorcb" class="anchor" href="#edmdesignerapicreateuserdata-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createUser(data, callback, onErrorCB)</h3>
+
+<p>Creates a new user</p>
+
+<h4>
+<a name="parameters-12" class="anchor" href="#parameters-12"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>data {Object}
+
+<ul>
+<li>data.id {String} /REQUIRED/ The id you want to use for this new user</li>
+<li>data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.</li>
+</ul>
+</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-12" class="anchor" href="#example-12"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(result) {
+
+            edmDesignerApi.createUser({id: "exampleuserId", group: result._id}, function(resultUser) {
+                // the resultUser is an object with an id property
+                console.log(resultUser);
+            }, onErrorCB);
+
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapicreatemultipleuserdata-callback-onerrorcb" class="anchor" href="#edmdesignerapicreatemultipleuserdata-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createMultipleUser(data, callback, onErrorCB)</h3>
+
+<p>Creates multiple user</p>
+
+<h4>
+<a name="parameters-13" class="anchor" href="#parameters-13"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>data {Array} It contains user objects. User object should have the following properties:
+
+<ul>
+<li>id {String} /REQUIRED/ The id you want to use for this new user</li>
+<li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.</li>
+</ul>
+</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-13" class="anchor" href="#example-13"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(result) {
+
+            edmDesignerApi.createMultipleUser([{id: "exampleUserId", group: result._id}, {id: "exampleUser2Id}, {id: "exampleUser3"}], function(resultObj) {
+                // the resultObj is an object with the following properties:
+                // created {Array} It contains the users whose have been created
+                // failed {Array} It contains the users whose creation has failed
+                // alreadyHave {Array} It contains the users whose you already created
+                console.log(resultObj);
+            }, onErrorCB);
+
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapigetuseruserid-callback-onerrorcb" class="anchor" href="#edmdesignerapigetuseruserid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.getUser(userId, callback, onErrorCB)</h3>
+
+<p>Gets a specified user</p>
+
+<h4>
+<a name="parameters-14" class="anchor" href="#parameters-14"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>userId {String} The id of the user.
+
+<ul>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul>
+</li>
+</ul><h4>
+<a name="example-14" class="anchor" href="#example-14"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
+
+            edmDesignerApi.getUser(result.id, function(resultUser) {
+                /**the resultUser is an object with
+                id (the user's id)
+                group (The group which the user belongs) and
+                createTime (Time of creation) properties*/
+                console.log(resultUser);
+            }, onErrorCB);
+
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapiupdateuseruserid-data-callback-onerrorcb" class="anchor" href="#edmdesignerapiupdateuseruserid-data-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.updateUser(userId, data, callback, onErrorCB)</h3>
+
+<p>Updates a specified user. Only the group (which the user belongs) can be changed.</p>
+
+<h4>
+<a name="parameters-15" class="anchor" href="#parameters-15"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>userId {String} The id of the user. </li>
+<li>data {Object}
+
+<ul>
+<li>data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.</li>
+</ul>
+</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-15" class="anchor" href="#example-15"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
+            edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(resultGroup) {
+
+                edmDesignerApi.updateUser(result.id, {group: resultGroup._id}, function(resultUser) {   
+                    //the resultUser is an object with an id property
+                    console.log(resultUser);
+                }, onErrorCB);
+
+            }, onErrorCB);
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapideleteuseruserid-callback-onerrorcb" class="anchor" href="#edmdesignerapideleteuseruserid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.deleteUser(userId, callback, onErrorCB)</h3>
+
+<p>Deletes a specified user</p>
+
+<h4>
+<a name="parameters-16" class="anchor" href="#parameters-16"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>userId {String} The id of the user.</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-16" class="anchor" href="#example-16"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
+
+            edmDesignerApi.deleteUser(result.id, function(resultUser) {
+                //the resultUser is an object with an id propert
+                console.log(resultUser);
+            }, onErrorCB);
+
+        }, onErrorCB);
+    });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h1>
+<a name="server-side-routes" class="anchor" href="#server-side-routes"><span class="octicon octicon-link"></span></a>Server side routes</h1>
+
+<p>Almost every client side functions have a corresponding route on server side.</p>
+
 <h2>
+<a name="admin-routes" class="anchor" href="#admin-routes"><span class="octicon octicon-link"></span></a>Admin routes</h2>
+
+<h2>
+<a name="authentication" class="anchor" href="#authentication"><span class="octicon octicon-link"></span></a>Authentication</h2>
+
+<p>To authenticate these routes, you need to generate a token to a "fake" user called admin.You should send this token and the admin string on every request's query. (like this: ?user=admint&amp;token=token ).Please note that every route need to be authenticated expect the one which generate the token. (//api.edmdesigner.com/api/token)</p>
+
+<p>Example: //api.edmdesigner.com/json/groups/list?user=admin&amp;token=adminToken</p>
+
+<h3>
+<a name="create-handshaking" class="anchor" href="#create-handshaking"><span class="octicon octicon-link"></span></a>Create handshaking</h3>
+
+<p>Create the handshaking between PHP and API needs to be done before any further call</p>
+
+<pre><code>    $url = "http://api.edmdesigner.com/api/token";
+    $data = array(
+        "id"    =&gt; $publicId,
+        "uid"   =&gt; $user,
+        "ip"    =&gt; $ip,
+        "ts"    =&gt; $timestamp,
+        "hash"  =&gt; $hash
+    );
+
+    $options = array(
+        'http' =&gt; array(
+            'header'  =&gt; "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  =&gt; 'POST',
+            'content' =&gt; http_build_query($data),
+        )
+    );
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+
+    $token = json_decode($result, TRUE);
+</code></pre>
+
+<hr><h2>
+<a name="group-manipulating-routes" class="anchor" href="#group-manipulating-routes"><span class="octicon octicon-link"></span></a>Group manipulating routes</h2>
+
+<h3>
+<a name="list-groups" class="anchor" href="#list-groups"><span class="octicon octicon-link"></span></a>List groups</h3>
+
+<p>Lists the groups you have</p>
+
+<h5>
+<a name="type" class="anchor" href="#type"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route" class="anchor" href="#route"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/groups/list</li>
+</ul><h4>
+<a name="answer" class="anchor" href="#answer"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>An array of your groups. Every group is an object with this parameters:</p>
+
+<ul>
+<li>_id {String} MongoDB id of the group</li>
+<li>featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.</li>
+<li>name {String} The name of the group</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="create-group" class="anchor" href="#create-group"><span class="octicon octicon-link"></span></a>Create group</h3>
+
+<p>Creates a new group</p>
+
+<h5>
+<a name="type-1" class="anchor" href="#type-1"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-1" class="anchor" href="#route-1"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/groups/create</li>
+</ul><h4>
+<a name="parameters-you-should-post" class="anchor" href="#parameters-you-should-post"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>name {String} /REQUIRED/ The name you want to give to the new group</li>
+<li>featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.</li>
+</ul><h4>
+<a name="answer-1" class="anchor" href="#answer-1"><span class="octicon octicon-link"></span></a>Answer</h4>
+
+<p>An object containing the MongoDB _id of the newly created group:</p>
+
+<ul>
+<li>_id {String}</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="get-one-group" class="anchor" href="#get-one-group"><span class="octicon octicon-link"></span></a>Get one group</h3>
+
+<p>Gets a specified group</p>
+
+<h5>
+<a name="type-2" class="anchor" href="#type-2"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-2" class="anchor" href="#route-2"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/groups/read/:id</li>
+</ul><h4>
+<a name="parameters-in-the-route" class="anchor" href="#parameters-in-the-route"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
+
+<ul>
+<li>id {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.</li>
+</ul><h4>
+<a name="answer-2" class="anchor" href="#answer-2"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>A group object:</p>
+
+<ul>
+<li>_id {String} MongoDB id of the group</li>
+<li>featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.</li>
+<li>name {String} The name of the group</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="update-one-group" class="anchor" href="#update-one-group"><span class="octicon octicon-link"></span></a>Update one group</h3>
+
+<p>Updates a specified group's name or the features it provides or both of these two at the same time.</p>
+
+<h5>
+<a name="type-3" class="anchor" href="#type-3"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-3" class="anchor" href="#route-3"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/groups/update</li>
+</ul><h4>
+<a name="parameters-you-should-post-1" class="anchor" href="#parameters-you-should-post-1"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>_id {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.</li>
+<li>name {String} The name you want to give to the group</li>
+<li>featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.</li>
+</ul><h4>
+<a name="answer-3" class="anchor" href="#answer-3"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>A newly updated group object:</p>
+
+<ul>
+<li>_id {String} MongoDB id of the group</li>
+<li>featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.</li>
+<li>name {String} The name of the group</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h2>
+<a name="user-manipulating-routes" class="anchor" href="#user-manipulating-routes"><span class="octicon octicon-link"></span></a>User manipulating routes</h2>
+
+<h3>
+<a name="list" class="anchor" href="#list"><span class="octicon octicon-link"></span></a>List</h3>
+
+<p>Lists the users you have</p>
+
+<h5>
+<a name="type-4" class="anchor" href="#type-4"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-4" class="anchor" href="#route-4"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/user/list</li>
+</ul><h4>
+<a name="answer-4" class="anchor" href="#answer-4"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>An array of your users. Every user is an object with this parameters:</p>
+
+<ul>
+<li>id {String} The id of the user</li>
+<li>group {String} The MongoDB _id of the group the user belongs to</li>
+<li>createTime {String} The time when the user was created</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="create-user" class="anchor" href="#create-user"><span class="octicon octicon-link"></span></a>Create user</h3>
+
+<p>Creates a new user</p>
+
+<h5>
+<a name="type-5" class="anchor" href="#type-5"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-5" class="anchor" href="#route-5"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/user/create</li>
+</ul><h4>
+<a name="parameters-you-should-post-2" class="anchor" href="#parameters-you-should-post-2"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>id {String} /REQUIRED/ The id you want to use for this new user</li>
+<li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.</li>
+</ul><h4>
+<a name="answer-5" class="anchor" href="#answer-5"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>User object:</p>
+
+<ul>
+<li>id {String} The id of the user (your id, not the MongoDB _id)</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="create-multiple-user" class="anchor" href="#create-multiple-user"><span class="octicon octicon-link"></span></a>Create multiple user</h3>
+
+<p>Creates multiple user</p>
+
+<h5>
+<a name="type-6" class="anchor" href="#type-6"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-6" class="anchor" href="#route-6"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/user/multipleCreate</li>
+</ul><h4>
+<a name="parameters-you-should-post-3" class="anchor" href="#parameters-you-should-post-3"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>users {Array} It contains user objects. User object should have the following properties:
+
+<ul>
+<li>id {String} /REQUIRED/ The id you want to use for this new user. Please note that if there is no id then the server will automatically ignore that input! (In this way you can get an empty array as an answer)</li>
+<li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.</li>
+</ul>
+</li>
+</ul><h4>
+<a name="answer-6" class="anchor" href="#answer-6"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Three different arrays:</p>
+
+<ul>
+<li>created {Array} Contains the ids of the users who was successfully created
+
+<ul>
+<li>id {String} The id of the user </li>
+</ul>
+</li>
+<li>alreadyHave {Array} Contains the users you already had
+
+<ul>
+<li>id {String} The id of the user</li>
+<li>group {String} The MongoDB _id of the group the user belongs to</li>
+<li>createTime {String} The time when the user was created</li>
+</ul>
+</li>
+<li>falied {Array} Contains the ids of the users whose creation failed
+
+<ul>
+<li>id {String} The id of the user</li>
+</ul>
+</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="get-one-user" class="anchor" href="#get-one-user"><span class="octicon octicon-link"></span></a>Get one user</h3>
+
+<p>Gets a specified user</p>
+
+<h5>
+<a name="type-7" class="anchor" href="#type-7"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-7" class="anchor" href="#route-7"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/user/getOne/:id</li>
+</ul><h4>
+<a name="parameters-in-the-route-1" class="anchor" href="#parameters-in-the-route-1"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the user.</li>
+</ul><h4>
+<a name="answer-7" class="anchor" href="#answer-7"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>User object:</p>
+
+<ul>
+<li>id {String} The id of the user</li>
+<li>group {String} The MongoDB _id of the group the user belongs to</li>
+<li>createTime {String} The time when the user was created</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="update-user" class="anchor" href="#update-user"><span class="octicon octicon-link"></span></a>Update user</h3>
+
+<p>Updates a specified user. Only the group (which the user belongs) can be changed.</p>
+
+<h5>
+<a name="type-8" class="anchor" href="#type-8"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-8" class="anchor" href="#route-8"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/user/update</li>
+</ul><h4>
+<a name="parameters-you-should-post-4" class="anchor" href="#parameters-you-should-post-4"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>id {String} The id of the user. </li>
+<li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.</li>
+</ul><h4>
+<a name="answer-8" class="anchor" href="#answer-8"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>User object:</p>
+
+<ul>
+<li>id {String} The id of the updated user</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="delete-user" class="anchor" href="#delete-user"><span class="octicon octicon-link"></span></a>Delete user</h3>
+
+<p>Deletes a specified user</p>
+
+<h5>
+<a name="type-9" class="anchor" href="#type-9"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>DELETE</li>
+</ul><h5>
+<a name="route-9" class="anchor" href="#route-9"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/user/delete/:id</li>
+</ul><h4>
+<a name="parameters-in-the-route-2" class="anchor" href="#parameters-in-the-route-2"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the user.</li>
+</ul><h4>
+<a name="answer-9" class="anchor" href="#answer-9"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>User object:</p>
+
+<ul>
+<li>id {String} The id of the deleted user</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="add-custom-string-to-all-users" class="anchor" href="#add-custom-string-to-all-users"><span class="octicon octicon-link"></span></a>Add custom string to all users</h3>
+
+<p>Add customstrings to all of your users.
+Note that every calls overwrites the previous, so if you want to remove all the custom strings, just do the call with   $customStrings['items'] or dont send the items at all</p>
+
+<pre><code>    $url = "http://api.edmdesigner.com/json/user/addCustomStrings?token=".$token."&amp;user=".$user;
+    //the $token is the string received from token validation and the $user is an existing userId
+
+    $customStrings = array();
+    $customStrings['items'] = array();
+    $customStrings['items'][] = array('label' =&gt; 'testLabel1', 'replacer' =&gt; 'testReplacer1');
+    $customStrings['items'][] = array('label' =&gt; 'testLabel2', 'replacer' =&gt; 'testReplacer2');
+    $customStrings['items'][] = array('label' =&gt; 'testLabel3', 'replacer' =&gt; 'testReplacer3');
+
+    $options = array(
+        'http' =&gt; array(
+            'header'  =&gt; "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  =&gt; 'POST',
+            'content' =&gt; http_build_query($data),
+        )
+    );
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    $savedResult = json_decode($result, TRUE);
+</code></pre>
+
+<hr><h3>
+<a name="add-custom-string-to-specified-user" class="anchor" href="#add-custom-string-to-specified-user"><span class="octicon octicon-link"></span></a>Add custom string to specified user</h3>
+
+<p>Add customstrings to just some of your users. 
+Note that every calls overwrites the previous, so if you want to remove all the custom strings, just do the call with   $customStrings['items'] or dont send the items at all</p>
+
+<pre><code>    $url = "http://api.edmdesigner.com/json/user/addCustomStringsToUser?token=".$token."&amp;user=".$user;
+    //the $token is the string received from token validation and the $user is an existing userId
+
+    $customStrings = array();
+    $customStrings['userId'] = 'your user id'; // It must be one of your existing user's id, otherwise returns error
+    $customStrings['items'] = array();
+    $customStrings['items'][] = array('label' =&gt; 'testLabel1', 'replacer' =&gt; 'testReplacer1');
+    $customStrings['items'][] = array('label' =&gt; 'testLabel2', 'replacer' =&gt; 'testReplacer2');
+    $customStrings['items'][] = array('label' =&gt; 'testLabel3', 'replacer' =&gt; 'testReplacer3');
+
+    $options = array(
+        'http' =&gt; array(
+            'header'  =&gt; "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  =&gt; 'POST',
+            'content' =&gt; http_build_query($data),
+        )
+    );
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    $savedResult = json_decode($result, TRUE);
+</code></pre>
+
+<hr><h2>
+<a name="gallery-handling" class="anchor" href="#gallery-handling"><span class="octicon octicon-link"></span></a>Gallery handling</h2>
+
+<p>If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.</p>
+
+<p>Basic operation: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and configure our server (you have to do the configuration only once).</p>
+
+<h3>
+<a name="configure-api-server" class="anchor" href="#configure-api-server"><span class="octicon octicon-link"></span></a>Configure api server</h3>
+
+<p>Set the api server the route where it can upload the images. (This route should be implemented on your server.)</p>
+
+<h5>
+<a name="type-10" class="anchor" href="#type-10"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-10" class="anchor" href="#route-10"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/config</li>
+</ul><h4>
+<a name="parameters-you-should-post-5" class="anchor" href="#parameters-you-should-post-5"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>route {String} The route which we can use for uploading the images.</li>
+</ul><h4>
+<a name="answer-10" class="anchor" href="#answer-10"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>The data you posted:</p>
+
+<ul>
+<li>route {String}
+or it can be an error object:</li>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="get-configuration" class="anchor" href="#get-configuration"><span class="octicon octicon-link"></span></a>Get configuration</h3>
+
+<p>Gets the configuration of the api gallery. It returns the route you set for the uploading</p>
+
+<h5>
+<a name="type-11" class="anchor" href="#type-11"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-11" class="anchor" href="#route-11"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/config</li>
+</ul><h4>
+<a name="answer-11" class="anchor" href="#answer-11"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Config object: </p>
+
+<ul>
+<li>route {String} The route you set for the uploading or nothing if you not configured our server yet. 
+or it can be an error object:</li>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="list-images" class="anchor" href="#list-images"><span class="octicon octicon-link"></span></a>List images</h3>
+
+<p>Lists all images of a specified user</p>
+
+<h5>
+<a name="type-12" class="anchor" href="#type-12"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-12" class="anchor" href="#route-12"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/list/:id</li>
+</ul><h4>
+<a name="parameters-in-the-route-3" class="anchor" href="#parameters-in-the-route-3"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the target user</li>
+</ul><h4>
+<a name="answer-12" class="anchor" href="#answer-12"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Array of urls</p>
+
+<p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="add-images" class="anchor" href="#add-images"><span class="octicon octicon-link"></span></a>Add images</h3>
+
+<p>Add one or more images to one or more specified users</p>
+
+<h5>
+<a name="type-13" class="anchor" href="#type-13"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-13" class="anchor" href="#route-13"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/add</li>
+</ul><h4>
+<a name="parameters-you-should-post-6" class="anchor" href="#parameters-you-should-post-6"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>images {Array} /REQUIRED/ should contain the images you want to give to the users. Every image should be an object with the following parameters:
+
+<ul>
+<li>url {String} /REQUIRED/ The url of the images (you probably host)</li>
+<li>secure_url {String} Http secure version og the image url</li>
+<li>thumb_url {String} An url where the thumbnail version of the image is available (Tha gallery can work a lot faster if you can provide a thumbnail)</li>
+<li>name {String} The name of the image. If it is not given then we will you the last segment of the url</li>
+<li>width {Number} The original width of the image (It can save a lot of process if you can provide this information)</li>
+<li>height {Number} The original height of the image (It can save a lot of process if you can provide this information)</li>
+</ul>
+</li>
+<li>users {Array} /REQUIRED/ should contain the ids of the users</li>
+</ul><h4>
+<a name="answer-13" class="anchor" href="#answer-13"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Three different array:</p>
+
+<ul>
+<li>added {Array} contains the image user pairs which were successfully created. An object in this array looks like this:
+
+<ul>
+<li>image {Object} One image from the posted images array</li>
+<li>users {Array} An array containing the ids of the users whose get the image successfully</li>
+</ul>
+</li>
+<li>alreadyHave {Array} contains the image user pairs where the user alread had the given image. An object in this array looks like this:
+
+<ul>
+<li>image {Object} One image from the posted images array</li>
+<li>users {Array} An array containing the ids of the users whose already had this image</li>
+</ul>
+</li>
+<li>failed {Array} contains the image user pairs where the adding the image to the given users failed. An object in this array looks like this:
+
+<ul>
+<li>image {Object} One image from the posted images array</li>
+<li>users {Array} An array containing the ids of the users whose cannot get the image because of somekind of error</li>
+<li>error {String} Description of the error</li>
+</ul>
+</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="delete-images" class="anchor" href="#delete-images"><span class="octicon octicon-link"></span></a>Delete images</h3>
+
+<p>Delete one or more images from one or more specified users</p>
+
+<h5>
+<a name="type-14" class="anchor" href="#type-14"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>DELETE</li>
+</ul><h5>
+<a name="route-14" class="anchor" href="#route-14"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/delete</li>
+</ul><h4>
+<a name="parameters-you-should-post-7" class="anchor" href="#parameters-you-should-post-7"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>images {Array} /REQUIRED/ should contain the urls of the images you want to remove from the given users.</li>
+<li>users {Array} /REQUIRED/ should contain the ids of the users.</li>
+</ul><h4>
+<a name="answer-14" class="anchor" href="#answer-14"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Three different array:</p>
+
+<ul>
+<li>deleted {Array} contains the image user pairs where the image was successfully deleted. An object in this array looks like this:
+
+<ul>
+<li>image {Object} One image from the posted images array
+
+<ul>
+<li>url {String} The url of the image </li>
+</ul>
+</li>
+<li>users {Array} An array containing the ids of the users whose</li>
+</ul>
+</li>
+<li>dontHave {Array} contains the image user pairs where the user doesn't have the given image. An object in this array looks like this:
+
+<ul>
+<li>image {Object} One image from the posted images array
+
+<ul>
+<li>url {String} The url of the image </li>
+</ul>
+</li>
+<li>users {Array} An array containing the ids of the users whose doesn't have this image</li>
+</ul>
+</li>
+<li>failed {Array} contains the image user pairs where the deleting the image from the given users failed. An object in this array looks like this:
+
+<ul>
+<li>image {Object} One image from the posted images array</li>
+<li>users {Array} An array containing the ids of the users whose image cannot be deleted because of somekind of error</li>
+<li>error {String} Description of the error</li>
+</ul>
+</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h2>
+<a name="project-handler-admin-routes" class="anchor" href="#project-handler-admin-routes"><span class="octicon octicon-link"></span></a>Project handler admin routes</h2>
+
+<h3>
+<a name="create-to" class="anchor" href="#create-to"><span class="octicon octicon-link"></span></a>Create to</h3>
+
+<p>Creates a project/template to a specified user</p>
+
+<h5>
+<a name="type-15" class="anchor" href="#type-15"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-15" class="anchor" href="#route-15"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/createTo</li>
+</ul><h4>
+<a name="parameters-you-should-post-8" class="anchor" href="#parameters-you-should-post-8"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>userId {String} /REQUIRED/ The target user's id</li>
+<li>title {String} The title of the new template, if it is not given, then the project's name will be 'Untitled'</li>
+<li>description {String} Description of the template, by defaullt it is an empty string</li>
+<li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
+</ul><h4>
+<a name="answer-15" class="anchor" href="#answer-15"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Project object:</p>
+
+<ul>
+<li>_id {String} MongoDB _id of the newly created project</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="create-from-to" class="anchor" href="#create-from-to"><span class="octicon octicon-link"></span></a>Create from to</h3>
+
+<p>Creates a project/template to a specified user using an another template</p>
+
+<h5>
+<a name="type-16" class="anchor" href="#type-16"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-16" class="anchor" href="#route-16"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/createFromTo</li>
+</ul><h4>
+<a name="parameters-you-should-post-9" class="anchor" href="#parameters-you-should-post-9"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>userId {String} /REQUIRED/ The target user's id</li>
+<li>_id {String} /REQUIRED/ The MongoDB _id of the template we want to copy to the target user</li>
+<li>title {String} The title of the new template, if it is not given, then the project's name will be 'Untitled'</li>
+<li>description {String} Description of the template, by defaullt it is an empty string</li>
+<li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
+</ul><h4>
+<a name="answer-16" class="anchor" href="#answer-16"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Project object:</p>
+
+<ul>
+<li>_id {String} MongoDB _id of the newly created project</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="default-templates" class="anchor" href="#default-templates"><span class="octicon octicon-link"></span></a>Default templates</h3>
+
+<p>Every api partner get a templater user. (id = "templater"). This speciel user have a few project by default which can be used for anything you want. With this route you can list this projects.</p>
+
+<h5>
+<a name="type-17" class="anchor" href="#type-17"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-17" class="anchor" href="#route-17"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/defaults</li>
+</ul><h4>
+<a name="answer-17" class="anchor" href="#answer-17"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>List of projects. Every project is an object with the following parameters:</p>
+
+<ul>
+<li>_id {String} MongoDB _id of the project</li>
+<li>title {String} Title of the template</li>
+<li>document {Object} An object, which represents a template</li>
+<li>description {String} Description of the template</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h2>
+<a name="user-routes" class="anchor" href="#user-routes"><span class="octicon octicon-link"></span></a>User routes</h2>
+
+<h2>
+<a name="authentication-1" class="anchor" href="#authentication-1"><span class="octicon octicon-link"></span></a>Authentication</h2>
+
+<p>To authenticate these routes, userId and a token (generated to the userId) are needed. Those to should be sent on the request's query.(somehow like this: ?user=userID&amp;token=token ). Please note that every route need to be authenticated expect the one which generate the token. (//api.edmdesigner.com/api/token)</p>
+
+<p>For example: //api.edmdesginer.com/json/project/list?user=userId&amp;token=123456789</p>
+
+<h2>
+<a name="project-routes" class="anchor" href="#project-routes"><span class="octicon octicon-link"></span></a>Project routes</h2>
+
+<h3>
+<a name="list-projects" class="anchor" href="#list-projects"><span class="octicon octicon-link"></span></a>List projects</h3>
+
+<p>Lists the projects of the actual user.</p>
+
+<h5>
+<a name="type-18" class="anchor" href="#type-18"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-18" class="anchor" href="#route-18"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/list</li>
+</ul><h4>
+<a name="answer-18" class="anchor" href="#answer-18"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>List of projects. Every project is an object with the following parameters:</p>
+
+<ul>
+<li>_id {String} MongoDB _id of the project</li>
+<li>title {String} Title of the template</li>
+<li>description {String} Description of the template</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="create" class="anchor" href="#create"><span class="octicon octicon-link"></span></a>Create</h3>
+
+<p>Creates a new project (a new e-mail template).</p>
+
+<h5>
+<a name="type-19" class="anchor" href="#type-19"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-19" class="anchor" href="#route-19"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/list</li>
+</ul><h4>
+<a name="parameters-you-should-post-10" class="anchor" href="#parameters-you-should-post-10"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>title {String} The title of the new project.</li>
+<li>description {String} The description of the new project.</li>
+<li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.</li>
+</ul><h4>
+<a name="answer-19" class="anchor" href="#answer-19"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<ul>
+<li>_id {String} MongoDB _id of the newly created project</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="duplicate" class="anchor" href="#duplicate"><span class="octicon octicon-link"></span></a>Duplicate</h3>
+
+<p>Creates the exact copy of the project with the ID specified in projectId.</p>
+
+<h5>
+<a name="type-20" class="anchor" href="#type-20"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-20" class="anchor" href="#route-20"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/duplicate/:id</li>
+</ul><h4>
+<a name="parameters-in-the-route-4" class="anchor" href="#parameters-in-the-route-4"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.</li>
+</ul><h4>
+<a name="answer-20" class="anchor" href="#answer-20"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Project object:</p>
+
+<ul>
+<li>_id {String} The MongoDB _id of the new template</li>
+<li>title {String} The title of the new template</li>
+<li>description {String} The description of the new template</li>
+<li>document {Object} An object, which represents the new template</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="remove" class="anchor" href="#remove"><span class="octicon octicon-link"></span></a>Remove</h3>
+
+<p>Removes a project.</p>
+
+<h5>
+<a name="type-21" class="anchor" href="#type-21"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>DELETE</li>
+</ul><h5>
+<a name="route-21" class="anchor" href="#route-21"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/remove/:id</li>
+</ul><h4>
+<a name="parameters-in-the-route-5" class="anchor" href="#parameters-in-the-route-5"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.</li>
+</ul><h4>
+<a name="answer-21" class="anchor" href="#answer-21"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>A number, it is 1 if the project was successfully deleted</p>
+
+<p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="generate" class="anchor" href="#generate"><span class="octicon octicon-link"></span></a>Generate</h3>
+
+<p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
+
+<h5>
+<a name="type-22" class="anchor" href="#type-22"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-22" class="anchor" href="#route-22"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/generate/:id</li>
+</ul><h4>
+<a name="parameters-in-the-route-6" class="anchor" href="#parameters-in-the-route-6"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.</li>
+</ul><h4>
+<a name="answer-22" class="anchor" href="#answer-22"><span class="octicon octicon-link"></span></a>Answer</h4>
+
+<p>A bulletproof responsive HTML version of the given template</p>
+
+<p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="get-title" class="anchor" href="#get-title"><span class="octicon octicon-link"></span></a>Get title</h3>
+
+<p>Gets the title of the selected project.</p>
+
+<h5>
+<a name="type-23" class="anchor" href="#type-23"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-23" class="anchor" href="#route-23"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/title/:id</li>
+</ul><h4>
+<a name="parameters-in-the-route-7" class="anchor" href="#parameters-in-the-route-7"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.</li>
+</ul><h4>
+<a name="answer-23" class="anchor" href="#answer-23"><span class="octicon octicon-link"></span></a>Answer</h4>
+
+<p>Title object:</p>
+
+<ul>
+<li>title {String} The title of the selected project</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="update-information" class="anchor" href="#update-information"><span class="octicon octicon-link"></span></a>Update information</h3>
+
+<p>Updates the title or/and the description of the specified project</p>
+
+<h5>
+<a name="type-24" class="anchor" href="#type-24"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-24" class="anchor" href="#route-24"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/updateInfo</li>
+</ul><h4>
+<a name="parameters-you-should-post-11" class="anchor" href="#parameters-you-should-post-11"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.</li>
+<li>title {String} The title of the new project.</li>
+<li>description {String} The description of the new project.</li>
+</ul><h4>
+<a name="answer-24" class="anchor" href="#answer-24"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<ul>
+<li>_id {String} MongoDB _id of the newly created project</li>
+<li>title {String} The title of the new template</li>
+<li>description {String} The description of the new template</li>
+<li>document {Object} An object, which represents the new template</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h2>
 <a name="example-implementations" class="anchor" href="#example-implementations"><span class="octicon octicon-link"></span></a>Example implementations</h2>
 
 <ul>
 <li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js">Node.js example</a></li>
 <li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP">PHP example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin">PHP admin example</a></li>
 </ul><h2>
 <a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
 
