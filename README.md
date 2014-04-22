@@ -11,6 +11,27 @@ The handshaking is built into the initialization process, so if you implemented 
 
 We provide example implementations that include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.
 
+##### Table of content
+
+1. __[Initializin](#initializing)__  
+2. __[Handshaking](#handshaking)__  
+3. __[Api functions](#api-functions)__  
+  1. [User functions](#user-functions)  
+  2. [Admin functions](#admin-functions)  
+4. __[Server side routes](#server-side-routes)__  
+  1. [Admin routes](#admin-routes)  
+    * _[Authentication](#authentication)_  
+    * _[Group handler routes](#group-handler-routes)_  
+    * _[User handler routes](#user-handler-routes)_  
+    * _[Gallery handling](#gallery-handling)_  
+    * _[Project handler routes](#project-handler-admin-routes)_  
+  2. [User routes](#user-routes)  
+    *  _[Authentication](#authentication-1)_  
+    *  _[Project routes](#project-routes)_  
+5. __[Examples](#example-implementations)__  
+6. __[Dependencies](#dependencies)__  
+
+
 Initializing
 ------------
 	
@@ -98,7 +119,7 @@ ___
 ### edmDesignerApi.duplicateProject(projectId, callback, onErrorCB)
 Creates the exact copy of the project with the ID specified in projectId.
 #### Parameters:
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -123,7 +144,7 @@ ___
 ### edmDesignerApi.removeProject(projectId, callback, onErrorCB)
 Removes a project.
 #### Parameters:
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -145,10 +166,11 @@ Removes a project.
 
 ___	
 
-### edmDesignerApi.openProject(projectId, callback, onErrorCB)
+### edmDesignerApi.openProject(projectId, [languageCode], callback, onErrorCB)
 Opens a project.
 #### Parameters:
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * languageCode {String} /Optional/ A two character [ISO 639-1 code](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of a selected language. With this parameter you can choose the language which the opened project will use. You can find the [list of the available languages](#languages) at the end of this page. Default language is english.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -173,7 +195,7 @@ ___
 ### edmDesignerApi.generateProject(projectId, callback, onErrorCB)
 Generates the bulletproof responsive HTML e-mail based on the projectId.
 #### Parameters:
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the edmDesignerAPI.listProjects function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -272,9 +294,9 @@ ___
 ### edmDesignerApi.getGroup(groupId, callback, onErrorCB)
 Gets a specified group
 #### Parameters:
-   * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
+   * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+   * callback {Function} A function to be called if the request succeeds
+   * onErrorCB {Function} A function to be called if the request fails
  
 #### Example:
 	
@@ -303,9 +325,9 @@ ___
 ### edmDesignerApi.updateGroup(groupId, data, callback, onErrorCB)
 Updates a specified group's name or the features it provides or both of these two at the same time.
 #### Parameters:
-   * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.
-   * data {Object}
-     * data.name {String} The name you want to give to the group
+  * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+  * data {Object}
+     data.name {String} The name you want to give to the group
      * data.featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
@@ -390,7 +412,7 @@ Creates a new user
 #### Parameters:
   * data {Object}
     * data.id {String} /REQUIRED/ The id you want to use for this new user
-    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.
+    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -420,7 +442,7 @@ Creates multiple user
 #### Parameters:
   * data {Array} It contains user objects. User object should have the following properties:
     * id {String} /REQUIRED/ The id you want to use for this new user
-    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.
+    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -451,7 +473,7 @@ ___
 ### edmDesignerApi.getUser(userId, callback, onErrorCB)
 Gets a specified user
 #### Parameters:
-   * userId {String} The id of the user.
+  * userId {String} The id of the user.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -484,7 +506,7 @@ Updates a specified user. Only the group (which the user belongs) can be changed
 #### Parameters:
   * userId {String} The id of the user. 
   * data {Object}
-    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the edmDesignerAPI.listGroups function.
+    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -577,7 +599,7 @@ Create the handshaking between PHP and API needs to be done before any further c
 
 ___
 
-## Group manipulating routes
+## Group handler routes
 ### List groups
 Lists the groups you have
 
@@ -630,7 +652,7 @@ Gets a specified group
   + //api.edmdesigner.com/json/groups/read/:id
 
 #### Parameters (in the route):
-   * id {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.
+   * id {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
 
 ####Answer:
 A group object:
@@ -653,7 +675,7 @@ Updates a specified group's name or the features it provides or both of these tw
   + //api.edmdesigner.com/json/groups/update
 
 #### Parameters (you should post):
-   * _id {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.
+   * _id {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
    * name {String} The name you want to give to the group
    * featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
 
@@ -668,7 +690,7 @@ Or it can be an error object:
 
 ___
 
-## User manipulating routes
+## User handler routes
 
 ### List
 Lists the users you have
@@ -701,7 +723,7 @@ Creates a new user
 
 #### Parameters (you should post):
   * id {String} /REQUIRED/ The id you want to use for this new user
-  * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.
+  * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
 
 ####Answer:
 User object:
@@ -724,7 +746,7 @@ Creates multiple user
 #### Parameters (you should post):
   * users {Array} It contains user objects. User object should have the following properties:
     * id {String} /REQUIRED/ The id you want to use for this new user. Please note that if there is no id then the server will automatically ignore that input! (In this way you can get an empty array as an answer)
-    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.
+    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
 
 ####Answer:
 Three different arrays:
@@ -776,7 +798,7 @@ Updates a specified user. Only the group (which the user belongs) can be changed
 
 #### Parameters (you should post):
    * id {String} The id of the user. 
-   * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the /json/groups/list route.
+   * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
 
 ####Answer:
 User object:
@@ -1128,7 +1150,7 @@ Creates the exact copy of the project with the ID specified in projectId.
   + //api.edmdesigner.com/json/project/duplicate/:id
 
 #### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.
+  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
 
 #### Answer:
 Project object:
@@ -1152,7 +1174,7 @@ Removes a project.
   + //api.edmdesigner.com/json/project/remove/:id
 
 #### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.
+  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
 
 ####Answer:
 A number, it is 1 if the project was successfully deleted
@@ -1172,7 +1194,7 @@ Generates the bulletproof responsive HTML e-mail based on the projectId.
   + //api.edmdesigner.com/json/project/generate/:id
 
 #### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.
+  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
 
 ####Answer
 A bulletproof responsive HTML version of the given template
@@ -1192,7 +1214,7 @@ Gets the title of the selected project.
   + //api.edmdesigner.com/json/project/title/:id
 
 #### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.
+  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
 
 ####Answer
 Title object:
@@ -1213,7 +1235,7 @@ Updates the title or/and the description of the specified project
   + //api.edmdesigner.com/json/project/updateInfo
 
 #### Parameters (you should post):
-  * projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the /json/project/list route.
+  * projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
   * title {String} The title of the new project.
   * description {String} The description of the new project.
 
@@ -1227,6 +1249,15 @@ or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
 ___
+
+Available Languages
+-------------------
+You can set the localization which the api will use. (if you want to know how, please check the [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-callback-onerrorcb) function!)  
+Available languages:
+ - English (code: 'en')
+ - Hungarian (code: 'hu')
+
+If the language you want to use is not available yet then please contact us with the following email address: info@edmdesigner.com  
 
 
 Example implementations
