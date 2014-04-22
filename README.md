@@ -11,6 +11,27 @@ The handshaking is built into the initialization process, so if you implemented 
 
 We provide example implementations that include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.
 
+##### Table of content
+
+1. __[Initializin](#initializing)__  
+2. __[Handshaking](#handshaking)__  
+3. __[Api functions](#api-functions)__  
+  1. [User functions](#user-functions)  
+  2. [Admin functions](#admin-functions)  
+4. __[Server side routes](#server-side-routes)__  
+  1. [Admin routes](#admin-routes)  
+    * _[Authentication](#authentication)_  
+    * _[Group handler routes](#group-handler-routes)_  
+    * _[User handler routes](#user-handler-routes)_  
+    * _[Gallery handling](#gallery-handling)_  
+    * _[Project handler routes](#project-handler-admin-routes)_  
+  2. [User routes](#user-routes)  
+    *  _[Authentication](#authentication-1)_  
+    *  _[Project routes](#project-routes)_  
+5. __[Examples](#example-implementations)__  
+6. __[Dependencies](#dependencies)__  
+
+
 Initializing
 ------------
 	
@@ -577,7 +598,7 @@ Create the handshaking between PHP and API needs to be done before any further c
 
 ___
 
-## Group manipulating routes
+## Group handler routes
 ### List groups
 Lists the groups you have
 
@@ -668,7 +689,7 @@ Or it can be an error object:
 
 ___
 
-## User manipulating routes
+## User handler routes
 
 ### List
 Lists the users you have
