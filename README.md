@@ -25,6 +25,7 @@ We provide example implementations that include the handshaking as well. You can
     * _[User handler routes](#user-handler-routes)_  
     * _[Gallery handling](#gallery-handling)_  
     * _[Project handler routes](#project-handler-admin-routes)_  
+    * _[Headers & Footers](#headers--footers)_
   2. [User routes](#user-routes)  
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
@@ -690,6 +691,58 @@ Or it can be an error object:
 
 ___
 
+### Upload Headers 
+Upload a list of headers to a specified groups. Every user who belongs to this group will be able to use these headers. Please note that every upload will overwrite the previews uploads!  
+If you want to know what a header is good for, please read the [headers & footers](#headers--footers) part of the documentation!
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/groups/uploadHeaders
+
+#### Parameters (you should post):
+   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
+   * headers {Array} /REQUIRED/ The list of headers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, pls read [this](#headers--footers) part of the documentation.
+
+####Answer:
+An object with two arrays:
+  - success {Array} The list of the headers which were successfully added to the group
+  - failed {Array} The list of the object: 
+    - header {Object} The header which is not valid therefore it was not added to the group
+    - error {String} The reason why the header is not valid
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Upload Footers 
+Upload a list of footers to a specified groups. Every user who belongs to this group will be able to use these footers. Please note that every upload will overwrite the previews uploads!  
+If you want to know what a footer is good for, please read the [headers & footers](#headers--footers) part of the documentation!
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/groups/uploadFooters
+
+#### Parameters (you should post):
+   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
+   * footers {Array} /REQUIRED/ The list of footers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, pls read [this](#headers--footers) part of the documentation.
+
+####Answer:
+An object with two arrays:
+  - success {Array} list of the footers which were successfully added to the group
+  - failed {Array} list of the object: 
+    - footer {Object} The footer which is not valid therefore it was not added to the group
+    - error {String} The reason why the footer is not valid
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
 ## User handler routes
 
 ### List
@@ -824,6 +877,64 @@ Deletes a specified user
 ####Answer:
 User object:
   - id {String} The id of the deleted user
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Upload Headers 
+Upload a list of headers to a specified user or users. Please note that every upload will overwrite the previews uploads!  
+If you want to know what a header is good for, please read the [headers & footers](#headers--footers) part of the documentation!
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/user/uploadHeaders
+
+#### Parameters (you should post):
+   * users {Array} /REQUIRED/ List of the ids of the users you want to upload the headers.
+   * headers {Array} /REQUIRED/ The list of headers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, pls read [this](#headers--footers) part of the documentation.
+
+####Answer:
+An object with two arrays:
+  - success {Array} list of the users whose successfully got the headers
+  - failed {Array} list of the object: 
+    - user {String} The id of the user who did not get the headers
+    - error {String} The reason why the user did not get the headers
+  - badHeaders {Array} list of the object: 
+    - header {Object} The header which is not valid therefore it was not added to the users
+    - error {String} The reason why the header is not valid
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Upload Footers 
+Upload a list of footers to a specified user or users. Please note that every upload will overwrite the previews uploads!  
+If you want to know what a footer is good for, please read the [headers & footers](#headers--footers) part of the documentation!
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/user/uploadFooters
+
+#### Parameters (you should post):
+   * users {Array} /REQUIRED/ List of the ids of the users you want to upload the footers.
+   * footers {Array} /REQUIRED/ The list of footers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, pls read [this](#headers--footers) part of the documentation.
+
+####Answer:
+An object with two arrays:
+  - success {Array} The list of the users whose successfully got the footers
+  - failed {Array} The list of the object: 
+    - user {String} The id of the user who did not get the footers
+    - error {String} The reason why the user did not get the footers
+  - badFooters {Array} list of the object: 
+    - footer {Object} The footer which is not valid therefore it was not added to the users
+    - error {String} The reason why the footer is not valid
 
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -1085,6 +1196,79 @@ List of projects. Every project is an object with the following parameters:
   - description {String} Description of the template
 
 or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+##Headers & footers
+You can upload headers and footers which your users will be able to use. A header will appear on the top of their templates and the footer will appear on the bottom.
+The users won’t be able to edit these two elements or remove them.  
+If you upload any header and/or footer, then the affected users have to use one. If you want to have a group of user who don’t have to use any kind of header and/or footer, then do not upload header and/or footer to all of your user ([general upload]()) or upload the group an empty header and/or footer. This way they can choose the empty one and then there will be no header and/or footer on their templates.  
+You can upload different kind of headers and/or footers. If you do so than the affected users will be able to choose which header they want to use, but they still have to use one of them.   
+A newly created template will get the first uploaded header and/or footer which affected the user who created the template. (The header and/or footer priority is the following: user’s personal headers and/or footers <  user’s group’s headers and/or footers < general headers and/or footers)
+
+### Structure
+The representing object fore header or footer should have the following properties:
+  - document {Object} /REQUIRED/
+    - root /REQUIRED/
+    - generalSettings
+  - id {String} /REQUIRED/
+  - title {Object} it should contains language code - title string pairs. For example: 'en': 'Green-white header'. The title will appear on the dropdown list.
+  - placeholders {Object}
+
+___
+
+### Localization
+
+
+___
+
+### Upload Headers 
+Upload a list of headers which __all of your users__ will be able to use. Please note that every upload will overwrite the previews uploads!  
+If you want to know what a header is good for, please read the [headers & footers](#headers--footers) part of the documentation!
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/general/uploadHeaders
+
+#### Parameters (you should post):
+   * headers {Array} The list of headers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, pls read [this](#headers--footers) part of the documentation.
+
+####Answer:
+An object with two arrays:
+  - success {Array} The list of the headers which were successfully saved
+  - failed {Array} The list of the object: 
+    - header {Object} The header which is not valid therefore it was not saved
+    - error {String} The reason why the header is not valid
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Upload Footers 
+Upload a list of footers which __all of your users__ will be able to use. Please note that every upload will overwrite the previews uploads!  
+If you want to know what a footer is good for, please read the [headers & footers](#headers--footers) part of the documentation!
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/general/uploadFooters
+
+#### Parameters (you should post):
+   * footers {Array} The list of footers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, pls read [this](#headers--footers) part of the documentation.
+
+####Answer:
+An object with two arrays:
+  - success {Array} The list of the footers which were successfully saved
+  - failed {Array} The list of the object: 
+    - footer {Object} The footer which is not valid therefore it was not saved
+    - error {String} The reason why the footer is not valid
+
+Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
 ___
