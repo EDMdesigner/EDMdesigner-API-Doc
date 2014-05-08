@@ -120,7 +120,7 @@ ___
 ### edmDesignerApi.duplicateProject(projectId, callback, onErrorCB)
 Creates the exact copy of the project with the ID specified in projectId.
 #### Parameters:
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -145,7 +145,7 @@ ___
 ### edmDesignerApi.removeProject(projectId, callback, onErrorCB)
 Removes a project.
 #### Parameters:
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -170,7 +170,7 @@ ___
 ### edmDesignerApi.openProject(projectId, [languageCode], callback, onErrorCB)
 Opens a project.
 #### Parameters:
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
   * languageCode {String} /Optional/ A two character [ISO 639-1 code](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of a selected language. With this parameter you can choose the language which the opened project will use. You can find the [list of the available languages](#languages) at the end of this page. Default language is english.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
@@ -196,7 +196,7 @@ ___
 ### edmDesignerApi.generateProject(projectId, callback, onErrorCB)
 Generates the bulletproof responsive HTML e-mail based on the projectId.
 #### Parameters:
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -295,7 +295,7 @@ ___
 ### edmDesignerApi.getGroup(groupId, callback, onErrorCB)
 Gets a specified group
 #### Parameters:
-   * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+   * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
    * callback {Function} A function to be called if the request succeeds
    * onErrorCB {Function} A function to be called if the request fails
  
@@ -326,7 +326,7 @@ ___
 ### edmDesignerApi.updateGroup(groupId, data, callback, onErrorCB)
 Updates a specified group's name or the features it provides or both of these two at the same time.
 #### Parameters:
-  * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+  * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * data {Object}
      data.name {String} The name you want to give to the group
      * data.featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
@@ -413,7 +413,7 @@ Creates a new user
 #### Parameters:
   * data {Object}
     * data.id {String} /REQUIRED/ The id you want to use for this new user
-    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -443,7 +443,7 @@ Creates multiple user
 #### Parameters:
   * data {Array} It contains user objects. User object should have the following properties:
     * id {String} /REQUIRED/ The id you want to use for this new user
-    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -507,7 +507,7 @@ Updates a specified user. Only the group (which the user belongs) can be changed
 #### Parameters:
   * userId {String} The id of the user. 
   * data {Object}
-    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -653,7 +653,7 @@ Gets a specified group
   + //api.edmdesigner.com/json/groups/read/:id
 
 #### Parameters (in the route):
-   * id {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
+   * id {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
 
 ####Answer:
 A group object:
@@ -676,7 +676,7 @@ Updates a specified group's name or the features it provides or both of these tw
   + //api.edmdesigner.com/json/groups/update
 
 #### Parameters (you should post):
-   * _id {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
+   * _id {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
    * name {String} The name you want to give to the group
    * featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
 
@@ -692,7 +692,7 @@ Or it can be an error object:
 ___
 
 ### Upload Headers 
-Upload a list of headers to a specified groups. Every user who belongs to this group will be able to use these headers. Please note that every upload will overwrite the previews uploads!  
+Upload a list of headers to the specified group. Every user who belongs to this group will be able to use these headers. Please note that every upload will overwrite the previous uploads!  
 If you want to know what a header is good for, please read the [headers & footers](#headers--footers) part of the documentation!
 
 #####Type
@@ -702,8 +702,8 @@ If you want to know what a header is good for, please read the [headers & footer
   + //api.edmdesigner.com/json/groups/uploadHeaders
 
 #### Parameters (you should post):
-   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
-   * headers {Array} /REQUIRED/ The list of headers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, pls read [this](#headers--footers) part of the documentation.
+   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
+   * headers {Array} /REQUIRED/ The list of headers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, please read [this](#structure) part of the documentation.
 
 ####Answer:
 An object with two arrays:
@@ -718,7 +718,7 @@ Or it can be an error object:
 ___
 
 ### Upload Footers 
-Upload a list of footers to a specified groups. Every user who belongs to this group will be able to use these footers. Please note that every upload will overwrite the previews uploads!  
+Upload a list of footers to the specified group. Every user who belongs to this group will be able to use these footers. Please note that every upload will overwrite the previous uploads!  
 If you want to know what a footer is good for, please read the [headers & footers](#headers--footers) part of the documentation!
 
 #####Type
@@ -728,8 +728,8 @@ If you want to know what a footer is good for, please read the [headers & footer
   + //api.edmdesigner.com/json/groups/uploadFooters
 
 #### Parameters (you should post):
-   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
-   * footers {Array} /REQUIRED/ The list of footers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, pls read [this](#headers--footers) part of the documentation.
+   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
+   * footers {Array} /REQUIRED/ The list of footers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, please read [this](#structure) part of the documentation.
 
 ####Answer:
 An object with two arrays:
@@ -776,7 +776,7 @@ Creates a new user
 
 #### Parameters (you should post):
   * id {String} /REQUIRED/ The id you want to use for this new user
-  * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
+  * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
 
 ####Answer:
 User object:
@@ -799,7 +799,7 @@ Creates multiple user
 #### Parameters (you should post):
   * users {Array} It contains user objects. User object should have the following properties:
     * id {String} /REQUIRED/ The id you want to use for this new user. Please note that if there is no id then the server will automatically ignore that input! (In this way you can get an empty array as an answer)
-    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
+    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
 
 ####Answer:
 Three different arrays:
@@ -851,7 +851,7 @@ Updates a specified user. Only the group (which the user belongs) can be changed
 
 #### Parameters (you should post):
    * id {String} The id of the user. 
-   * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed your groups with the [/json/groups/list](#list-groups) route.
+   * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
 
 ####Answer:
 User object:
@@ -884,7 +884,7 @@ Or it can be an error object:
 ___
 
 ### Upload Headers 
-Upload a list of headers to a specified user or users. Please note that every upload will overwrite the previews uploads!  
+Upload a list of headers to a specified user or users. Please note that every upload will overwrite the previous uploads!  
 If you want to know what a header is good for, please read the [headers & footers](#headers--footers) part of the documentation!
 
 #####Type
@@ -895,7 +895,7 @@ If you want to know what a header is good for, please read the [headers & footer
 
 #### Parameters (you should post):
    * users {Array} /REQUIRED/ List of the ids of the users you want to upload the headers.
-   * headers {Array} /REQUIRED/ The list of headers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, pls read [this](#headers--footers) part of the documentation.
+   * headers {Array} /REQUIRED/ The list of headers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, please read [this](#structure) part of the documentation.
 
 ####Answer:
 An object with two arrays:
@@ -913,7 +913,7 @@ Or it can be an error object:
 ___
 
 ### Upload Footers 
-Upload a list of footers to a specified user or users. Please note that every upload will overwrite the previews uploads!  
+Upload a list of footers to a specified user or users. Please note that every upload will overwrite the previous uploads!  
 If you want to know what a footer is good for, please read the [headers & footers](#headers--footers) part of the documentation!
 
 #####Type
@@ -924,7 +924,7 @@ If you want to know what a footer is good for, please read the [headers & footer
 
 #### Parameters (you should post):
    * users {Array} /REQUIRED/ List of the ids of the users you want to upload the footers.
-   * footers {Array} /REQUIRED/ The list of footers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, pls read [this](#headers--footers) part of the documentation.
+   * footers {Array} /REQUIRED/ The list of footers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, please read [this](#structure) part of the documentation.
 
 ####Answer:
 An object with two arrays:
@@ -1203,28 +1203,70 @@ ___
 ##Headers & footers
 You can upload headers and footers which your users will be able to use. A header will appear on the top of their templates and the footer will appear on the bottom.
 The users won’t be able to edit these two elements or remove them.  
-If you upload any header and/or footer, then the affected users have to use one. If you want to have a group of user who don’t have to use any kind of header and/or footer, then do not upload header and/or footer to all of your user ([general upload]()) or upload the group an empty header and/or footer. This way they can choose the empty one and then there will be no header and/or footer on their templates.  
-You can upload different kind of headers and/or footers. If you do so than the affected users will be able to choose which header they want to use, but they still have to use one of them.   
-A newly created template will get the first uploaded header and/or footer which affected the user who created the template. (The header and/or footer priority is the following: user’s personal headers and/or footers <  user’s group’s headers and/or footers < general headers and/or footers)
+If you upload any header and/or footer, then the affected users have to use one. If you want to have a group of users who don’t have to use any kind of header and/or footer, then do not upload header and/or footer to all of your users ([general upload](#upload-header-2)) or upload the group an empty header and/or footer. This way they can choose the empty one and then there will be no header and/or footer on their templates.  
+You can upload different kind of headers and/or footers. If you do so, then the affected users will be able to choose which header they want to use, but they still have to use one of them.   
+The newly created document will get a header and/or footer if the user (who created the project) has any header and/or footer. A user can have header and/or footer if it was uploaded directly to him or to his group or if there are headers and/or footers which were uploaded to every users. (The header and/or footer priority is the following: user’s personal headers and/or footers <  user’s group’s headers and/or footers < general headers and/or footers)
+
+There is three different ways to upload headers. You can upload it:
+  - to all your user ([general header upload](#upload-headers-2)) 
+  - to a specified group ([upload headers to group](#upload-headers)) 
+  - to specified user or users ([upload headers to user](#upload-headers-1))
+
+Footers can be uploaded in the same ways:
+  - to everyone ([general footer upload](#upload-footers-2))
+  - to a specified group ([upload footers to a group](#upload-footers))
+  - to specified user or users ([upload footers to users](#upload-footers-1))
+
 
 ### Structure
 The representing object fore header or footer should have the following properties:
-  - document {Object} /REQUIRED/
-    - root /REQUIRED/
+  - document {Object} /REQUIRED/ it should be a json object (which represent our templates)
+    - root /REQUIRED/ There should be the structure of the header or footer
     - generalSettings
-  - id {String} /REQUIRED/
-  - title {Object} it should contains language code - title string pairs. For example: 'en': 'Green-white header'. The title will appear on the dropdown list.
-  - placeholders {Object}
+  - id {String} /REQUIRED/ this id is what we use for distinguish the headers from each other so __it should be unique!__ Please note that the id you want to use for the users headers should be different from the ids of the general headers or the ids of the user's group's headers. The same is true for the footers.
+  - title {Object} it should contains language code - title string pairs. For example: 'en': 'Green-white header'. The title will appear on the dropdown list. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
+  - placeholders {Object} it is needed when you want to have more than one supported language on your headers or footers. If you want to know how do the placeholders work please read the [localization](#localization) part of the [headers & footers](#headers--footers) chapter.
 
 ___
 
 ### Localization
+It is possible to use different localization with the same headers and/or footers but __not required__.  
+If you want to support only one language then you should "hardcode" the content of the header or footer to the representing json and it should work perfectly. In that case you do not have to use the placeholders object (see [stucture](#structure)).  
+If you want to support more than one language, then you have to use the placeholders object. You should not write the actual content to the json instead you should use a placeholder (for example if you have a title element in your header or footer, then the text of the title should be the placeholder instead of the actual content. We will replace the placeholders in our application). You can give any kind of name to this placeholder, but it should begin and end with two '#' character (for example: ##title##.). After that you have to insert the placeholder to the placeholders object as follows: the key should be the name of the placeholder, and the value should be an object conatining the language code - value pairs of the actual content.  
+Example placeholders object: 
 
+	placeholders: { '##title##': {
+				'en': 'The header is a good thing',
+				'hu': 'A fejléc egy jó dolog',
+				//...
+			},
+	 '##example-palceholder##: {
+	 			'en': 'It is an example',
+	 			'hu': 'Ez egy példa',
+	 			//...
+	 			}
+	 }
+	 
+You can localize the name (title) of the headers and/or footers too. The title of a header or footer is the text which will appear on the dropdown list, where the user will be able to choose from them.  
+If you want to support more than one language you just have to put the language code - text pair to the title object (see [structure](#structure)).
+An example title object: 
+
+	title: { 'en': 'example title',
+		 'hu': 'példa cím'
+		 /...
+		}
+		
+If you support a language but you do not want to give the header or footer a different title in the other language, you do not have to, but please note that this way the default title will be used on the dropdown list for this header, and the default is always the 'en' (english) version of the title.  
+
+Example:  
+_We support the english and the hungarian languages. We upload two headers with the following two title objects: title: {'en': 'first 	header'} and title: {'en': 'second header', 'hu': 'Második fejléc'}. If someone select the hungarian language, then in his dropdown 		list there will be two selectable header: 'first header' and 'Második fejléc', but if someone choose the english version, then 		the dropdown list will look like the following: 'first header' and 'second header'._  
+
+If you do not give an 'en' (english) title to a header, then it will be generated automatically in our application, so it is suggested to always upload an 'en' version of the title too.
 
 ___
 
 ### Upload Headers 
-Upload a list of headers which __all of your users__ will be able to use. Please note that every upload will overwrite the previews uploads!  
+Upload a list of headers which __all of your users__ will be able to use. Please note that every upload will overwrite the previous uploads!  
 If you want to know what a header is good for, please read the [headers & footers](#headers--footers) part of the documentation!
 
 #####Type
@@ -1234,7 +1276,7 @@ If you want to know what a header is good for, please read the [headers & footer
   + //api.edmdesigner.com/json/general/uploadHeaders
 
 #### Parameters (you should post):
-   * headers {Array} The list of headers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, pls read [this](#headers--footers) part of the documentation.
+   * headers {Array} The list of headers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, please read [this](#structure)
 
 ####Answer:
 An object with two arrays:
@@ -1249,7 +1291,7 @@ Or it can be an error object:
 ___
 
 ### Upload Footers 
-Upload a list of footers which __all of your users__ will be able to use. Please note that every upload will overwrite the previews uploads!  
+Upload a list of footers which __all of your users__ will be able to use. Please note that every upload will overwrite the previous uploads!  
 If you want to know what a footer is good for, please read the [headers & footers](#headers--footers) part of the documentation!
 
 #####Type
@@ -1259,7 +1301,7 @@ If you want to know what a footer is good for, please read the [headers & footer
   + //api.edmdesigner.com/json/general/uploadFooters
 
 #### Parameters (you should post):
-   * footers {Array} The list of footers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, pls read [this](#headers--footers) part of the documentation.
+   * footers {Array} The list of footers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, please read [this](#structure) part of the documentation.
 
 ####Answer:
 An object with two arrays:
@@ -1334,7 +1376,7 @@ Creates the exact copy of the project with the ID specified in projectId.
   + //api.edmdesigner.com/json/project/duplicate/:id
 
 #### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
+  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
 
 #### Answer:
 Project object:
@@ -1358,7 +1400,7 @@ Removes a project.
   + //api.edmdesigner.com/json/project/remove/:id
 
 #### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
+  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
 
 ####Answer:
 A number, it is 1 if the project was successfully deleted
@@ -1378,7 +1420,7 @@ Generates the bulletproof responsive HTML e-mail based on the projectId.
   + //api.edmdesigner.com/json/project/generate/:id
 
 #### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
+  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
 
 ####Answer
 A bulletproof responsive HTML version of the given template
@@ -1398,7 +1440,7 @@ Gets the title of the selected project.
   + //api.edmdesigner.com/json/project/title/:id
 
 #### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
+  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
 
 ####Answer
 Title object:
@@ -1419,7 +1461,7 @@ Updates the title or/and the description of the specified project
   + //api.edmdesigner.com/json/project/updateInfo
 
 #### Parameters (you should post):
-  * projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you listed the projects of the user with the [/json/project/list](#list-projects) route.
+  * projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
   * title {String} The title of the new project.
   * description {String} The description of the new project.
 
