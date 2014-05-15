@@ -29,8 +29,9 @@ We provide example implementations that include the handshaking as well. You can
   2. [User routes](#user-routes)  
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
-5. __[Examples](#example-implementations)__  
-6. __[Dependencies](#dependencies)__  
+5. __[Available languages](#available-languages)__   
+6. __[Examples](#example-implementations)__
+7. __[Dependencies](#dependencies)__  
 
 
 Initializing
@@ -268,7 +269,7 @@ Creates a new group
 #### Parameters:
   * data {Object}
     * data.name {String} /REQUIRED/ The name you want to give to the new group
-    * data.featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
+    * data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -329,7 +330,7 @@ Updates a specified group's name or the features it provides or both of these tw
   * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * data {Object}
      data.name {String} The name you want to give to the group
-     * data.featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
+     * data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -613,7 +614,7 @@ Lists the groups you have
 ####Answer:
 An array of your groups. Every group is an object with this parameters:
   - _id {String} MongoDB id of the group
-  - featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
+  - featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   - name {String} The name of the group
 
 Or it can be an error object:
@@ -632,7 +633,7 @@ Creates a new group
 
 #### Parameters (you should post):
   * name {String} /REQUIRED/ The name you want to give to the new group
-  * featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
+  * featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
 
 ####Answer
 An object containing the MongoDB _id of the newly created group:
@@ -658,7 +659,7 @@ Gets a specified group
 ####Answer:
 A group object:
   - _id {String} MongoDB id of the group
-  - featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
+  - featureSwitch {Object} The features that are available for users belong to this group.There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   - name {String} The name of the group
 
 Or it can be an error object:
@@ -678,12 +679,12 @@ Updates a specified group's name or the features it provides or both of these tw
 #### Parameters (you should post):
    * _id {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
    * name {String} The name you want to give to the group
-   * featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
+   * featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
 
 ####Answer:
 A newly updated group object:
   - _id {String} MongoDB id of the group
-  - featureSwitch {Object} The features that are available for users belong to this group. Please note that now it doesn't have any function, but later there will be a list of possible features which you can choose from.
+  - featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   - name {String} The name of the group
 
 Or it can be an error object:
@@ -1011,18 +1012,26 @@ Set the api server the route where it can upload the images. (This route should 
   + //api.edmdesigner.com/json/gallery/config
   
 #### Parameters (you should post):
-  * route {String} The route which we can use for uploading the images.
+  * uploadRoute {String} /REQUIRED/ The route which we can use for uploading the images.
+  * deleteRoute {String} /REQUIRED/ The route which we can use for deleting the images.
+  * noUploadText {Object} It contains the language code (see [available languages](#available-languages)) - html(string) pairs. The given content will be displayed if the upload is not allowed. 
+  * limitReached {Object} It contains the language code (see [available languages](#available-languages)) - html(string) pairs. The given content will be displayed if a user reached the upload limit. It is not required to impose a limit on the upload. If you want to know how you can set the limit, please read the [feature switch](#feature-switch) chapter.
+  * noUrl {Boolean} With this boolean you can forbid the image handling from absolute urls. If you set this parameter true, then none of your users will be able to use images from absoulte url.
  
 ####Answer:
 The data you posted:
-  - route {String}
+  - uploadRoute {String}
+  - deleteRoute {String}
+  - noUploadText {Object}
+  - limitReached {Object}
+  - noUrl {Boolean}
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
 ___
 
 ###Get configuration
-Gets the configuration of the api gallery. It returns the route you set for the uploading
+Gets the configuration of the api gallery.
 
 #####Type
   + GET
@@ -1032,7 +1041,12 @@ Gets the configuration of the api gallery. It returns the route you set for the 
   
 ####Answer:
 Config object: 
-  - route {String} The route you set for the uploading or nothing if you not configured our server yet. 
+  - uploadRoute {String} The route you set for the uploading or nothing if you not configured our server yet.
+  - deleteRoute {String} The route you set for the deleting or nothing if you not configured our server yet.
+  - noUploadText {Object} (only if you previously set it in)
+  - limitReached {Object} (only if you previously set it)
+  - noUrl {Boolean} (only if you previously set it true)
+or it can be an error
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
@@ -1473,6 +1487,19 @@ Updates the title or/and the description of the specified project
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
+
+___
+
+Feature Switch
+---------------
+You can allow or forbid some feature of our application to a group of your users.
+The list of the features you can set at the moment:  
+  - gallery {Object}: contains the features of the gallery
+    - noUpload {Boolean} If you set this parameter true then the users belong to this group cannot use the upload functionality. If you configured the gallery noUploadText (see [gallery config](#configure-api-server)) text then it will appear on the upload tab, otherwise a default text will be used.
+    - noUrl {Bollean} If you set this parameter true, then the users of this group cannot use any image not hosted by you. The image from url tab of the gallery will disappear if the feature does not allowed.
+    - limit {Number} The number of images the user can upload. If you do not want to set any limit then leave this parameter undefined. If a user reach the limit, then he won't be able to upload any more image and if you configured the gallery limitReached (see [gallery config](#configure-api-server)) text then it will be displayed otherwise a default text will be used.  Please note that the 0 limit and the noUpload are almost equivalent expect a different message will appear on the upload tab if you use one or the other.
+
+This list is constantly expanding with time!
 
 ___
 
