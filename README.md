@@ -29,9 +29,10 @@ We provide example implementations that include the handshaking as well. You can
   2. [User routes](#user-routes)  
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
-5. __[Available languages](#available-languages)__   
-6. __[Examples](#example-implementations)__
-7. __[Dependencies](#dependencies)__  
+5. __[Feature switch](#feature-switch)__
+6. __[Available languages](#available-languages)__  
+7. __[Examples](#example-implementations)__
+8. __[Dependencies](#dependencies)__  
 
 
 Initializing
