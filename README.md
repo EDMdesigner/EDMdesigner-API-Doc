@@ -1003,6 +1003,8 @@ If you want to host the uploaded images yourself and want to use your other host
 
 Basic operation: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and [configure](#configure-api-servers-gallery) our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the [gallery configuration](#configure-api-servers-gallery)) .
 
+___
+
 ### Upload route
 You should implement a route on your server which we can use for image upload.
 
@@ -1018,6 +1020,8 @@ The response to our post request should be an image object. The object should ha
   * width {Number} The original width of the image (It can save a lot of process if you can provide this information)
   * height {Number} The original height of the image (It can save a lot of process if you can provide this information)
 
+___
+
 ### Delete route
 You should implement a route on your server side which we can use for deleting images.
 
@@ -1029,6 +1033,7 @@ We will post an objact with two parameters:
 
 Your response to our post request should be 200. (HTTP status code) 
 
+___
 
 ###Configure api server's gallery
 Configure the api's gallery.
