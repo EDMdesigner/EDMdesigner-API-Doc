@@ -1001,7 +1001,34 @@ ___
 ##Gallery handling
 If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.
 
-Basic operation: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and configure our server (you have to do the configuration only once).
+Basic operation: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and [configure](#configure-api-servers-gallery) our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the [gallery configuration](#configure-api-servers-gallery)) .
+
+### Upload route
+You should implement a route on your server which we can use for image upload.
+
+Type: POST
+
+We will upload the images as the following. There will be a "userId" field in the query of the request, it will contain the id of the user (who wants to upload the image). The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId"
+
+The response to our post request should be an image object. The object should have the following properties:
+  * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
+  * secure_url {String} Http secure version og the image url
+  * thumb_url {String} An url where the thumbnail version of the image is available (Tha gallery can work a lot faster if you can provide a thumbnail)
+  * name {String} The name of the image. If it is not given then we will you the last segment of the url
+  * width {Number} The original width of the image (It can save a lot of process if you can provide this information)
+  * height {Number} The original height of the image (It can save a lot of process if you can provide this information)
+
+### Delete route
+You should implement a route on your server side which we can use for deleting images.
+
+Type: POST
+
+We will post an objact with two parameters:
+  * url {String} The url of the deleted image
+  * userId {String} The id of the user who deleted the image.
+
+Your response to our post request should be 200. (HTTP status code) 
+
 
 ###Configure api server's gallery
 Configure the api's gallery.
@@ -1013,8 +1040,8 @@ Configure the api's gallery.
   + //api.edmdesigner.com/json/gallery/config
   
 #### Parameters (you should post):
-  * uploadRoute {String} /REQUIRED/ The route which we can use for uploading the images. (This route should be implemented on your server.)
-  * deleteRoute {String} /REQUIRED/ The route which we can use for deleting the images. (This route should be implemented on your server.)
+  * uploadRoute {String} /REQUIRED/ The [route](#upload-route) which we can use for uploading the images. (This route should be implemented on your server.)
+  * deleteRoute {String} /REQUIRED/ The [route](#delete-route) which we can use for deleting the images. (This route should be implemented on your server.)
   * noUploadText {Object} It contains the language code (see [available languages](#available-languages)) - html(string) pairs. The given content will be displayed if the upload is not allowed. 
   * limitReached {Object} It contains the language code (see [available languages](#available-languages)) - html(string) pairs. The given content will be displayed if a user reached the upload limit. It is not required to impose a limit on the upload. If you want to know how you can set the limit, please read the [feature switch](#feature-switch) chapter.
   * noUrl {Boolean} With this boolean you can forbid the image handling from absolute urls. If you set this parameter true, then none of your users will be able to use images from absoulte url.
@@ -1042,8 +1069,8 @@ Gets the configuration of the api gallery.
   
 ####Answer:
 Config object: 
-  - uploadRoute {String} The route you set for the uploading or nothing if you not configured our server yet.
-  - deleteRoute {String} The route you set for the deleting or nothing if you not configured our server yet.
+  - uploadRoute {String} The [route](#upload-route) you set for the uploading or nothing if you not configured our server yet.
+  - deleteRoute {String} The [route](#delete-route) you set for the deleting or nothing if you not configured our server yet.
   - noUploadText {Object} (only if you previously set it in)
   - limitReached {Object} (only if you previously set it)
   - noUrl {Boolean} (only if you previously set it true)
@@ -1496,9 +1523,9 @@ Feature Switch
 You can allow or forbid some features of our application to a group of your users.
 The list of the features you can set at the moment:  
   - gallery {Object}: contains the features of the gallery
-    - noUpload {Boolean} If you set this parameter true then the users belong to this group cannot use the upload functionality. If you configured the gallery noUploadText (see [gallery config](#configure-api-server)) text then it will appear on the upload tab, otherwise a default text will be used.
+    - noUpload {Boolean} If you set this parameter true then the users belong to this group cannot use the upload functionality. If you configured the gallery noUploadText (see [gallery config](#configure-api-servers-gallery)) text then it will appear on the upload tab, otherwise a default text will be used.
     - noUrl {Bollean} If you set this parameter true, then the users of this group cannot use any image not hosted by you. The image from url tab of the gallery will disappear if the feature does not allowed.
-    - limit {Number} The number of images the user can upload. If you do not want to set any limit then leave this parameter undefined. If a user reach the limit, then he won't be able to upload any more image and if you configured the gallery limitReached (see [gallery config](#configure-api-server)) text then it will be displayed otherwise a default text will be used.  Please note that the 0 limit and the noUpload are almost equivalent except a different message will appear on the upload tab if you use one or the other.
+    - limit {Number} The number of images the user can upload. If you do not want to set any limit then leave this parameter undefined. If a user reach the limit, then he won't be able to upload any more image and if you configured the gallery limitReached (see [gallery config](#configure-api-servers-gallery)) text then it will be displayed otherwise a default text will be used.  Please note that the 0 limit and the noUpload are almost equivalent except a different message will appear on the upload tab if you use one or the other.
 
 This list is constantly expanding with time!
 
