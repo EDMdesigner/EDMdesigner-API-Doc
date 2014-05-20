@@ -745,6 +745,28 @@ Or it can be an error object:
 
 ___
 
+### Upload Complex Elems 
+Upload a list of Complex elems to the specified group. Every user who belongs to this group will be able to use these Complex elems. Please note that every upload will overwrite the previous uploads!  
+If you want to know what is a Complex elem, please read the [complexElems](#complexElems) part of the documentation!
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/complexElem/addComplexElemToGroup
+
+#### Parameters (you should post):
+   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
+   * items {Array} /REQUIRED/ The list of Complex elems which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a Complex elem object should look like, please read [this](#structure) part of the documentation.
+
+####Answer:
+An object with 3 child objects:
+  - result {Array} list of the complex elems which were successfully added to the group
+  - fails {Array} if some of the items failed it contains the reason, if none of them failed it is null 
+  - err {String} If there is any reason why the whole process failed otherwise null
+
+___
+
 ## User handler routes
 
 ### List
@@ -997,6 +1019,51 @@ Note that every calls overwrites the previous, so if you want to remove all the 
 		$savedResult = json_decode($result, TRUE);
 
 ___
+
+### Upload Complex elems to specified users 
+Upload a list of Complex elems to a specified user or users. Please note that every upload will overwrite the previous uploads!  
+If you want to know what a Complex elem is good for, please read the [complexElems](#complexElems) part of the documentation!
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/complexElem/addComplexElemToUsers
+
+#### Parameters (you should post):
+   * userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.
+   * items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a Complex elem object should look like, please read [this](#structure) part of the documentation.
+
+####Answer:
+An object:
+  - error {String} If the whole process is failed, otherwise null.
+  - fails {Array} If a part of the items failed to insert, if all items inserted, it is null.
+
+___
+
+
+### Upload Complex elems to all users 
+Upload a list of Complex elems to all users. Please note that every upload will overwrite the previous uploads!  
+If you want to know what a Complex elem is good for, please read the [complexElems](#complexElems) part of the documentation!
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/complexElem/addComplexElems
+
+#### Parameters (you should post):
+   * userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.
+   * items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a Complex elem object should look like, please read [this](#structure) part of the documentation.
+
+####Answer:
+An object:
+  - error {String} If the whole process is failed, otherwise null.
+  - fails {Array} If a part of the items failed to insert, if all items inserted, it is null.
+  - result {Array} List of all inserted Complex elems
+
+___
+
 
 ##Gallery handling
 If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.
@@ -1361,6 +1428,47 @@ Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
 ___
+
+
+##complexElements
+The complex elem is a possible tool to save a BOX or MULITCOLL element with all of it contents to be able to reuse it. This feature is created for make the template editing more fast so more effective.
+A complex elem can binded to a user, to a group of users or to all of the users.
+When a user uses the editor these binding displays all together and can be used all of them.
+
+The administrator of the application can upload complex elems to all of the above possibilities.
+The user of the editor can save complex elems only for him/herself, those will be added to the admin defined items.
+The editor users can also delete those complex elems what are binded to him/herself as a user.
+
+These are the 3 ways to upload complex elems as an admin:
+  - to all your user ([general complexElems upload](#upload-complexElems)) 
+  - to a specified group ([upload complexElems to group](#upload-complexElems)) 
+  - to specified user or users ([upload complexElems to user](#upload-complexElems))
+
+___
+
+### Structure
+The representing object for a Complex elem should have the following properties:
+  - doc {Object} /REQUIRED/ it should be a json object (which represent our templates)
+    - type /REQUIRED/ It must be "BOX" or "MULTICOLUMN"
+    - generalSettings
+  - id {String} /optional/ this id is what will identify the item for you if you would like to manage it via admin
+  - title {Object} /optional/ it should contains language code - title string pairs. For example: 'en': 'Green-white complexElem'. If you miss to give it, we it will receive a default name. The title will appear on the list of the complex element. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
+
+### Localization
+It is possible to use different localization with the same complex elem but __not required__.
+You can localize the title of the complex elem. The title of a complex elem will appear on the list, where the user will be able to choose from.  
+If you want to support more than one language you just have to put the language code - text pair to the title object (see [structure](#structure)).
+An example title object: 
+
+	title: { 'en': 'example title',
+		 'hu': 'példa cím'
+		 /...
+		}
+
+
+		
+___
+
 
 ##User routes
 
