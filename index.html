@@ -1008,6 +1008,37 @@ If you want to know what a footer is good for, please read the <a href="#headers
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="upload-complex-elems" class="anchor" href="#upload-complex-elems"><span class="octicon octicon-link"></span></a>Upload Complex Elems</h3>
+
+<p>Upload a list of Complex elems to the specified group. Every user who belongs to this group will be able to use these Complex elems. Please note that every upload will overwrite the previous uploads!<br>
+If you want to know what is a Complex elem, please read the <a href="#complexElems">complexElems</a> part of the documentation!</p>
+
+<h5>
+<a name="type-6" class="anchor" href="#type-6"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-6" class="anchor" href="#route-6"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/complexElem/addComplexElemToGroup</li>
+</ul><h4>
+<a name="parameters-you-should-post-4" class="anchor" href="#parameters-you-should-post-4"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
+<li>items {Array} /REQUIRED/ The list of Complex elems which the users of the specified group will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
+</ul><h4>
+<a name="answer-6" class="anchor" href="#answer-6"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>An object with 3 child objects:</p>
+
+<ul>
+<li>result {Array} list of the complex elems which were successfully added to the group</li>
+<li>fails {Array} if some of the items failed it contains the reason, if none of them failed it is null </li>
+<li>err {String} If there is any reason why the whole process failed otherwise null</li>
 </ul><hr><h2>
 <a name="user-handler-routes" class="anchor" href="#user-handler-routes"><span class="octicon octicon-link"></span></a>User handler routes</h2>
 
@@ -1017,17 +1048,17 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Lists the users you have</p>
 
 <h5>
-<a name="type-6" class="anchor" href="#type-6"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-7" class="anchor" href="#type-7"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-6" class="anchor" href="#route-6"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-7" class="anchor" href="#route-7"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/list</li>
 </ul><h4>
-<a name="answer-6" class="anchor" href="#answer-6"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-7" class="anchor" href="#answer-7"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An array of your users. Every user is an object with this parameters:</p>
 
@@ -1045,23 +1076,23 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Creates a new user</p>
 
 <h5>
-<a name="type-7" class="anchor" href="#type-7"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-8" class="anchor" href="#type-8"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-7" class="anchor" href="#route-7"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-8" class="anchor" href="#route-8"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/create</li>
 </ul><h4>
-<a name="parameters-you-should-post-4" class="anchor" href="#parameters-you-should-post-4"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-5" class="anchor" href="#parameters-you-should-post-5"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>id {String} /REQUIRED/ The id you want to use for this new user</li>
 <li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 </ul><h4>
-<a name="answer-7" class="anchor" href="#answer-7"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-8" class="anchor" href="#answer-8"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>User object:</p>
 
@@ -1077,17 +1108,17 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Creates multiple user</p>
 
 <h5>
-<a name="type-8" class="anchor" href="#type-8"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-9" class="anchor" href="#type-9"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-8" class="anchor" href="#route-8"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-9" class="anchor" href="#route-9"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/multipleCreate</li>
 </ul><h4>
-<a name="parameters-you-should-post-5" class="anchor" href="#parameters-you-should-post-5"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-6" class="anchor" href="#parameters-you-should-post-6"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>users {Array} It contains user objects. User object should have the following properties:
@@ -1098,7 +1129,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 </ul>
 </li>
 </ul><h4>
-<a name="answer-8" class="anchor" href="#answer-8"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-9" class="anchor" href="#answer-9"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Three different arrays:</p>
 
@@ -1133,12 +1164,12 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Gets a specified user</p>
 
 <h5>
-<a name="type-9" class="anchor" href="#type-9"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-10" class="anchor" href="#type-10"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-9" class="anchor" href="#route-9"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-10" class="anchor" href="#route-10"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/getOne/:id</li>
@@ -1148,7 +1179,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>:id {String} The id of the user.</li>
 </ul><h4>
-<a name="answer-9" class="anchor" href="#answer-9"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-10" class="anchor" href="#answer-10"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>User object:</p>
 
@@ -1166,23 +1197,23 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Updates a specified user. Only the group (which the user belongs) can be changed.</p>
 
 <h5>
-<a name="type-10" class="anchor" href="#type-10"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-11" class="anchor" href="#type-11"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-10" class="anchor" href="#route-10"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-11" class="anchor" href="#route-11"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/update</li>
 </ul><h4>
-<a name="parameters-you-should-post-6" class="anchor" href="#parameters-you-should-post-6"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-7" class="anchor" href="#parameters-you-should-post-7"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>id {String} The id of the user. </li>
 <li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 </ul><h4>
-<a name="answer-10" class="anchor" href="#answer-10"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-11" class="anchor" href="#answer-11"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>User object:</p>
 
@@ -1198,12 +1229,12 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Deletes a specified user</p>
 
 <h5>
-<a name="type-11" class="anchor" href="#type-11"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-12" class="anchor" href="#type-12"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>DELETE</li>
 </ul><h5>
-<a name="route-11" class="anchor" href="#route-11"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-12" class="anchor" href="#route-12"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/delete/:id</li>
@@ -1213,7 +1244,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>:id {String} The id of the user.</li>
 </ul><h4>
-<a name="answer-11" class="anchor" href="#answer-11"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-12" class="anchor" href="#answer-12"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>User object:</p>
 
@@ -1230,23 +1261,23 @@ If you want to know what a footer is good for, please read the <a href="#headers
 If you want to know what a header is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a name="type-12" class="anchor" href="#type-12"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-13" class="anchor" href="#type-13"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-12" class="anchor" href="#route-12"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-13" class="anchor" href="#route-13"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/uploadHeaders</li>
 </ul><h4>
-<a name="parameters-you-should-post-7" class="anchor" href="#parameters-you-should-post-7"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-8" class="anchor" href="#parameters-you-should-post-8"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>users {Array} /REQUIRED/ List of the ids of the users you want to upload the headers.</li>
 <li>headers {Array} /REQUIRED/ The list of headers which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a header object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-12" class="anchor" href="#answer-12"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-13" class="anchor" href="#answer-13"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1277,23 +1308,23 @@ If you want to know what a header is good for, please read the <a href="#headers
 If you want to know what a footer is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a name="type-13" class="anchor" href="#type-13"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-14" class="anchor" href="#type-14"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-13" class="anchor" href="#route-13"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-14" class="anchor" href="#route-14"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/uploadFooters</li>
 </ul><h4>
-<a name="parameters-you-should-post-8" class="anchor" href="#parameters-you-should-post-8"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-9" class="anchor" href="#parameters-you-should-post-9"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>users {Array} /REQUIRED/ List of the ids of the users you want to upload the footers.</li>
 <li>footers {Array} /REQUIRED/ The list of footers which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a footer object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-13" class="anchor" href="#answer-13"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-14" class="anchor" href="#answer-14"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1374,7 +1405,68 @@ Note that every calls overwrites the previous, so if you want to remove all the 
     $savedResult = json_decode($result, TRUE);
 </code></pre>
 
-<hr><h2>
+<hr><h3>
+<a name="upload-complex-elems-to-specified-users" class="anchor" href="#upload-complex-elems-to-specified-users"><span class="octicon octicon-link"></span></a>Upload Complex elems to specified users</h3>
+
+<p>Upload a list of Complex elems to a specified user or users. Please note that every upload will overwrite the previous uploads!<br>
+If you want to know what a Complex elem is good for, please read the <a href="#complexElems">complexElems</a> part of the documentation!</p>
+
+<h5>
+<a name="type-15" class="anchor" href="#type-15"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-15" class="anchor" href="#route-15"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/complexElem/addComplexElemToUsers</li>
+</ul><h4>
+<a name="parameters-you-should-post-10" class="anchor" href="#parameters-you-should-post-10"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.</li>
+<li>items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
+</ul><h4>
+<a name="answer-15" class="anchor" href="#answer-15"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>An object:</p>
+
+<ul>
+<li>error {String} If the whole process is failed, otherwise null.</li>
+<li>fails {Array} If a part of the items failed to insert, if all items inserted, it is null.</li>
+</ul><hr><h3>
+<a name="upload-complex-elems-to-all-users" class="anchor" href="#upload-complex-elems-to-all-users"><span class="octicon octicon-link"></span></a>Upload Complex elems to all users</h3>
+
+<p>Upload a list of Complex elems to all users. Please note that every upload will overwrite the previous uploads!<br>
+If you want to know what a Complex elem is good for, please read the <a href="#complexElems">complexElems</a> part of the documentation!</p>
+
+<h5>
+<a name="type-16" class="anchor" href="#type-16"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul><h5>
+<a name="route-16" class="anchor" href="#route-16"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/complexElem/addComplexElems</li>
+</ul><h4>
+<a name="parameters-you-should-post-11" class="anchor" href="#parameters-you-should-post-11"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.</li>
+<li>items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
+</ul><h4>
+<a name="answer-16" class="anchor" href="#answer-16"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>An object:</p>
+
+<ul>
+<li>error {String} If the whole process is failed, otherwise null.</li>
+<li>fails {Array} If a part of the items failed to insert, if all items inserted, it is null.</li>
+<li>result {Array} List of all inserted Complex elems</li>
+</ul><hr><h2>
 <a name="gallery-handling" class="anchor" href="#gallery-handling"><span class="octicon octicon-link"></span></a>Gallery handling</h2>
 
 <p>If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.</p>
@@ -1419,17 +1511,17 @@ Note that every calls overwrites the previous, so if you want to remove all the 
 <p>Configure the api's gallery.</p>
 
 <h5>
-<a name="type-14" class="anchor" href="#type-14"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-17" class="anchor" href="#type-17"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-14" class="anchor" href="#route-14"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-17" class="anchor" href="#route-17"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/config</li>
 </ul><h4>
-<a name="parameters-you-should-post-9" class="anchor" href="#parameters-you-should-post-9"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-12" class="anchor" href="#parameters-you-should-post-12"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>uploadRoute {String} /REQUIRED/ The <a href="#upload-route">route</a> which we can use for uploading the images. (This route should be implemented on your server.)</li>
@@ -1438,7 +1530,7 @@ Note that every calls overwrites the previous, so if you want to remove all the 
 <li>limitReached {Object} It contains the language code (see <a href="#available-languages">available languages</a>) - html(string) pairs. The given content will be displayed if a user reached the upload limit. It is not required to impose a limit on the upload. If you want to know how you can set the limit, please read the <a href="#feature-switch">feature switch</a> chapter.</li>
 <li>noUrl {Boolean} With this boolean you can forbid the image handling from absolute urls. If you set this parameter true, then none of your users will be able to use images from absoulte url.</li>
 </ul><h4>
-<a name="answer-14" class="anchor" href="#answer-14"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-17" class="anchor" href="#answer-17"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>The data you posted:</p>
 
@@ -1456,17 +1548,17 @@ or it can be an error object:</li>
 <p>Gets the configuration of the api gallery.</p>
 
 <h5>
-<a name="type-15" class="anchor" href="#type-15"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-18" class="anchor" href="#type-18"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-15" class="anchor" href="#route-15"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-18" class="anchor" href="#route-18"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/config</li>
 </ul><h4>
-<a name="answer-15" class="anchor" href="#answer-15"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-18" class="anchor" href="#answer-18"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Config object: </p>
 
@@ -1485,12 +1577,12 @@ or it can be an error object:</li>
 <p>Lists all images of a specified user</p>
 
 <h5>
-<a name="type-16" class="anchor" href="#type-16"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-19" class="anchor" href="#type-19"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-16" class="anchor" href="#route-16"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-19" class="anchor" href="#route-19"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/list/:id</li>
@@ -1500,7 +1592,7 @@ or it can be an error object:</li>
 <ul>
 <li>:id {String} The id of the target user</li>
 </ul><h4>
-<a name="answer-16" class="anchor" href="#answer-16"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-19" class="anchor" href="#answer-19"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Array of urls</p>
 
@@ -1514,17 +1606,17 @@ or it can be an error object:</li>
 <p>Add one or more images to one or more specified users</p>
 
 <h5>
-<a name="type-17" class="anchor" href="#type-17"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-20" class="anchor" href="#type-20"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-17" class="anchor" href="#route-17"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-20" class="anchor" href="#route-20"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/add</li>
 </ul><h4>
-<a name="parameters-you-should-post-10" class="anchor" href="#parameters-you-should-post-10"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-13" class="anchor" href="#parameters-you-should-post-13"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>images {Array} /REQUIRED/ should contain the images you want to give to the users. Every image should be an object with the following parameters:
@@ -1540,7 +1632,7 @@ or it can be an error object:</li>
 </li>
 <li>users {Array} /REQUIRED/ should contain the ids of the users</li>
 </ul><h4>
-<a name="answer-17" class="anchor" href="#answer-17"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-20" class="anchor" href="#answer-20"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Three different array:</p>
 
@@ -1577,23 +1669,23 @@ or it can be an error object:</li>
 <p>Delete one or more images from one or more specified users</p>
 
 <h5>
-<a name="type-18" class="anchor" href="#type-18"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-21" class="anchor" href="#type-21"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>DELETE</li>
 </ul><h5>
-<a name="route-18" class="anchor" href="#route-18"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-21" class="anchor" href="#route-21"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/delete</li>
 </ul><h4>
-<a name="parameters-you-should-post-11" class="anchor" href="#parameters-you-should-post-11"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-14" class="anchor" href="#parameters-you-should-post-14"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>images {Array} /REQUIRED/ should contain the urls of the images you want to remove from the given users.</li>
 <li>users {Array} /REQUIRED/ should contain the ids of the users.</li>
 </ul><h4>
-<a name="answer-18" class="anchor" href="#answer-18"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-21" class="anchor" href="#answer-21"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Three different array:</p>
 
@@ -1643,17 +1735,17 @@ or it can be an error object:</li>
 <p>Creates a project/template to a specified user</p>
 
 <h5>
-<a name="type-19" class="anchor" href="#type-19"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-22" class="anchor" href="#type-22"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-19" class="anchor" href="#route-19"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-22" class="anchor" href="#route-22"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createTo</li>
 </ul><h4>
-<a name="parameters-you-should-post-12" class="anchor" href="#parameters-you-should-post-12"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-15" class="anchor" href="#parameters-you-should-post-15"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>userId {String} /REQUIRED/ The target user's id</li>
@@ -1661,7 +1753,7 @@ or it can be an error object:</li>
 <li>description {String} Description of the template, by defaullt it is an empty string</li>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
 </ul><h4>
-<a name="answer-19" class="anchor" href="#answer-19"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-22" class="anchor" href="#answer-22"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Project object:</p>
 
@@ -1677,17 +1769,17 @@ or it can be an error object:</li>
 <p>Creates a project/template to a specified user using an another template</p>
 
 <h5>
-<a name="type-20" class="anchor" href="#type-20"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-23" class="anchor" href="#type-23"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-20" class="anchor" href="#route-20"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-23" class="anchor" href="#route-23"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromTo</li>
 </ul><h4>
-<a name="parameters-you-should-post-13" class="anchor" href="#parameters-you-should-post-13"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-16" class="anchor" href="#parameters-you-should-post-16"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>userId {String} /REQUIRED/ The target user's id</li>
@@ -1696,7 +1788,7 @@ or it can be an error object:</li>
 <li>description {String} Description of the template, by defaullt it is an empty string</li>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
 </ul><h4>
-<a name="answer-20" class="anchor" href="#answer-20"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-23" class="anchor" href="#answer-23"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Project object:</p>
 
@@ -1712,17 +1804,17 @@ or it can be an error object:</li>
 <p>Every api partner get a templater user. (id = "templater"). This speciel user have a few project by default which can be used for anything you want. With this route you can list this projects.</p>
 
 <h5>
-<a name="type-21" class="anchor" href="#type-21"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-24" class="anchor" href="#type-24"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-21" class="anchor" href="#route-21"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-24" class="anchor" href="#route-24"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/defaults</li>
 </ul><h4>
-<a name="answer-21" class="anchor" href="#answer-21"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-24" class="anchor" href="#answer-24"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>List of projects. Every project is an object with the following parameters:</p>
 
@@ -1817,23 +1909,23 @@ An example title object: </p>
 If you want to know what a header is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a name="type-22" class="anchor" href="#type-22"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-25" class="anchor" href="#type-25"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-22" class="anchor" href="#route-22"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-25" class="anchor" href="#route-25"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/uploadHeaders</li>
 </ul><h4>
-<a name="parameters-you-should-post-14" class="anchor" href="#parameters-you-should-post-14"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-17" class="anchor" href="#parameters-you-should-post-17"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>headers {Array} The list of headers which all of your users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a header object should look like, please read <a href="#structure">this</a>
 </li>
 </ul><h4>
-<a name="answer-22" class="anchor" href="#answer-22"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-25" class="anchor" href="#answer-25"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1857,22 +1949,22 @@ If you want to know what a header is good for, please read the <a href="#headers
 If you want to know what a footer is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a name="type-23" class="anchor" href="#type-23"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-26" class="anchor" href="#type-26"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-23" class="anchor" href="#route-23"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-26" class="anchor" href="#route-26"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/uploadFooters</li>
 </ul><h4>
-<a name="parameters-you-should-post-15" class="anchor" href="#parameters-you-should-post-15"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-18" class="anchor" href="#parameters-you-should-post-18"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>footers {Array} The list of footers which all of your users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a footer object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-23" class="anchor" href="#answer-23"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-26" class="anchor" href="#answer-26"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1890,6 +1982,53 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
 </ul><hr><h2>
+<a name="complexelements" class="anchor" href="#complexelements"><span class="octicon octicon-link"></span></a>complexElements</h2>
+
+<p>The complex elem is a possible tool to save a BOX or MULITCOLL element with all of it contents to be able to reuse it. This feature is created for make the template editing more fast so more effective.
+A complex elem can binded to a user, to a group of users or to all of the users.
+When a user uses the editor these binding displays all together and can be used all of them.</p>
+
+<p>The administrator of the application can upload complex elems to all of the above possibilities.
+The user of the editor can save complex elems only for him/herself, those will be added to the admin defined items.
+The editor users can also delete those complex elems what are binded to him/herself as a user.</p>
+
+<p>These are the 3 ways to upload complex elems as an admin:</p>
+
+<ul>
+<li>to all your user (<a href="#upload-complexElems">general complexElems upload</a>) </li>
+<li>to a specified group (<a href="#upload-complexElems">upload complexElems to group</a>) </li>
+<li>to specified user or users (<a href="#upload-complexElems">upload complexElems to user</a>)</li>
+</ul><hr><h3>
+<a name="structure-1" class="anchor" href="#structure-1"><span class="octicon octicon-link"></span></a>Structure</h3>
+
+<p>The representing object for a Complex elem should have the following properties:</p>
+
+<ul>
+<li>doc {Object} /REQUIRED/ it should be a json object (which represent our templates)
+
+<ul>
+<li>type /REQUIRED/ It must be "BOX" or "MULTICOLUMN"</li>
+<li>generalSettings</li>
+</ul>
+</li>
+<li>id {String} /optional/ this id is what will identify the item for you if you would like to manage it via admin</li>
+<li>title {Object} /optional/ it should contains language code - title string pairs. For example: 'en': 'Green-white complexElem'. If you miss to give it, we it will receive a default name. The title will appear on the list of the complex element. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!<br>
+</li>
+</ul><h3>
+<a name="localization-1" class="anchor" href="#localization-1"><span class="octicon octicon-link"></span></a>Localization</h3>
+
+<p>It is possible to use different localization with the same complex elem but <strong>not required</strong>.
+You can localize the title of the complex elem. The title of a complex elem will appear on the list, where the user will be able to choose from.<br>
+If you want to support more than one language you just have to put the language code - text pair to the title object (see <a href="#structure">structure</a>).
+An example title object: </p>
+
+<pre><code>title: { 'en': 'example title',
+     'hu': 'példa cím'
+     /...
+    }
+</code></pre>
+
+<hr><h2>
 <a name="user-routes" class="anchor" href="#user-routes"><span class="octicon octicon-link"></span></a>User routes</h2>
 
 <h2>
@@ -1908,17 +2047,17 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Lists the projects of the actual user.</p>
 
 <h5>
-<a name="type-24" class="anchor" href="#type-24"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-27" class="anchor" href="#type-27"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-24" class="anchor" href="#route-24"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-27" class="anchor" href="#route-27"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/list</li>
 </ul><h4>
-<a name="answer-24" class="anchor" href="#answer-24"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-27" class="anchor" href="#answer-27"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>List of projects. Every project is an object with the following parameters:</p>
 
@@ -1936,24 +2075,24 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Creates a new project (a new e-mail template).</p>
 
 <h5>
-<a name="type-25" class="anchor" href="#type-25"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-28" class="anchor" href="#type-28"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-25" class="anchor" href="#route-25"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-28" class="anchor" href="#route-28"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/list</li>
 </ul><h4>
-<a name="parameters-you-should-post-16" class="anchor" href="#parameters-you-should-post-16"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-19" class="anchor" href="#parameters-you-should-post-19"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>title {String} The title of the new project.</li>
 <li>description {String} The description of the new project.</li>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.</li>
 </ul><h4>
-<a name="answer-25" class="anchor" href="#answer-25"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-28" class="anchor" href="#answer-28"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <ul>
 <li>_id {String} MongoDB _id of the newly created project</li>
@@ -1967,12 +2106,12 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Creates the exact copy of the project with the ID specified in projectId.</p>
 
 <h5>
-<a name="type-26" class="anchor" href="#type-26"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-29" class="anchor" href="#type-29"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-26" class="anchor" href="#route-26"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-29" class="anchor" href="#route-29"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/duplicate/:id</li>
@@ -1982,7 +2121,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-26" class="anchor" href="#answer-26"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-29" class="anchor" href="#answer-29"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Project object:</p>
 
@@ -2001,12 +2140,12 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Removes a project.</p>
 
 <h5>
-<a name="type-27" class="anchor" href="#type-27"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-30" class="anchor" href="#type-30"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>DELETE</li>
 </ul><h5>
-<a name="route-27" class="anchor" href="#route-27"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-30" class="anchor" href="#route-30"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/remove/:id</li>
@@ -2016,7 +2155,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-27" class="anchor" href="#answer-27"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-30" class="anchor" href="#answer-30"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>A number, it is 1 if the project was successfully deleted</p>
 
@@ -2030,12 +2169,12 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
 <h5>
-<a name="type-28" class="anchor" href="#type-28"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-31" class="anchor" href="#type-31"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-28" class="anchor" href="#route-28"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-31" class="anchor" href="#route-31"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/generate/:id</li>
@@ -2045,7 +2184,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-28" class="anchor" href="#answer-28"><span class="octicon octicon-link"></span></a>Answer</h4>
+<a name="answer-31" class="anchor" href="#answer-31"><span class="octicon octicon-link"></span></a>Answer</h4>
 
 <p>A bulletproof responsive HTML version of the given template</p>
 
@@ -2059,12 +2198,12 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Gets the title of the selected project.</p>
 
 <h5>
-<a name="type-29" class="anchor" href="#type-29"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-32" class="anchor" href="#type-32"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-29" class="anchor" href="#route-29"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-32" class="anchor" href="#route-32"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/title/:id</li>
@@ -2074,7 +2213,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-29" class="anchor" href="#answer-29"><span class="octicon octicon-link"></span></a>Answer</h4>
+<a name="answer-32" class="anchor" href="#answer-32"><span class="octicon octicon-link"></span></a>Answer</h4>
 
 <p>Title object:</p>
 
@@ -2090,24 +2229,24 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <p>Updates the title or/and the description of the specified project</p>
 
 <h5>
-<a name="type-30" class="anchor" href="#type-30"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-33" class="anchor" href="#type-33"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-30" class="anchor" href="#route-30"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-33" class="anchor" href="#route-33"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/updateInfo</li>
 </ul><h4>
-<a name="parameters-you-should-post-17" class="anchor" href="#parameters-you-should-post-17"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-20" class="anchor" href="#parameters-you-should-post-20"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 <li>title {String} The title of the new project.</li>
 <li>description {String} The description of the new project.</li>
 </ul><h4>
-<a name="answer-30" class="anchor" href="#answer-30"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-33" class="anchor" href="#answer-33"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <ul>
 <li>_id {String} MongoDB _id of the newly created project</li>
