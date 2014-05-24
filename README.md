@@ -1642,6 +1642,125 @@ The list of the features you can set at the moment:
 
 This list is constantly expanding with time!
 
+---
+
+EDMdesigner's json document descriptors
+---------------------------------------
+In some cases you - as an integrator - migth want to use the raw document format instead of using the editor and fetch the document from the created project. Some example cases could be when you want to set custom headers and footers to some of your users or you want to create complex or dynamic element.
+
+We can distiguish two main element descriptors, from which a whole document can be composed. These two main types are the containers and the leaf elements.
+
+Every element has its type property. The possible values are the followings: "BOX", "MULTICOLUMN", "ROOT", "TEXT", "TITLE", "IMAGE", "BUTTON".
+
+##Containers
+Containers are used to group some elements and define the layout of the project. You can put any kind of elements into containers, so these elements can be other containers and leaf elements as well.
+###Box
+Boxes are great to hold other elements together, give them margins, paddings, borders and/or background.
+Example:
+
+	{
+		type: "BOX",
+		margin: {
+			top: 0,
+			right: 20,
+			bottom: 0,
+			left: 20
+		},
+		padding: {
+			top: 10,
+			right: 10,
+			bottom: 10,
+			left: 10
+		},
+		border: {
+			top: {
+				style: "solid",
+				width: 1,
+				color: "#aabbaa"
+			},
+			right: {
+				style: "dotted",
+				width: 2,
+				color: "#aabbaa"
+			},
+			bottom: {
+				style: "dashed",
+				width: 3,
+				color: "#aabbaa"
+			},
+			left: {
+				style: "none",
+				width: 0,
+				color: "#aabbaa"
+			}
+		},
+		background: {
+			color: "#00aaff",
+			image: {
+				src: "http://startups.hu/images/logos/edmdesigner.png",
+				repeat: "no-repeat",
+				position: "top center"
+			}
+		},
+		children: [
+			//puth the child elements here
+		]
+	}
+	
+The properties what you can see in the example above, are optional.
+
+###Multicolumn
+Multicolumns are the main elements to create complex layouts. They can have multiple columns (we support max. 5 in our editor) and every columns can have children. Example:
+
+	{
+		type: "MULTICOLUMN",
+		cols: [
+			[
+				//children of the first column
+			],
+			[
+				//children of the second column
+			]
+		]
+	}
+
+###Root
+Now, the root element is actually a box, only the type property differs. ({type: "ROOT", ... }) In the near future - when we will introduce the full width containers - it will change a little bit.
+
+###Full width container
+Not implemented yet.
+The main feature of this element type will be that the background color can be full width, not only 600px as the root element.
+
+##Leaf elements
+Leaf elements cannot have any child elements. These elements are typically the content elements.
+
+###Text
+The text element is super simple. It can contain html code, but you should not put very complex things in it. In our editor we enable the simple text formatting options (bold, italic, underlined) and lists (ul, ol) and some other very simple things like h1, h2, h3. Example:
+
+	{
+		text: "yo <i>this</i> is Sparta"
+	}
+
+###Title
+Title elements are just like texts, but we enable the users to set only h1, h2 and h3 as formatting.
+
+###Image
+Images are relatively complex elements. Just like boxes, they can have paddings, margins, borders, background color (no background image), but they can't have children. They have their own, special properties as well:
+  - src: the url of the image
+  - altText: the alt text
+  - link: you can wrapp in a link to your image with this propery
+  - originalWidth: the original width of the image
+  - originalHeight: the original height of the image
+  - width: the scaled width of the image (how width should it be in your newsletter)
+  - height: the scaled height of the image (how heigh should it be in your newsletter) - this is a must have property if you want your newsletters to render nice on outlooks
+
+###Button
+Button is relatively complex as well. It can have the following box properties: paddings, margins, borders, backgrouns (color and background image as well). In addition it can have radius. Baically button is a fancy link, so it has the following properties as well:
+  - text: the text what sould appear (it can be a simple html snippet as well)
+  - href: the link.
+  - sizeType: "FIXED" - exact amount of pixels, "FIT_TO_TEXT": the width will be based on the width of the text
+  - width: num of pixels if the sizeType is "FIXED"
+
 ___
 
 Available Languages
