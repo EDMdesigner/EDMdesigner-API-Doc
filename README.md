@@ -1078,7 +1078,7 @@ You should implement a route on your server which we can use for image upload.
 
 Type: POST
 
-We will upload the images as the following. There will be a "userId" field in the query of the request, it will contain the id of the user (who wants to upload the image). The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId"
+We will upload the images as the following. There will be a "userId" field in the query of the request, it will contain the id of the user (who wants to upload the image). The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.
 
 The response to our post request should be an image object. The object should have the following properties:
   * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
