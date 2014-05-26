@@ -30,9 +30,10 @@ We provide example implementations that include the handshaking as well. You can
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
 5. __[Feature switch](#feature-switch)__
-6. __[Available languages](#available-languages)__  
-7. __[Examples](#example-implementations)__
-8. __[Dependencies](#dependencies)__  
+6. __[JSON document descriptors](#json-document-descriptors)__
+7. __[Available languages](#available-languages)__  
+8. __[Examples](#example-implementations)__
+9. __[Dependencies](#dependencies)__  
 
 
 Initializing
@@ -1644,8 +1645,8 @@ This list is constantly expanding with time!
 
 ---
 
-EDMdesigner's json document descriptors
----------------------------------------
+JSON document descriptors
+-------------------------
 In some cases you - as an integrator - migth want to use the raw document format instead of using the editor and fetch the document from the created project. Some example cases could be when you want to set custom headers and footers to some of your users or you want to create complex or dynamic element.
 
 We can distiguish two main element descriptors, from which a whole document can be composed. These two main types are the containers and the leaf elements.
