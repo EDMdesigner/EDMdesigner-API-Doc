@@ -1335,7 +1335,7 @@ Footers can be uploaded in the same ways:
 
 ### Structure
 The representing object fore header or footer should have the following properties:
-  - document {Object} /REQUIRED/ it should be a json object (which represent our templates)
+  - document {Object} /REQUIRED/ it should be a json object ([which represent our templates](#json-document-descriptors))
     - root /REQUIRED/ There should be the structure of the header or footer
     - generalSettings
   - id {String} /REQUIRED/ this id is what we use for distinguish the headers from each other so __it should be unique!__ Please note that the id you want to use for the users headers should be different from the ids of the general headers or the ids of the user's group's headers. The same is true for the footers.
