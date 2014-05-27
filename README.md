@@ -25,7 +25,8 @@ We provide example implementations that include the handshaking as well. You can
     * _[User handler routes](#user-handler-routes)_  
     * _[Gallery handling](#gallery-handling)_  
     * _[Project handler routes](#project-handler-admin-routes)_  
-    * _[Headers & Footers](#headers--footers)_
+    * _[Headers & Footers](#headers--footers)_  
+    * _[ComplexElements](#complexelements)_  
   2. [User routes](#user-routes)  
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
@@ -748,7 +749,7 @@ ___
 
 ### Upload Complex Elems 
 Upload a list of Complex elems to the specified group. Every user who belongs to this group will be able to use these Complex elems. Please note that every upload will overwrite the previous uploads!  
-If you want to know what is a Complex elem, please read the [complexElems](#complexElems) part of the documentation!
+If you want to know what is a Complex elem, please read the [complexElements](#complexelements) part of the documentation!
 
 #####Type
   + POST
@@ -1023,7 +1024,7 @@ ___
 
 ### Upload Complex elems to specified users 
 Upload a list of Complex elems to a specified user or users. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a Complex elem is good for, please read the [complexElems](#complexElems) part of the documentation!
+If you want to know what a Complex elem is good for, please read the [complexElements](#complexelements) part of the documentation!
 
 #####Type
   + POST
@@ -1045,7 +1046,7 @@ ___
 
 ### Upload Complex elems to all users 
 Upload a list of Complex elems to all users. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a Complex elem is good for, please read the [complexElems](#complexElems) part of the documentation!
+If you want to know what a Complex elem is good for, please read the [complexElements](#complexelements) part of the documentation!
 
 #####Type
   + POST
@@ -1441,19 +1442,23 @@ The user of the editor can save complex elems only for him/herself, those will b
 The editor users can also delete those complex elems what are binded to him/herself as a user.
 
 These are the 3 ways to upload complex elems as an admin:
-  - to all your user ([general complexElems upload](#upload-complexElems)) 
-  - to a specified group ([upload complexElems to group](#upload-complexElems)) 
-  - to specified user or users ([upload complexElems to user](#upload-complexElems))
+  - to all your user ([general complexElems upload](#upload-complex-elems-to-all-users)) 
+  - to a specified group ([upload complexElems to group](#upload-complex-elems)) 
+  - to specified user or users ([upload complexElems to user](#upload-complex-elems-to-specified-users))
 
 ___
 
 ### Structure
-The representing object for a Complex elem should have the following properties:
+The representing object for a Complex elem should have the following properties:  
   - doc {Object} /REQUIRED/ it should be a json object (which represent our templates)
     - type /REQUIRED/ It must be "BOX" or "MULTICOLUMN"
     - generalSettings
   - id {String} /optional/ this id is what will identify the item for you if you would like to manage it via admin
   - title {Object} /optional/ it should contains language code - title string pairs. For example: 'en': 'Green-white complexElem'. If you miss to give it, we it will receive a default name. The title will appear on the list of the complex element. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
+
+
+___
+
 
 ### Localization
 It is possible to use different localization with the same complex elem but __not required__.
@@ -1467,7 +1472,6 @@ An example title object:
 		}
 
 
-		
 ___
 
 
