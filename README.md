@@ -27,6 +27,7 @@ We provide example implementations that include the handshaking as well. You can
     * _[Project handler routes](#project-handler-admin-routes)_  
     * _[Headers & Footers](#headers--footers)_  
     * _[ComplexElements](#complexelements)_  
+    * _[Dynamic Elements](#dynamic-elements)_  
   2. [User routes](#user-routes)  
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
@@ -1474,6 +1475,48 @@ An example title object:
 
 ___
 
+
+## Dynamic Elements
+Coming soon...
+
+
+### Dynamic element structure
+Coming soon...
+
+### Dynamic element templates
+Coming soon...
+
+### Dynamic element data
+Coming soon...
+
+___
+
+### Create Structures
+You can create one or more structure for your [dynamic elements](#dynamic-elements) with this route. If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
+
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/createDynamicElemStructures
+
+#### Parameters (you should post):
+   * structures {Array} 
+
+####Answer:
+An object with three arrays:
+  - inserted {Array} The list of the structures which were successfully saved
+  - updated {Array} list of the structures which have existed therefore they were updated
+  - fails {Array} list of the folllowing objects: 
+    - item {Object} the structure
+    - text {String} The reason why the creation of the structure failed
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+
+___
 
 ##User routes
 
