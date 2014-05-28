@@ -1667,10 +1667,16 @@ Coming soon...
 ### Dynamic element structure
 Coming soon...
 
+
 You can assign structures to:  
   - all of your users ([add to apiPartner](#add-structures-to-everyone))
   - a specified group ([add to group](#add-structures-to-group))
   - a specified user or users ([add to user](#add-structures-to-users))
+
+A structure object should have the following properties:
+  - id {String} This id is very __important__. You have to use it everywhere, so choose carefully! It should be unique!
+  - label {Object} It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it [here](#localization)). Please note that the 'en' language code will be the default label! If you do not give any 'en' version, then we will generate one.
+  - placeHolders {Object} It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). It works almost similar like the headers and footers placeholders (expect , here you do not have to use localization). You can read more about the header and footer placeholders [here](#localization).
 
 Example:
 	
@@ -1696,6 +1702,12 @@ You can create templates to:
   - all of your users ([add to apiPartner](#add-templates-to-everyone))
   - a specified group ([add to group](#add-templates-to-group))
   - a specified user or users ([add to user](#add-templates-to-users))
+
+A template object should have the following properties:
+  - id {String} If you do not give any id then we will generate one.
+  - label {Object} It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it [here](#localization)). Please note that the 'en' language code will be the default label! If you do not give any 'en' version, then we will generate one.
+  - doc {Object} Json document ([see more](#json-document-descriptors))
+  - structureId {String} The id of the structure which the template belongs to.
 
 Example: 
 
@@ -1745,6 +1757,12 @@ Coming soon...
 You can add data to:
   - a specified group ([add to group](#add-data-to-group))
   - a specified user or users ([add to user](#add-data-to-users))
+
+A Data object should have the following properties: 
+  - id {String} If you do not give any id then we will generate one.
+  - label {Object} /REQUIRED/ It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it [here](#localization)). Please note that the 'en' language code will be the default label! If you do not give any 'en' version then we will generate one.
+  - palceHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). It works almost similar like the headers and footers placeholders (expect , here you do not have to use localization). You can read more about the header and footer placeholders [here](#localization).
+  - structureId {String} /REQUIRED/ The id of the structure which the data belongs to.
 
 Example:
 
