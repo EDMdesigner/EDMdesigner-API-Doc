@@ -1672,6 +1672,23 @@ You can assign structures to:
   - a specified group ([add to group](#add-structures-to-group))
   - a specified user or users ([add to user](#add-structures-to-users))
 
+Example:
+	
+	var structure = {
+		id: "my-structure-id",
+		label: {
+			'en': 'Product',
+			'hu': 'Termék'
+		},
+		placeHolders: {
+			'##title##': 'default title',
+			'##image-src##': 'http://default.image.src',
+			'##description##': 'default foo bar description',
+			'##price##': '0'
+		},
+	};
+
+
 ### Dynamic element template
 Coming soon...  
 
@@ -1680,12 +1697,70 @@ You can create templates to:
   - a specified group ([add to group](#add-templates-to-group))
   - a specified user or users ([add to user](#add-templates-to-users))
 
+Example: 
+
+	var template = {
+		id: 'my-template-id',
+		label: {
+			'en': 'Simple Template',
+			'hu': 'Sima Sablon'
+		},
+		doc: {
+	            "children" : [ 
+	                {
+	                    "text" : "<h1 style=\"text-align: center;\">##title##</h1>",
+	                    "defaultText" : "Double click to edit",
+	                    "type" : "TITLE"
+	                }, 
+	                {
+	                    "originalHeight" : "0",
+	                    "originalWidth" : "0",
+	                    "sizeType" : "FIXED",
+	                    "link" : "",
+	                    "altText" : "",
+	                    "src" : "##image-src##",
+	                    "id" : "",
+	                    "align" : "center",
+	                    "type" : "IMAGE"
+	                }, 
+	                {
+	                    "text" : "<p style=\"text-align: center;\">##description##</p>",
+	                    "defaultText" : "Double click to edit",
+	                    "type" : "TEXT"
+	                }, 
+	                {
+	                    "text" : "<p style=\"text-align: right;\">price: ##price##</p>",
+	                    "defaultText" : "Double click to edit",
+	                    "type" : "TEXT"
+	                }
+	            ],
+	            "type" : "ROOT"
+    		},
+    		structureId: "my-structure-id"
+	};
+
 ### Dynamic element data
 Coming soon...
 
 You can add data to:
   - a specified group ([add to group](#add-data-to-group))
   - a specified user or users ([add to user](#add-data-to-users))
+
+Example:
+
+	var data = {
+		id: 'my-data-id',
+		label: {
+			'en': 'EDM beer'
+		},
+		placeHolders: {
+			'##title##': 'EDM beer',
+			'##image-src##': 'http://www.beer100.com/images/beermug.jpg',
+			'##description##': 'Best beer ever! You should try it!',
+			'##price##': '10$'
+		},
+		structureId: 'my-structure-id'
+	};
 
 ___
 
@@ -1700,7 +1775,7 @@ You can create one or more structure for your [dynamic elements](#dynamic-elemen
 
 #### Parameters (you should post):
    * structures {Array} list of structure ([see more](#dynamic-element-structure)) objects. One object should have the following properties:
-     * id {String} /REQUIRED/
+     * id {String} /REQUIRED/ This id is very __important__. You have to use it everywhere, so choose carefully!
      * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
      * placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](#dynamic-element-structure))
 
