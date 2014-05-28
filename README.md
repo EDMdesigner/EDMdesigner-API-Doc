@@ -770,6 +770,93 @@ An object with 3 child objects:
 
 ___
 
+### Add structures to group
+You can assign structures to a specified group. If you do so, then each of your users, who belong to the group, will be able to use the given structures.  
+If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/addStructuresToGroup
+
+#### Parameters (you should post):
+   * structureId {Array} /REQUIRED/ It should contain the ids of the structures you want to assign to all of your users.
+   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
+
+####Answer:
+An object with the following two arrays: 
+  - fails {Array} It contains objects with the following properties:
+    - item {Object} The structure which cannot be assigned
+    - text {String} The reason why it cannot be assigned
+  - saved {Array} It contains the objects of the successfully saved structures  
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+
+### Add templates to group
+You can assign templates to a specified group. If you do so, then each users , who belong to the selected group, will be able to use the given templates.  
+If you want to know what exactly a template is good for, please read the [dynamic element template](#dynamic-element-template) part of the documentation.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/addTemplatesToGroup
+
+#### Parameters (you should post):
+  * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
+  * templates {Array} /REQUIRED/ It should contain template objects. A template object should look like the following:
+    * id {String} If you do not give any id then we will generate one.
+    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
+    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors))
+    * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
+
+####Answer:
+An object containing two arrays: 
+  - fails {Array} It contains objects with the following properties:
+    - item {Object} The template which cannot be created
+    - text {String} The reason why it cannot be created
+  - saved {Array} It contains the objects of the successfully saved templates  
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Add data to group
+You can add data to a specified group.  If you do so, then each users , who belong to the selected group, will be able to use the given data.    
+If you want to know what exactly a data is good for, please read the [dynamic element data](#dynamic-element-data) part of the documentation.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/addDataToGroup
+
+#### Parameters (you should post):
+  * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
+  * items {Array} /REQUIRED/ It should contain data objects. A data object should look like the following:
+    * id {String} If you do not give any id then we will generate one.
+    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
+    * palceHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](dynamic-element-data))
+    * structureId {String} /REQUIRED/ The id of the structure which the data belongs to.
+
+####Answer:
+An object containing two arrays: 
+  - fails {Array} It contains objects with the following properties:
+    - item {Object} The data which cannot be added
+    - text {String} The reason why it cannot be added
+  - saved {Array} It contains the objects of the successfully saved data  
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
 ## User handler routes
 
 ### List
@@ -1067,6 +1154,103 @@ An object:
 
 ___
 
+### Add structures to users
+You can assign structures to one or more users. If you do so, then the selected users will be able to use the given structures.  
+If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/addStructuresToUsers
+
+#### Parameters (you should post):
+   * users {Array} It should contain the ids of the users
+   * structureId {Array} It should contain the ids of the structures you want to assign to the specified users  
+
+####Answer:
+An object with the following four arrays: 
+  - failedItems {Array} It contains objects with the following two properties:
+    - text {String} The reason why the structure cannot be assigned to the users
+    - item {Object} The structure in question
+  - failedUsers {Array} It contains objects with the following two properties:
+    - text {String} The reason why we cannot assign anything to the given user
+    - item {String} The user's id
+  - savedItems {Array} It contains the structure which were assigned to the user/users.
+  - savedToUsers {Array) It contains the ids of the users who successfully get the structures
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Add templates to users
+You can create templates to a specified user or users. If you do so then the selected users will be able to use the given templates.  
+If you want to know what exactly a template is good for, please read the [dynamic element template](#dynamic-element-template) part of the documentation.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/addTemplatesToUsers
+
+#### Parameters (you should post):
+  * users {Array} It should contain the ids of the users
+  * templates {Array} /REQUIRED/ It should contain template objects. A template object should look like the following:
+    * id {String} If you do not give any id then we will generate one.
+    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
+    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors))
+    * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
+
+####Answer:
+An object with the following four arrays: 
+  - failedItems {Array} It contains objects with the following two properties:
+    - text {String} The reason why the template cannot be created to the users
+    - item {Object} The template in question
+  - failedUsers {Array} It contains objects with the following two properties:
+    - text {String} The reason why we cannot create any templates to the given user
+    - item {String} The user's id
+  - savedItems {Array} It contains the templates which were assigned to the user/users.
+  - savedToUsers {Array) It contains the ids of the users who successfully get the templates 
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Add data to user
+You can add data to a specified user. If you do so then the selected user will be able to use the given data.  
+If you want to know what exactly a data is good for, please read the [dynamic element data](#dynamic-element-data) part of the documentation.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/addDataToUsers
+
+#### Parameters (you should post):
+  * users {Array} It should contain the ids of the users
+  * items {Array} /REQUIRED/ It should contain data objects. A data object should look like the following:
+    * id {String} If you do not give any id then we will generate one.
+    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
+    * palceHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](dynamic-element-data))
+    * structureId {String} /REQUIRED/ The id of the structure which the data belongs to.
+
+####Answer:
+An object with the following four arrays: 
+  - failedItems {Array} It contains objects with the following two properties:
+    - text {String} The reason why the data cannot be added to the users
+    - item {Object} The data in question
+  - failedUsers {Array} It contains objects with the following two properties:
+    - text {String} The reason why we cannot add any data to the given user
+    - item {String} The user's id
+  - savedItems {Array} It contains the data which were assigned to the user/users.
+  - savedToUsers {Array) It contains the ids of the users who successfully get the data 
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
 
 ##Gallery handling
 If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.
@@ -1483,17 +1667,30 @@ Coming soon...
 ### Dynamic element structure
 Coming soon...
 
-### Dynamic element templates
-Coming soon...
+You can assign structures to:  
+  - all of your users ([add to apiPartner](#add-structures-to-everyone))
+  - a specified group ([add to group](#add-structures-to-group))
+  - a specified user or users ([add to user](#add-structures-to-users))
+
+### Dynamic element template
+Coming soon...  
+
+You can create templates to:
+  - all of your users ([add to apiPartner](#add-templates-to-everyone))
+  - a specified group ([add to group](#add-templates-to-group))
+  - a specified user or users ([add to user](#add-templates-to-users))
 
 ### Dynamic element data
 Coming soon...
+
+You can add data to:
+  - a specified group ([add to group](#add-data-to-group))
+  - a specified user or users ([add to user](#add-data-to-users))
 
 ___
 
 ### Create Structures
 You can create one or more structure for your [dynamic elements](#dynamic-elements) with this route. If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
-
 
 #####Type
   + POST
@@ -1502,7 +1699,10 @@ You can create one or more structure for your [dynamic elements](#dynamic-elemen
   + //api.edmdesigner.com/json/dynamicElems/createDynamicElemStructures
 
 #### Parameters (you should post):
-   * structures {Array} 
+   * structures {Array} list of structure ([see more](dynamic-element-structure)) objects. One object should have the following properties:
+     * id {String} /REQUIRED/
+     * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
+     * placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](dynamic-element-structure))
 
 ####Answer:
 An object with three arrays:
@@ -1515,8 +1715,106 @@ An object with three arrays:
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
+___
+
+### List Structures
+List your structures.  
+If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
+
+
+#####Type
+  + GET
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/listDynamicElemStructure
+
+
+####Answer:
+An object with the followinf property: 
+  - result {Array} The list of your structures.
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
 
 ___
+
+### Delete Structure
+Delete one specified structure. Please note that if you delete a structure then every template and data which belong to it __will be deleted__ too. THis process can take a very long time!
+If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.  
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/deleteDynamicElemStructure
+
+#### Parameters (you should post):
+   * id {String} The id of the structure you want to delete
+
+####Answer:
+An object with the followinf property: 
+  - deleted {object} The structure you deleted
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Add structures to everyone
+You can assign structures to all of your users. If you do so, then each of your user will be able to use the given structures.  
+If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/addStructures
+
+#### Parameters (you should post):
+   * structureId {Array} It should contain the ids of the structures you want to assign to all of your users.
+
+####Answer:
+An object containing two arrays: 
+  - fails {Array} It contains objects with the following properties:
+    - item {Object} The structure which cannot be assigned
+    - text {String} The reason why it cannot be assigned
+  - saved {Array} It contains the objects of the successfully saved structures  
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+
+### Add templates to everyone
+You can assign templates to all of your users. If you do so, then each of your user will be able to use the given templates.  
+If you want to know what exactly a template is good for, please read the [dynamic element template](#dynamic-element-template) part of the documentation.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/dynamicElems/addTemplates
+
+#### Parameters (you should post):
+  * templates {Array} It should contain template objects. A template object should look like the following:
+    * id {String} If you do not give any id then we will generate one.
+    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
+    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors))
+    * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
+
+####Answer:
+An object containing two arrays: 
+  - fails {Array} It contains objects with the following properties:
+    - item {Object} The template which cannot be created
+    - text {String} The reason why it cannot be created
+  - saved {Array} It contains the objects of the successfully saved templates  
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
 
 ##User routes
 
