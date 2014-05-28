@@ -1699,10 +1699,10 @@ You can create one or more structure for your [dynamic elements](#dynamic-elemen
   + //api.edmdesigner.com/json/dynamicElems/createDynamicElemStructures
 
 #### Parameters (you should post):
-   * structures {Array} list of structure ([see more](dynamic-element-structure)) objects. One object should have the following properties:
+   * structures {Array} list of structure ([see more](#dynamic-element-structure)) objects. One object should have the following properties:
      * id {String} /REQUIRED/
      * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-     * placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](dynamic-element-structure))
+     * placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](#dynamic-element-structure))
 
 ####Answer:
 An object with three arrays:
