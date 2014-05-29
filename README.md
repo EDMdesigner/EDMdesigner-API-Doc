@@ -1650,8 +1650,8 @@ ___
 Coming soon...
 
 ### Dynamic element structure
-The structure is the main part of the dynamic element. It specifies the type of the dynamic element. For example, it can be a "Product" (which means that the dynamic element will be able to display products), or a "company" or whatever you want. It is the connection between [data](#dynamic-element-data) and [templates](#dynamic-element-template). It describe how the data's structure should look like (which kind of placeholders should it use, etc) and which placeholders should a template contains. It also contains a default content for the dynamic elements.  
-It is very important , because every templates and data have to be assign to one of your structures!
+The structure is the main part of the dynamic element. It specifies the type of the dynamic element. For example, it can be a "Product" (which means that the dynamic element will be able to display products), or a "company" or whatever you want. It is the connection between [data](#dynamic-element-data) and [templates](#dynamic-element-template). It describe how the data's structure should look like (which kind of placeholders should it use, etc) and which placeholders should a template contains. It also contains a default content for the dynamic elements. When a user choose a structure , then the default content will appear and the user can change it with selecting one of his data.  
+The structure is very important , because every templates and data have to be assign to one of your structures!
 
 You can assign structures to:  
   - all of your users ([add to apiPartner](#add-structures-to-everyone))
