@@ -1793,14 +1793,13 @@ You can create one or more structure for your [dynamic elements](#dynamic-elemen
 
 #### Parameters (you should post):
    * structures {Array} list of structure ([see more](#dynamic-element-structure)) objects. One object should have the following properties:
-     * id {String} /REQUIRED/ This id is very __important__. You have to use it everywhere, so choose carefully!
+     * id {String} /REQUIRED/ This id is very __important__. You have to use it everywhere, so choose carefully! It must be unique, so if already used, the insertion is ignored andlisted in the fails array.
      * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
      * placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](#dynamic-element-structure))
 
 ####Answer:
 An object with three arrays:
   - inserted {Array} The list of the structures which were successfully saved
-  - updated {Array} list of the structures which have existed therefore they were updated
   - fails {Array} list of the folllowing objects: 
     - item {Object} the structure
     - text {String} The reason why the creation of the structure failed
