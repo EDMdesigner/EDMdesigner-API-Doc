@@ -781,7 +781,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
   + //api.edmdesigner.com/json/dynamicElems/addStructuresToGroup
 
 #### Parameters (you should post):
-   * structureId {Array} /REQUIRED/ It should contain the ids of the structures you want to assign to all of your users.
+   * structureIds {Array} /REQUIRED/ It should contain the ids of the structures you want to assign to all of your users.
    * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
 
 ####Answer:
@@ -790,10 +790,7 @@ An object with the following two arrays:
     - item {Object} The structure which cannot be assigned
     - text {String} The reason why it cannot be assigned
   - saved {Array} It contains the objects of the successfully saved structures  
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
+  - err {String} only in case of error, contains the error description
 ___
 
 
@@ -821,9 +818,7 @@ An object containing two arrays:
     - item {Object} The template which cannot be created
     - text {String} The reason why it cannot be created
   - saved {Array} It contains the objects of the successfully saved templates  
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
+  - err {String} only in case of error, contains the error description
 
 ___
 
@@ -851,9 +846,7 @@ An object containing two arrays:
     - item {Object} The data which cannot be added
     - text {String} The reason why it cannot be added
   - saved {Array} It contains the objects of the successfully saved data  
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
+  - err {String} only in case of error, contains the error description
 
 ___
 
@@ -1166,7 +1159,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
 
 #### Parameters (you should post):
    * users {Array} It should contain the ids of the users
-   * structureId {Array} It should contain the ids of the structures you want to assign to the specified users  
+   * structureIds {Array} It should contain the ids of the structures you want to assign to the specified users  
 
 ####Answer:
 An object with the following four arrays: 
@@ -1178,9 +1171,7 @@ An object with the following four arrays:
     - item {String} The user's id
   - savedItems {Array} It contains the structure which were assigned to the user/users.
   - savedToUsers {Array) It contains the ids of the users who successfully get the structures
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
+  - err {String} only in case of error, contains the error description
 
 ___
 
@@ -1212,9 +1203,7 @@ An object with the following four arrays:
     - item {String} The user's id
   - savedItems {Array} It contains the templates which were assigned to the user/users.
   - savedToUsers {Array) It contains the ids of the users who successfully get the templates 
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
+  - err {String} only in case of error, contains the error description
 
 ___
 
@@ -1246,9 +1235,7 @@ An object with the following four arrays:
     - item {String} The user's id
   - savedItems {Array} It contains the data which were assigned to the user/users.
   - savedToUsers {Array) It contains the ids of the users who successfully get the data 
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
+  - err {String} only in case of error, contains the error description
 
 ___
 
@@ -1522,7 +1509,7 @@ Footers can be uploaded in the same ways:
 ### Structure
 The representing object fore header or footer should have the following properties:
   - document {Object} /REQUIRED/ it should be a json object ([which represent our templates](#json-document-descriptors))
-    - root /REQUIRED/ There should be the structure of the header or footer (It should be a ["ROOT"](#root) type)
+    - root /REQUIRED/ There should be the structure of the header or footer
     - generalSettings
   - id {String} /REQUIRED/ this id is what we use for distinguish the headers from each other so __it should be unique!__ Please note that the id you want to use for the users headers should be different from the ids of the general headers or the ids of the user's group's headers. The same is true for the footers.
   - title {Object} it should contains language code - title string pairs. For example: 'en': 'Green-white header'. The title will appear on the dropdown list. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
@@ -1636,7 +1623,7 @@ ___
 ### Structure
 The representing object for a Complex elem should have the following properties:  
   - doc {Object} /REQUIRED/ it should be a json object (which represent our templates)
-    - type /REQUIRED/ It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)
+    - type /REQUIRED/ It must be "BOX" or "MULTICOLUMN"
     - generalSettings
   - id {String} /optional/ this id is what will identify the item for you if you would like to manage it via admin
   - title {Object} /optional/ it should contains language code - title string pairs. For example: 'en': 'Green-white complexElem'. If you miss to give it, we it will receive a default name. The title will appear on the list of the complex element. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
@@ -1696,8 +1683,7 @@ Example:
 
 
 ### Dynamic element template
-The template is responsible for the visual appearance of a dynamic element. A template always has to be assigned to a [structure](#dynamic-element-structure) and it has to contain the placeholders which the structure define. It is important because when the user choose a [data](#dynamic-element-data) for the dynamic element, then the placeholders will be replaced with actual content.
-You can assign any number of templates to a structure.
+Coming soon...  
 
 You can create templates to:
   - all of your users ([add to apiPartner](#add-templates-to-everyone))
@@ -1707,7 +1693,7 @@ You can create templates to:
 A template object should have the following properties:
   - id {String} If you do not give any id then we will generate one.
   - label {Object} It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it [here](#localization)). Please note that the 'en' language code will be the default label! If you do not give any 'en' version, then we will generate one.
-  - doc {Object} Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children).
+  - doc {Object} Json document ([see more](#json-document-descriptors))
   - structureId {String} The id of the structure which the template belongs to.
 
 Example: 
@@ -1722,6 +1708,7 @@ Example:
 	            "children" : [ 
 	                {
 	                    "text" : "<h1 style=\"text-align: center;\">##title##</h1>",
+	                    "defaultText" : "Double click to edit",
 	                    "type" : "TITLE"
 	                }, 
 	                {
@@ -1737,21 +1724,22 @@ Example:
 	                }, 
 	                {
 	                    "text" : "<p style=\"text-align: center;\">##description##</p>",
+	                    "defaultText" : "Double click to edit",
 	                    "type" : "TEXT"
 	                }, 
 	                {
 	                    "text" : "<p style=\"text-align: right;\">price: ##price##</p>",
+	                    "defaultText" : "Double click to edit",
 	                    "type" : "TEXT"
 	                }
 	            ],
-	            "type" : "BOX"
+	            "type" : "ROOT"
     		},
     		structureId: "my-structure-id"
 	};
 
 ### Dynamic element data
-The data contains the actual content of the dynamic element. A template always has to be assigned to a [structure](#dynamic-element-structure) and it has to contain "placholder - value " (example: "##placeholder##": "value") for every placeholders the structure contains.  
-You can assign any number of data to a structure.
+Coming soon...
 
 You can add data to:
   - a specified group ([add to group](#add-data-to-group))
@@ -1792,20 +1780,17 @@ You can create one or more structure for your [dynamic elements](#dynamic-elemen
 
 #### Parameters (you should post):
    * structures {Array} list of structure ([see more](#dynamic-element-structure)) objects. One object should have the following properties:
-     * id {String} /REQUIRED/ This id is very __important__. You have to use it everywhere, so choose carefully!
+     * id {String} /REQUIRED/ This id is very __important__. You have to use it everywhere, so choose carefully! It must be unique, so if already used, the insertion is ignored and listed in the fails array.
      * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
      * placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](#dynamic-element-structure))
 
 ####Answer:
 An object with three arrays:
   - inserted {Array} The list of the structures which were successfully saved
-  - updated {Array} list of the structures which have existed therefore they were updated
   - fails {Array} list of the folllowing objects: 
     - item {Object} the structure
     - text {String} The reason why the creation of the structure failed
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
+  - err {String} only in case of error, contains the error description
 
 ___
 
@@ -1824,10 +1809,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
 ####Answer:
 An object with the followinf property: 
   - result {Array} The list of your structures.
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
+  - err {String} only in case of error, contains the error description
 ___
 
 ### Delete Structure
@@ -1846,9 +1828,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
 ####Answer:
 An object with the followinf property: 
   - deleted {object} The structure you deleted
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
+  - err {String} only in case of error, contains the error description
 
 ___
 
@@ -1863,7 +1843,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
   + //api.edmdesigner.com/json/dynamicElems/addStructures
 
 #### Parameters (you should post):
-   * structureId {Array} It should contain the ids of the structures you want to assign to all of your users.
+   * structureIds {Array} It should contain the ids of the structures you want to assign to all of your users.
 
 ####Answer:
 An object containing two arrays: 
@@ -1871,10 +1851,7 @@ An object containing two arrays:
     - item {Object} The structure which cannot be assigned
     - text {String} The reason why it cannot be assigned
   - saved {Array} It contains the objects of the successfully saved structures  
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
+  - err {String} only in case of error, contains the error description
 ___
 
 
@@ -1901,9 +1878,7 @@ An object containing two arrays:
     - item {Object} The template which cannot be created
     - text {String} The reason why it cannot be created
   - saved {Array} It contains the objects of the successfully saved templates  
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
+  - err {String} only in case of error, contains the error description
 
 ___
 
