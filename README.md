@@ -1820,7 +1820,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
   + //api.edmdesigner.com/json/dynamicElems/deleteDynamicElemStructure
 
 #### Parameters (you should post):
-   * id {String} The id of the structure you want to delete
+   * id {String} The id of the structure you want to delete. __Please try to avoid using this id again!!__
 
 ####Answer:
 An object with the followinf property: 
