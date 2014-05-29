@@ -1522,7 +1522,7 @@ Footers can be uploaded in the same ways:
 ### Structure
 The representing object fore header or footer should have the following properties:
   - document {Object} /REQUIRED/ it should be a json object ([which represent our templates](#json-document-descriptors))
-    - root /REQUIRED/ There should be the structure of the header or footer
+    - root /REQUIRED/ There should be the structure of the header or footer (It should be a ["ROOT"](#root) type)
     - generalSettings
   - id {String} /REQUIRED/ this id is what we use for distinguish the headers from each other so __it should be unique!__ Please note that the id you want to use for the users headers should be different from the ids of the general headers or the ids of the user's group's headers. The same is true for the footers.
   - title {Object} it should contains language code - title string pairs. For example: 'en': 'Green-white header'. The title will appear on the dropdown list. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
@@ -1636,7 +1636,7 @@ ___
 ### Structure
 The representing object for a Complex elem should have the following properties:  
   - doc {Object} /REQUIRED/ it should be a json object (which represent our templates)
-    - type /REQUIRED/ It must be "BOX" or "MULTICOLUMN"
+    - type /REQUIRED/ It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)
     - generalSettings
   - id {String} /optional/ this id is what will identify the item for you if you would like to manage it via admin
   - title {Object} /optional/ it should contains language code - title string pairs. For example: 'en': 'Green-white complexElem'. If you miss to give it, we it will receive a default name. The title will appear on the list of the complex element. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
@@ -1696,7 +1696,8 @@ Example:
 
 
 ### Dynamic element template
-Coming soon...  
+The template is responsible for the visual appearance of a dynamic element. A template always has to be assigned to a [structure](#dynamic-element-structure) and it has to contain the placeholders which the structure define. It is important because when the user choose a [data](#dynamic-element-data) for the dynamic element, then the placeholders will be replaced with actual content.
+You can assign any number of templates to a structure.
 
 You can create templates to:
   - all of your users ([add to apiPartner](#add-templates-to-everyone))
@@ -1706,7 +1707,7 @@ You can create templates to:
 A template object should have the following properties:
   - id {String} If you do not give any id then we will generate one.
   - label {Object} It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it [here](#localization)). Please note that the 'en' language code will be the default label! If you do not give any 'en' version, then we will generate one.
-  - doc {Object} Json document ([see more](#json-document-descriptors))
+  - doc {Object} Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children).
   - structureId {String} The id of the structure which the template belongs to.
 
 Example: 
@@ -1721,7 +1722,6 @@ Example:
 	            "children" : [ 
 	                {
 	                    "text" : "<h1 style=\"text-align: center;\">##title##</h1>",
-	                    "defaultText" : "Double click to edit",
 	                    "type" : "TITLE"
 	                }, 
 	                {
@@ -1737,22 +1737,21 @@ Example:
 	                }, 
 	                {
 	                    "text" : "<p style=\"text-align: center;\">##description##</p>",
-	                    "defaultText" : "Double click to edit",
 	                    "type" : "TEXT"
 	                }, 
 	                {
 	                    "text" : "<p style=\"text-align: right;\">price: ##price##</p>",
-	                    "defaultText" : "Double click to edit",
 	                    "type" : "TEXT"
 	                }
 	            ],
-	            "type" : "ROOT"
+	            "type" : "BOX"
     		},
     		structureId: "my-structure-id"
 	};
 
 ### Dynamic element data
-Coming soon...
+The data contains the actual content of the dynamic element. A template always has to be assigned to a [structure](#dynamic-element-structure) and it has to contain "placholder - value " (example: "##placeholder##": "value") for every placeholders the structure contains.  
+You can assign any number of data to a structure.
 
 You can add data to:
   - a specified group ([add to group](#add-data-to-group))
@@ -1793,13 +1792,14 @@ You can create one or more structure for your [dynamic elements](#dynamic-elemen
 
 #### Parameters (you should post):
    * structures {Array} list of structure ([see more](#dynamic-element-structure)) objects. One object should have the following properties:
-     * id {String} /REQUIRED/ This id is very __important__. You have to use it everywhere, so choose carefully! It must be unique, so if already used, the insertion is ignored andlisted in the fails array.
+     * id {String} /REQUIRED/ This id is very __important__. You have to use it everywhere, so choose carefully!
      * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
      * placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](#dynamic-element-structure))
 
 ####Answer:
 An object with three arrays:
   - inserted {Array} The list of the structures which were successfully saved
+  - updated {Array} list of the structures which have existed therefore they were updated
   - fails {Array} list of the folllowing objects: 
     - item {Object} the structure
     - text {String} The reason why the creation of the structure failed
