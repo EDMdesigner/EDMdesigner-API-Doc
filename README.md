@@ -1647,7 +1647,10 @@ ___
 
 
 ## Dynamic Elements
-Coming soon...
+This element is good for those who want their users to be able to change their emails/templates content easily. Users can add a dynamic element to their templates and choose which type of content will it display ([structure](#dynamic-element-structure), how will it look like ([template](#dynamic-element-template) and what the actual content will be ([data](#dynamic-element-data)).  
+You can upload any number of different dynamic element type ([structure](#dynamic-element-structure), and create any number of different looks ([template](#dynamic-element-template) for your structures and assign any number of content ([data](#dynamic-element-data)) to those too.
+You can even choose which type of dynamic elements can your user use, or users belonging to a specified group. You even can set which templates can someone use or not. There is even an option for making a dynamic element type/template to be available for all of your users.
+Please note that the data can only be added to groups or specified users.
 
 ### Dynamic element structure
 The structure is the main part of the dynamic element. It specifies the type of the dynamic element. For example, it can be a "Product" (which means that the dynamic element will be able to display products), or a "company" or whatever you want. It is the connection between [data](#dynamic-element-data) and [templates](#dynamic-element-template). It describe how the data's structure should look like (which kind of placeholders should it use, etc) and which placeholders should a template contains. It also contains a default content for the dynamic elements. When a user choose a structure , then the default content will appear and the user can change it with selecting one of his data.  
