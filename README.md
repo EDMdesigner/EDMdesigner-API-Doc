@@ -2178,11 +2178,43 @@ Multicolumns are the main elements to create complex layouts. They can have mult
 	}
 
 ###Root
-Now, the root element is actually a box, only the type property differs. ({type: "ROOT", ... }) In the near future - when we will introduce the full width containers - it will change a little bit.
+Every document starts with this elem, as this is the top parent elem. It contains a full width container as a child what has a box inside as a child. It has no other property out of the children field. ({type: "ROOT", ... }) In the near future - when we will introduce the full width containers - it will change a little bit.  
+
+Example:
+
+	{
+		type: "ROOT",
+		children: [
+			{
+				type: "FULLWIDTH_CONTAINER,
+				background: { ... },
+				children: [
+					type: "BOX",
+					... any box properties ...
+				]
+			}
+		]
+	}
 
 ###Full width container
-Not implemented yet.
 The main feature of this element type will be that the background color can be full width, not only 600px as the root element.
+It can only be a direct child of the root, so can be placed only in the highest level of the document structure. A fullwidth container can have 1 cell, or one left cell and one right cells divided from the middle. The cells can have their own background color. The elem can be set "left to right" or "right to left". In case of "left to right" setting the left cells will be ordered on the top if there is no enough room for both in the same line. In case of "right to left" the right cell will do so. If the element is set to be 1 celled, the order property determines that which cell is displayed. The content of the not visible cell always will be stored so will never be lost only not displayed.    
+
+Example:
+
+	{
+		type: "FULLWIDTH_CONTAINER",
+		order: "RTL", (or "LTR")
+		twoCell: "true", (or "false")
+		leftBackgroundColor: "#aaaaaa",
+		rightBackgroundColor: "#FF0000",
+		leftChildren: [
+			...any element except root and fullwidth container...
+		],
+		rightChildren: [
+			...any element except root and fullwidth container...
+		]
+	}
 
 ##Leaf elements
 Leaf elements cannot have any child elements. These elements are typically the content elements.
