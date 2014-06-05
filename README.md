@@ -809,7 +809,7 @@ If you want to know what exactly a template is good for, please read the [dynami
   * templates {Array} /REQUIRED/ It should contain template objects. A template object should look like the following:
     * id {String} If you do not give any id then we will generate one.
     * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors))
+    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
     * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
 
 ####Answer:
@@ -1190,7 +1190,7 @@ If you want to know what exactly a template is good for, please read the [dynami
   * templates {Array} /REQUIRED/ It should contain template objects. A template object should look like the following:
     * id {String} If you do not give any id then we will generate one.
     * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors))
+    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
     * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
 
 ####Answer:
@@ -1509,7 +1509,7 @@ Footers can be uploaded in the same ways:
 ### Structure
 The representing object fore header or footer should have the following properties:
   - document {Object} /REQUIRED/ it should be a json object ([which represent our templates](#json-document-descriptors))
-    - root /REQUIRED/ There should be the structure of the header or footer (It should be a ["FULLWIDTH_CONTAINER"](#full-width-container) type)
+    - root /REQUIRED/ There should be the structure of the header or footer. __It must be a ["FULLWIDTH_CONTAINER"](#full-width-container) type!__
     - generalSettings
   - id {String} /REQUIRED/ this id is what we use for distinguish the headers from each other so __it should be unique!__ Please note that the id you want to use for the users headers should be different from the ids of the general headers or the ids of the user's group's headers. The same is true for the footers.
   - title {Object} it should contains language code - title string pairs. For example: 'en': 'Green-white header'. The title will appear on the dropdown list. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
@@ -1663,7 +1663,7 @@ ___
 ### Structure
 The representing object for a Complex elem should have the following properties:  
   - doc {Object} /REQUIRED/ it should be a json object (which represent our templates)
-    - type /REQUIRED/ It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)
+    - type /REQUIRED/ It must be ["BOX"](#box), ["MULTICOLUMN"](#multicolumn) or ["FULLWIDTH_CONTAINER"](#full-width-container)
     - generalSettings
   - id {String} /optional/ this id is what will identify the item for you if you would like to manage it via admin
   - title {Object} /optional/ it should contains language code - title string pairs. For example: 'en': 'Green-white complexElem'. If you miss to give it, we it will receive a default name. The title will appear on the list of the complex element. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
@@ -1735,7 +1735,7 @@ You can create templates to:
 A template object should have the following properties:
   - id {String} If you do not give any id then we will generate one.
   - label {Object} It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it [here](#localization)). Please note that the 'en' language code will be the default label! If you do not give any 'en' version, then we will generate one.
-  - doc {Object} Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children).
+  - doc {Object} Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
   - structureId {String} The id of the structure which the template belongs to.
 
 Example: 
@@ -1909,7 +1909,7 @@ If you want to know what exactly a template is good for, please read the [dynami
   * templates {Array} It should contain template objects. A template object should look like the following:
     * id {String} If you do not give any id then we will generate one.
     * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors))
+    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
     * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
 
 ####Answer:
@@ -2103,7 +2103,7 @@ In some cases you - as an integrator - migth want to use the raw document format
 
 We can distiguish two main element descriptors, from which a whole document can be composed. These two main types are the containers and the leaf elements.
 
-Every element has its type property. The possible values are the followings: "BOX", "MULTICOLUMN", "ROOT", "TEXT", "TITLE", "IMAGE", "BUTTON".
+Every element has its type property. The possible values are the followings: "BOX", "MULTICOLUMN", "ROOT", "TEXT", "TITLE", "IMAGE", "BUTTON and "FULLWIDTH_CONTAINER".
 
 ##Containers
 Containers are used to group some elements and define the layout of the project. You can put any kind of elements into containers, so these elements can be other containers and leaf elements as well.
@@ -2187,11 +2187,12 @@ Example:
 		children: [
 			{
 				type: "FULLWIDTH_CONTAINER,
-				background: { ... },
-				children: [
+				leftChildren: [
 					type: "BOX",
 					... any box properties ...
-				]
+				],
+				order: "LTR",
+				twoCell: false
 			}
 		]
 	}
