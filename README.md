@@ -1509,12 +1509,52 @@ Footers can be uploaded in the same ways:
 ### Structure
 The representing object fore header or footer should have the following properties:
   - document {Object} /REQUIRED/ it should be a json object ([which represent our templates](#json-document-descriptors))
-    - root /REQUIRED/ There should be the structure of the header or footer (It should be a ["ROOT"](#root) type)
+    - root /REQUIRED/ There should be the structure of the header or footer (It should be a ["FULLWIDTH_CONTAINER"](#full-width-container) type)
     - generalSettings
   - id {String} /REQUIRED/ this id is what we use for distinguish the headers from each other so __it should be unique!__ Please note that the id you want to use for the users headers should be different from the ids of the general headers or the ids of the user's group's headers. The same is true for the footers.
   - title {Object} it should contains language code - title string pairs. For example: 'en': 'Green-white header'. The title will appear on the dropdown list. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
   - placeholders {Object} it is needed when you want to have more than one supported language on your headers or footers. If you want to know how do the placeholders work please read the [localization](#localization) part of the [headers & footers](#headers--footers) chapter.
 
+Example:
+	
+	var headerOrFooter = {
+		"document":  {
+			"root": {
+				"leftChildren" : [
+					{
+						"text" : "<h1 style=\"text-align: center;\">##title##</h1>",
+						"type" : "TITLE"
+					}
+					{
+						"text" : "<p style=\"text-align: right;\">##example-palceholder##</p>",
+						"defaultText" : "Double click to edit",
+						"type" : "TEXT"
+					}
+				],
+				"rightChildren": [],
+				"rightBackgroundColor" : "",
+				"leftBackgroundColor" : "",
+				"twoCell" : "false",
+				"order" : "LTR",
+				"type" : "FULLWIDTH_CONTAINER"
+			}
+		},
+		"id": "My-example-header-or-footer-unique-id",
+		"title": {
+			"en": "example title",
+		 	"hu": "példa cím"
+		},
+		"placeholders": { 
+				'##title##': {
+					'en': 'The header is a good thing',
+					'hu': 'A fejléc egy jó dolog',
+				},
+	 			'##example-palceholder##: {
+	 				'en': 'It is an example',
+	 				'hu': 'Ez egy példa',
+	 			}
+		}
+	};
 ___
 
 ### Localization
@@ -1528,7 +1568,7 @@ Example placeholders object:
 				'hu': 'A fejléc egy jó dolog',
 				//...
 			},
-	 '##example-palceholder##: {
+	 		'##example-palceholder##: {
 	 			'en': 'It is an example',
 	 			'hu': 'Ez egy példa',
 	 			//...
