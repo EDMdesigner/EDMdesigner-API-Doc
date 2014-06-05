@@ -1147,7 +1147,7 @@ Config object:
   - noUploadText {Object} (only if you previously set it in)
   - limitReached {Object} (only if you previously set it)
   - noUrl {Boolean} (only if you previously set it true)
-or it can be an error
+
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
