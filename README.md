@@ -1467,6 +1467,35 @@ or it can be an error object:
 
 ___
 
+###Get Project
+Get a specified project as json. The result  will contain almost every information about the selected project.
+
+#####Type
+  + GET
+
+#####Route
+  + //api.edmdesigner.com/json/project/getProject
+
+####Answer:
+Project object:
+  - _id {String} MongoDB _id of the newly created project
+  - title {String} The title of the project.
+  - description {String} Description about the project
+  - createdOn {String} Creation time
+  - lastModified {String} Time of the last modification
+  - document {Object} The json format of the template
+    - usedColors {Array} List of the colors which are used in the template
+    - generalSettings {Object} The default settings of the template
+    - root {Object} The actual structure of the template
+    - header {Object} The header of the template
+    - footer {Object} The footer of the template 
+  - customData {Object} Your custom data
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
 ###Default templates
 Every api partner get a templater user. (id = "templater"). This speciel user have a few project by default which can be used for anything you want. With this route you can list this projects.
 
