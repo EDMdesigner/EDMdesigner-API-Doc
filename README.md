@@ -229,6 +229,7 @@ You can get the default templates povided by EDMdesigner by calling this funcito
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
+
 #### Example:
 
 	<script>
@@ -252,6 +253,7 @@ Lists the groups you have
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
+
 #### Example:
 	
 	<script>
@@ -277,6 +279,7 @@ Creates a new group
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
+
 #### Example:
 	
 	<script>
@@ -303,7 +306,7 @@ Gets a specified group
    * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
    * callback {Function} A function to be called if the request succeeds
    * onErrorCB {Function} A function to be called if the request fails
- 
+
 #### Example:
 	
 	<script>
@@ -337,7 +340,7 @@ Updates a specified group's name or the features it provides or both of these tw
      * data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
- 
+
 #### Example:
 	
 	<script>
@@ -391,7 +394,7 @@ Lists the users you have
 #### Parameters:
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
- 
+
 #### Example:
 	
 	<script>
@@ -421,7 +424,7 @@ Creates a new user
     * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
- 
+
 #### Example:
 	
 	<script>
@@ -451,7 +454,7 @@ Creates multiple user
     * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
- 
+
 #### Example:
 	
 	<script>
@@ -482,9 +485,9 @@ Gets a specified user
   * userId {String} The id of the user.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
- 
+
 #### Example:
-	
+
 	<script>
 		initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
 			edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
@@ -515,7 +518,7 @@ Updates a specified user. Only the group (which the user belongs) can be changed
     * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
- 
+
 #### Example:
 	
 	<script>
@@ -545,7 +548,7 @@ Deletes a specified user
   * userId {String} The id of the user.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
- 
+
 #### Example:
 	
 	<script>
@@ -566,6 +569,44 @@ Deletes a specified user
 	</script>
 
 ___
+
+###edmDesignerApi.getProject(projectId, callback, onErrorCB)
+Get a specified project as json. The result will contain almost every information about the selected project.
+#### Parameters:
+  * projectId {String}  The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * callback {Function} A function to be called if the request succeeds
+  * onErrorCB {Function} A function to be called if the request fails
+
+#### Example:
+
+	<script>
+		initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				edmDesignerApi.getProject(result._id, function(result) {
+					console.log(result);
+					//the result is the whole project
+					// _id {String} The id of the project
+					// title {String} The title of the project.
+ 					// description {String} Description about the project
+					// createdOn {String} Creation time
+					// lastModified {String} Time of the last modification
+					// document {Object} The json format of the template
+					    // usedColors {Array} List of the colors which are used in the template
+					   // generalSettings {Object} The default settings of the template
+					   // root {Object} The actual structure of the template
+					   // header {Object} The header of the template
+					   // footer {Object} The footer of the template 
+					// customData {Object} Your custom data
+				});
+			});
+		}, onErrorCB);
+		
+		function onErrorCB(error) {
+			console.log(error);
+		}
+	</script>
+___
+
 
 # Server side routes
 Almost every client side functions have a corresponding route on server side.
