@@ -2293,14 +2293,87 @@ Example:
 Leaf elements cannot have any child elements. These elements are typically the content elements.
 
 ###Text
-The text element is super simple. It can contain html code, but you should not put very complex things in it. In our editor we enable the simple text formatting options (bold, italic, underlined) and lists (ul, ol) and some other very simple things like h1, h2, h3. Example:
+The text element must contain 2 fields: 'text' what can contain html code, but you should not put very complex things in i, and the 'type' with constant 'TEXT'. 
+In our editor we enable the simple text formatting options (bold, italic, underlined) and lists (ul, ol) and some other very simple things like h1, h2, h3.
+The 'linkColor' and 'linkUnderLine' specifies the links styles for those <a> tags what has no inline style. The defaults values can be found in the example below. 
+The 'textStyles' specifies the style for those (non H1, H2, H3) text contents what have no inline specified style. The defaults values can be found in the example below. 
+The 'h1Styles', 'h2Styles' and 'h3Styles' specifies the style for those (H1, H2, H3) tags what have no inline specified style. The defaults values can be found in the example below. 
+The spacing specifies a padding values around the whole text div. The defaults values can be found in the example below. 
+
+ Example:
 
 	{
-		text: "yo <i>this</i> is Sparta"
+		text: "yo <i>this</i> is Sparta",
+		type: "TEXT",
+		linkColor: "#5555ff",
+	        linkUnderLine: true,
+	        textStyles: {
+	            lineHeight: 14,
+	            color": "#000000",
+	            size": 14,
+	            family": "arial"
+	        },
+	         h3Styles: {
+	            lineHeight: 32,
+	            color": "#000000",
+	            size": 32,
+	            family": "arial"
+	        },
+	         h2Styles: {
+	            lineHeight: 26,
+	            color": "#000000",
+	            size": 26,
+	            family": "arial"
+	        },
+	         h1Styles: {
+	            lineHeight: 20,
+	            color": "#000000",
+	            size": 20,
+	            family": "arial"
+	        },
+		"spacing": {
+                    "left": "5",
+                    "bottom": "5",
+                    "right": "5",
+                    "top": "5"
+                }
 	}
 
 ###Title
 Title elements are just like texts, but we enable the users to set only h1, h2 and h3 as formatting.
+
+Example:
+
+	{
+		text: "yo <i>this</i> is Sparta",
+		type: "TITLE",
+		linkColor: "#5555ff",
+	        linkUnderLine: true,
+	         h3Styles: {
+	            lineHeight: 32,
+	            color": "#000000",
+	            size": 32,
+	            family": "arial"
+	        },
+	         h2Styles: {
+	            lineHeight: 26,
+	            color": "#000000",
+	            size": 26,
+	            family": "arial"
+	        },
+	         h1Styles: {
+	            lineHeight: 20,
+	            color": "#000000",
+	            size": 20,
+	            family": "arial"
+	        },
+		"spacing": {
+                    "left": "5",
+                    "bottom": "5",
+                    "right": "5",
+                    "top": "5"
+                }
+	}
 
 ###Image
 Images are relatively complex elements. Just like boxes, they can have paddings, margins, borders, background color (no background image), but they can't have children. They have their own, special properties as well:
