@@ -172,11 +172,13 @@ Removes a project.
 
 ___	
 
-### edmDesignerApi.openProject(projectId, [languageCode], callback, onErrorCB)
+### edmDesignerApi.openProject(projectId, [languageCode], [settings], callback, onErrorCB)
 Opens a project.
 #### Parameters:
   * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
   * languageCode {String} /Optional/ A two character [ISO 639-1 code](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of a selected language. With this parameter you can choose the language which the opened project will use. You can find the [list of the available languages](#languages) at the end of this page. Default language is english.
+  * settings {Object} /Optional/ With this object, it is possible to set some basic settings:
+    * autosave {Number} With this property you can set the frequency of the autosave (in millisecond). Please note that the autosave only save the project if there were changes after the last save, with this property you can only set how often should the autosave handler check if there are any kind of changes in the template. If you want to turn off the autosave functionality, then you have to set this property to zero (0). It is possible to manually trigger the saving mechanism with the [save project message](#save-project).
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -2319,9 +2321,33 @@ Button is relatively complex as well. It can have the following box properties: 
 
 ___
 
+Communication with the iframe
+-----------------------------
+The [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb) function will return an iframe. It is possible to communicate with this iframe with the [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method.
+
+___
+
+###Possbile messages to send
+List of the events you can send to the iframe (as a message).  
+
+###Save Project
+It is possible to manualy ask the iframe to save the actual (opened) project. As an answer the iframe will post a [save result](#save-result) message.  
+The message you need to send: __saveProject__
+
+___
+
+###Possible Answer messages
+List of the events the iframe can send to your application (as a message).
+
+###Save result
+It is the answer for the [save project](#save project) request. It can have to different status:  
+In case of success the answer message will be the following: __Save result: success__  
+In case of failure the answer message will be the following: __Save result: failed__  
+
+
 Available Languages
 -------------------
-You can set the localization which the api will use. (if you want to know how, please check the [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-callback-onerrorcb) function!)  
+You can set the localization which the api will use. (if you want to know how, please check the [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb) function!)  
 Available languages:
  - English (code: 'en')
  - Hungarian (code: 'hu')
