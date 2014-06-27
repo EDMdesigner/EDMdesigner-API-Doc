@@ -129,7 +129,7 @@
 &lt;/script&gt;
 </code></pre>
 
-<p>First of all, jQuery has to be loaded before you load our API. In the second line you can see a route parameter in the script's src. By that you can tell the script where to look for the handshaking implementation. For example, if you implemented it in your index.php, you have to replace ##handshaking_route## with index.php. The first parameter is a user id from your system. It can be any string. In case you don't want to handle separate user accounts, just pass there your API_KEY. The last parameter is an error callback which will be called in every request if the request fails. This is not required thus you can set an error callback in one of your function calls (see later) and in that case it will be called instead of this one.</p>
+<p>First of all, jQuery has to be loaded before you load our API. In the second line you can see a route parameter in the script's src. By that you can tell the script where to look for the handshaking implementation. For example, if you implemented it in your index.php, you have to replace ##handshaking_route## with index.php. The first parameter is a user id from your system. It can be any string. The last parameter is an error callback which will be called in every request if the request fails. This is not required thus you can set an error callback in one of your function calls (see later) and in that case it will be called instead of this one.</p>
 
 <p>In the resulting object (edmDesignerApi) you will find some functions through which you can interact with our system.</p>
 
@@ -282,7 +282,7 @@
 </code></pre>
 
 <hr><h3>
-<a name="edmdesignerapiopenprojectprojectid-languagecode-callback-onerrorcb" class="anchor" href="#edmdesignerapiopenprojectprojectid-languagecode-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.openProject(projectId, [languageCode], callback, onErrorCB)</h3>
+<a name="edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb" class="anchor" href="#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.openProject(projectId, [languageCode], [settings], callback, onErrorCB)</h3>
 
 <p>Opens a project.</p>
 
@@ -292,6 +292,12 @@
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
 <li>languageCode {String} /Optional/ A two character <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO 639-1 code</a> of a selected language. With this parameter you can choose the language which the opened project will use. You can find the <a href="#languages">list of the available languages</a> at the end of this page. Default language is english.</li>
+<li>settings {Object} /Optional/ With this object, it is possible to set some basic settings:
+
+<ul>
+<li>autosave {Number} With this property you can set the frequency of the autosave (in millisecond). Please note that the autosave only save the project if there were changes after the last save, with this property you can only set how often should the autosave handler check if there are any kind of changes in the template. If you want to turn off the autosave functionality, then you have to set this property to zero (0). It is possible to manually trigger the saving mechanism with the <a href="#save-project">save project message</a>.</li>
+</ul>
+</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
@@ -756,6 +762,49 @@
 
         }, onErrorCB);
     });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
+<a name="edmdesignerapigetprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapigetprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.getProject(projectId, callback, onErrorCB)</h3>
+
+<p>Get a specified project as json. The result will contain almost every information about the selected project.</p>
+
+<h4>
+<a name="parameters-17" class="anchor" href="#parameters-17"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>projectId {String}  The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-17" class="anchor" href="#example-17"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+        edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+            edmDesignerApi.getProject(result._id, function(result) {
+                console.log(result);
+                //the result is the whole project
+                // _id {String} The id of the project
+                // title {String} The title of the project.
+                // description {String} Description about the project
+                // createdOn {String} Creation time
+                // lastModified {String} Time of the last modification
+                // document {Object} The json format of the template
+                    // usedColors {Array} List of the colors which are used in the template
+                   // generalSettings {Object} The default settings of the template
+                   // root {Object} The actual structure of the template
+                   // header {Object} The header of the template
+                   // footer {Object} The footer of the template 
+                // customData {Object} Your custom data
+            });
+        });
+    }, onErrorCB);
 
     function onErrorCB(error) {
         console.log(error);
@@ -2092,9 +2141,9 @@ or it can be an error object:</li>
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
 </ul><hr><h3>
-<a name="default-templates" class="anchor" href="#default-templates"><span class="octicon octicon-link"></span></a>Default templates</h3>
+<a name="get-project" class="anchor" href="#get-project"><span class="octicon octicon-link"></span></a>Get Project</h3>
 
-<p>Every api partner get a templater user. (id = "templater"). This speciel user have a few project by default which can be used for anything you want. With this route you can list this projects.</p>
+<p>Get a specified project as json. The result  will contain almost every information about the selected project.</p>
 
 <h5>
 <a name="type-30" class="anchor" href="#type-30"><span class="octicon octicon-link"></span></a>Type</h5>
@@ -2105,9 +2154,50 @@ or it can be an error object:</li>
 <a name="route-30" class="anchor" href="#route-30"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
-<li>//api.edmdesigner.com/json/project/defaults</li>
+<li>//api.edmdesigner.com/json/project/getProject</li>
 </ul><h4>
 <a name="answer-30" class="anchor" href="#answer-30"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Project object:</p>
+
+<ul>
+<li>_id {String} MongoDB _id of the newly created project</li>
+<li>title {String} The title of the project.</li>
+<li>description {String} Description about the project</li>
+<li>createdOn {String} Creation time</li>
+<li>lastModified {String} Time of the last modification</li>
+<li>document {Object} The json format of the template
+
+<ul>
+<li>usedColors {Array} List of the colors which are used in the template</li>
+<li>generalSettings {Object} The default settings of the template</li>
+<li>root {Object} The actual structure of the template</li>
+<li>header {Object} The header of the template</li>
+<li>footer {Object} The footer of the template </li>
+</ul>
+</li>
+<li>customData {Object} Your custom data</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="default-templates" class="anchor" href="#default-templates"><span class="octicon octicon-link"></span></a>Default templates</h3>
+
+<p>Every api partner get a templater user. (id = "templater"). This speciel user have a few project by default which can be used for anything you want. With this route you can list this projects.</p>
+
+<h5>
+<a name="type-31" class="anchor" href="#type-31"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul><h5>
+<a name="route-31" class="anchor" href="#route-31"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/defaults</li>
+</ul><h4>
+<a name="answer-31" class="anchor" href="#answer-31"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>List of projects. Every project is an object with the following parameters:</p>
 
@@ -2245,12 +2335,12 @@ An example title object: </p>
 If you want to know what a header is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a name="type-31" class="anchor" href="#type-31"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-32" class="anchor" href="#type-32"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-31" class="anchor" href="#route-31"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-32" class="anchor" href="#route-32"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/uploadHeaders</li>
@@ -2261,7 +2351,7 @@ If you want to know what a header is good for, please read the <a href="#headers
 <li>headers {Array} The list of headers which all of your users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a header object should look like, please read <a href="#structure">this</a>
 </li>
 </ul><h4>
-<a name="answer-31" class="anchor" href="#answer-31"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-32" class="anchor" href="#answer-32"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -2285,12 +2375,12 @@ If you want to know what a header is good for, please read the <a href="#headers
 If you want to know what a footer is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a name="type-32" class="anchor" href="#type-32"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-33" class="anchor" href="#type-33"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-32" class="anchor" href="#route-32"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-33" class="anchor" href="#route-33"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/uploadFooters</li>
@@ -2300,7 +2390,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>footers {Array} The list of footers which all of your users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a footer object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-32" class="anchor" href="#answer-32"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-33" class="anchor" href="#answer-33"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -2508,12 +2598,12 @@ You can assign any number of data to a structure.  </p>
 <p>You can create one or more structure for your <a href="#dynamic-elements">dynamic elements</a> with this route. If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.</p>
 
 <h5>
-<a name="type-33" class="anchor" href="#type-33"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-34" class="anchor" href="#type-34"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-33" class="anchor" href="#route-33"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-34" class="anchor" href="#route-34"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/createDynamicElemStructures</li>
@@ -2530,7 +2620,7 @@ You can assign any number of data to a structure.  </p>
 </ul>
 </li>
 </ul><h4>
-<a name="answer-33" class="anchor" href="#answer-33"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-34" class="anchor" href="#answer-34"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object with three arrays:</p>
 
@@ -2551,17 +2641,17 @@ You can assign any number of data to a structure.  </p>
 If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.</p>
 
 <h5>
-<a name="type-34" class="anchor" href="#type-34"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-35" class="anchor" href="#type-35"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-34" class="anchor" href="#route-34"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-35" class="anchor" href="#route-35"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/listDynamicElemStructure</li>
 </ul><h4>
-<a name="answer-34" class="anchor" href="#answer-34"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-35" class="anchor" href="#answer-35"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object with the followinf property: </p>
 
@@ -2576,12 +2666,12 @@ ___</li>
 If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.  </p>
 
 <h5>
-<a name="type-35" class="anchor" href="#type-35"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-36" class="anchor" href="#type-36"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-35" class="anchor" href="#route-35"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-36" class="anchor" href="#route-36"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/deleteDynamicElemStructure</li>
@@ -2592,7 +2682,7 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <li>id {String} The id of the structure you want to delete. <strong>Please try to avoid using this id again!!</strong>
 </li>
 </ul><h4>
-<a name="answer-35" class="anchor" href="#answer-35"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-36" class="anchor" href="#answer-36"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object with the followinf property: </p>
 
@@ -2606,12 +2696,12 @@ If you want to know what exactly a structure is good for, please read the <a hre
 If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.</p>
 
 <h5>
-<a name="type-36" class="anchor" href="#type-36"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-37" class="anchor" href="#type-37"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-36" class="anchor" href="#route-36"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-37" class="anchor" href="#route-37"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addStructures</li>
@@ -2621,7 +2711,7 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <ul>
 <li>structureIds {Array} It should contain the ids of the structures you want to assign to all of your users.</li>
 </ul><h4>
-<a name="answer-36" class="anchor" href="#answer-36"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-37" class="anchor" href="#answer-37"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object containing two arrays: </p>
 
@@ -2644,12 +2734,12 @@ ___</li>
 If you want to know what exactly a template is good for, please read the <a href="#dynamic-element-template">dynamic element template</a> part of the documentation.</p>
 
 <h5>
-<a name="type-37" class="anchor" href="#type-37"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-38" class="anchor" href="#type-38"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-37" class="anchor" href="#route-37"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-38" class="anchor" href="#route-38"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addTemplates</li>
@@ -2667,7 +2757,7 @@ If you want to know what exactly a template is good for, please read the <a href
 </ul>
 </li>
 </ul><h4>
-<a name="answer-37" class="anchor" href="#answer-37"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-38" class="anchor" href="#answer-38"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>An object containing two arrays: </p>
 
@@ -2701,17 +2791,17 @@ If you want to know what exactly a template is good for, please read the <a href
 <p>Lists the projects of the actual user.</p>
 
 <h5>
-<a name="type-38" class="anchor" href="#type-38"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-39" class="anchor" href="#type-39"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-38" class="anchor" href="#route-38"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-39" class="anchor" href="#route-39"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/list</li>
 </ul><h4>
-<a name="answer-38" class="anchor" href="#answer-38"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-39" class="anchor" href="#answer-39"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>List of projects. Every project is an object with the following parameters:</p>
 
@@ -2729,12 +2819,12 @@ If you want to know what exactly a template is good for, please read the <a href
 <p>Creates a new project (a new e-mail template).</p>
 
 <h5>
-<a name="type-39" class="anchor" href="#type-39"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-40" class="anchor" href="#type-40"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-39" class="anchor" href="#route-39"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-40" class="anchor" href="#route-40"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/list</li>
@@ -2746,7 +2836,7 @@ If you want to know what exactly a template is good for, please read the <a href
 <li>description {String} The description of the new project.</li>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.</li>
 </ul><h4>
-<a name="answer-39" class="anchor" href="#answer-39"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-40" class="anchor" href="#answer-40"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <ul>
 <li>_id {String} MongoDB _id of the newly created project</li>
@@ -2760,12 +2850,12 @@ If you want to know what exactly a template is good for, please read the <a href
 <p>Creates the exact copy of the project with the ID specified in projectId.</p>
 
 <h5>
-<a name="type-40" class="anchor" href="#type-40"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-41" class="anchor" href="#type-41"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-40" class="anchor" href="#route-40"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-41" class="anchor" href="#route-41"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/duplicate/:id</li>
@@ -2775,7 +2865,7 @@ If you want to know what exactly a template is good for, please read the <a href
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-40" class="anchor" href="#answer-40"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-41" class="anchor" href="#answer-41"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Project object:</p>
 
@@ -2794,12 +2884,12 @@ If you want to know what exactly a template is good for, please read the <a href
 <p>Removes a project.</p>
 
 <h5>
-<a name="type-41" class="anchor" href="#type-41"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-42" class="anchor" href="#type-42"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>DELETE</li>
 </ul><h5>
-<a name="route-41" class="anchor" href="#route-41"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-42" class="anchor" href="#route-42"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/remove/:id</li>
@@ -2809,7 +2899,7 @@ If you want to know what exactly a template is good for, please read the <a href
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-41" class="anchor" href="#answer-41"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-42" class="anchor" href="#answer-42"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>A number, it is 1 if the project was successfully deleted</p>
 
@@ -2823,12 +2913,12 @@ If you want to know what exactly a template is good for, please read the <a href
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
 <h5>
-<a name="type-42" class="anchor" href="#type-42"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-43" class="anchor" href="#type-43"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-42" class="anchor" href="#route-42"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-43" class="anchor" href="#route-43"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/generate/:id</li>
@@ -2838,7 +2928,7 @@ If you want to know what exactly a template is good for, please read the <a href
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-42" class="anchor" href="#answer-42"><span class="octicon octicon-link"></span></a>Answer</h4>
+<a name="answer-43" class="anchor" href="#answer-43"><span class="octicon octicon-link"></span></a>Answer</h4>
 
 <p>A bulletproof responsive HTML version of the given template</p>
 
@@ -2852,12 +2942,12 @@ If you want to know what exactly a template is good for, please read the <a href
 <p>Gets the title of the selected project.</p>
 
 <h5>
-<a name="type-43" class="anchor" href="#type-43"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-44" class="anchor" href="#type-44"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-43" class="anchor" href="#route-43"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-44" class="anchor" href="#route-44"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/title/:id</li>
@@ -2867,7 +2957,7 @@ If you want to know what exactly a template is good for, please read the <a href
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-43" class="anchor" href="#answer-43"><span class="octicon octicon-link"></span></a>Answer</h4>
+<a name="answer-44" class="anchor" href="#answer-44"><span class="octicon octicon-link"></span></a>Answer</h4>
 
 <p>Title object:</p>
 
@@ -2883,12 +2973,12 @@ If you want to know what exactly a template is good for, please read the <a href
 <p>Updates the title or/and the description of the specified project</p>
 
 <h5>
-<a name="type-44" class="anchor" href="#type-44"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-45" class="anchor" href="#type-45"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-44" class="anchor" href="#route-44"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-45" class="anchor" href="#route-45"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/updateInfo</li>
@@ -2900,7 +2990,7 @@ If you want to know what exactly a template is good for, please read the <a href
 <li>title {String} The title of the new project.</li>
 <li>description {String} The description of the new project.</li>
 </ul><h4>
-<a name="answer-44" class="anchor" href="#answer-44"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-45" class="anchor" href="#answer-45"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <ul>
 <li>_id {String} MongoDB _id of the newly created project</li>
@@ -3072,10 +3162,50 @@ It can only be a direct child of the root, so can be placed only in the highest 
 <h3>
 <a name="text" class="anchor" href="#text"><span class="octicon octicon-link"></span></a>Text</h3>
 
-<p>The text element is super simple. It can contain html code, but you should not put very complex things in it. In our editor we enable the simple text formatting options (bold, italic, underlined) and lists (ul, ol) and some other very simple things like h1, h2, h3. Example:</p>
+<p>The text element must contain 2 fields: 'text' what can contain html code, but you should not put very complex things in i, and the 'type' with constant 'TEXT'. 
+In our editor we enable the simple text formatting options (bold, italic, underlined) and lists (ul, ol) and some other very simple things like h1, h2, h3.
+The 'linkColor' and 'linkUnderLine' specifies the links styles for those  tags what has no inline style. The defaults values can be found in the example below. 
+The 'textStyles' specifies the style for those (non H1, H2, H3) text contents what have no inline specified style. The defaults values can be found in the example below. 
+The 'h1Styles', 'h2Styles' and 'h3Styles' specifies the style for those (H1, H2, H3) tags what have no inline specified style. The defaults values can be found in the example below. 
+The spacing specifies a padding values around the whole text div. The defaults values can be found in the example below. </p>
+
+<p>Example:</p>
 
 <pre><code>{
-    text: "yo &lt;i&gt;this&lt;/i&gt; is Sparta"
+    text: "yo &lt;i&gt;this&lt;/i&gt; is Sparta",
+    type: "TEXT",
+    linkColor: "#5555ff",
+        linkUnderLine: true,
+        textStyles: {
+            lineHeight: 14,
+            color": "#000000",
+            size": 14,
+            family": "arial"
+        },
+         h3Styles: {
+            lineHeight: 32,
+            color": "#000000",
+            size": 32,
+            family": "arial"
+        },
+         h2Styles: {
+            lineHeight: 26,
+            color": "#000000",
+            size": 26,
+            family": "arial"
+        },
+         h1Styles: {
+            lineHeight: 20,
+            color": "#000000",
+            size": 20,
+            family": "arial"
+        },
+    "spacing": {
+                "left": "5",
+                "bottom": "5",
+                "right": "5",
+                "top": "5"
+            }
 }
 </code></pre>
 
@@ -3083,6 +3213,40 @@ It can only be a direct child of the root, so can be placed only in the highest 
 <a name="title" class="anchor" href="#title"><span class="octicon octicon-link"></span></a>Title</h3>
 
 <p>Title elements are just like texts, but we enable the users to set only h1, h2 and h3 as formatting.</p>
+
+<p>Example:</p>
+
+<pre><code>{
+    text: "yo &lt;i&gt;this&lt;/i&gt; is Sparta",
+    type: "TITLE",
+    linkColor: "#5555ff",
+        linkUnderLine: true,
+         h3Styles: {
+            lineHeight: 32,
+            color": "#000000",
+            size": 32,
+            family": "arial"
+        },
+         h2Styles: {
+            lineHeight: 26,
+            color": "#000000",
+            size": 26,
+            family": "arial"
+        },
+         h1Styles: {
+            lineHeight: 20,
+            color": "#000000",
+            size": 20,
+            family": "arial"
+        },
+    "spacing": {
+                "left": "5",
+                "bottom": "5",
+                "right": "5",
+                "top": "5"
+            }
+}
+</code></pre>
 
 <h3>
 <a name="image" class="anchor" href="#image"><span class="octicon octicon-link"></span></a>Image</h3>
@@ -3108,9 +3272,37 @@ It can only be a direct child of the root, so can be placed only in the highest 
 <li>sizeType: "FIXED" - exact amount of pixels, "FIT_TO_TEXT": the width will be based on the width of the text</li>
 <li>width: num of pixels if the sizeType is "FIXED"</li>
 </ul><hr><h2>
+<a name="communication-with-the-iframe" class="anchor" href="#communication-with-the-iframe"><span class="octicon octicon-link"></span></a>Communication with the iframe</h2>
+
+<p>The <a href="#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb">edmDesignerApi.openProject</a> function will return an iframe. It is possible to communicate with this iframe with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage">window.postMessage</a> native method.</p>
+
+<hr><h3>
+<a name="possbile-messages-to-send" class="anchor" href="#possbile-messages-to-send"><span class="octicon octicon-link"></span></a>Possbile messages to send</h3>
+
+<p>List of the events you can send to the iframe (as a message).  </p>
+
+<h3>
+<a name="save-project" class="anchor" href="#save-project"><span class="octicon octicon-link"></span></a>Save Project</h3>
+
+<p>It is possible to manualy ask the iframe to save the actual (opened) project. As an answer the iframe will post a <a href="#save-result">save result</a> message.<br>
+The message you need to send: <strong>saveProject</strong></p>
+
+<hr><h3>
+<a name="possible-answer-messages" class="anchor" href="#possible-answer-messages"><span class="octicon octicon-link"></span></a>Possible Answer messages</h3>
+
+<p>List of the events the iframe can send to your application (as a message).</p>
+
+<h3>
+<a name="save-result" class="anchor" href="#save-result"><span class="octicon octicon-link"></span></a>Save result</h3>
+
+<p>It is the answer for the <a href="#save%20project">save project</a> request. It can have to different status:<br>
+In case of success the answer message will be the following: <strong>Save result: success</strong><br>
+In case of failure the answer message will be the following: <strong>Save result: failed</strong>  </p>
+
+<h2>
 <a name="available-languages" class="anchor" href="#available-languages"><span class="octicon octicon-link"></span></a>Available Languages</h2>
 
-<p>You can set the localization which the api will use. (if you want to know how, please check the <a href="#edmdesignerapiopenprojectprojectid-callback-onerrorcb">edmDesignerApi.openProject</a> function!)<br>
+<p>You can set the localization which the api will use. (if you want to know how, please check the <a href="#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb">edmDesignerApi.openProject</a> function!)<br>
 Available languages:</p>
 
 <ul>
