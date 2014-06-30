@@ -28,6 +28,7 @@ We provide example implementations that include the handshaking as well. You can
     * _[Headers & Footers](#headers--footers)_  
     * _[ComplexElements](#complexelements)_  
     * _[Dynamic Elements](#dynamic-elements)_  
+    * _[Custom Data](#custom-data)_
   2. [User routes](#user-routes)  
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
@@ -145,7 +146,35 @@ Creates the exact copy of the project with the ID specified in projectId.
 		}
 	</script>
 
-___	
+___
+
+### edmDesignerApi.createFromOwn(projectId, data, callback, onErrorCB)
+This function is similar to the [duplicateProject](#edmdesignerapiduplicateprojectprojectid-callback-onerrorcb) function, expect whit this function you can define the the title and the description of the new (copy) project. The user can only create the new project from one of his/her own project.
+#### Parameters:
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * data {Object}
+    * data.title {String} The title of the new project
+    * data.description {String} The description of the new project
+  * callback {Function} A function to be called if the request succeeds
+  * onErrorCB {Function} A function to be called if the request fails
+
+#### Example:
+	
+	<script>
+		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				edmDesignerApi.createFromOwn(result._id, {title: "createFromOwn example", description: "Created with createFromOwn function"}, function(result) {
+					//the result is the newly created project's object or error obejct with err property
+				});
+			});
+		}, onErrorCB);
+		
+		function onErrorCB(error) {
+			console.log(error);
+		}
+	</script>
+
+___
 
 ### edmDesignerApi.removeProject(projectId, callback, onErrorCB)
 Removes a project.
@@ -2160,7 +2189,33 @@ Project object:
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
-___	
+___
+
+### Create from own
+It is very similar to the duplicate route, the only difference is that here you can define the title and the description of the new (copy) project. Whit this route user can only create project from one of his/her own project.
+
+#####Type
+  + Post
+
+#####Route
+  + //api.edmdesigner.com/json/project/createFromOwn
+
+#### Parameters (you should post):
+  * _id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
+  * title {String} The title of the new project
+  * description {String} The description of the new project
+
+#### Answer:
+Project object:
+  - _id {String} The MongoDB _id of the new template
+  - title {String} The title of the new template
+  - description {String} The description of the new template
+  - document {Object} An object, which represents the new template
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
 
 ### Remove
 Removes a project.
