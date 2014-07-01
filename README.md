@@ -28,6 +28,7 @@ We provide example implementations that include the handshaking as well. You can
     * _[Headers & Footers](#headers--footers)_  
     * _[ComplexElements](#complexelements)_  
     * _[Dynamic Elements](#dynamic-elements)_  
+    * _[Custom Data](#custom-data)_
   2. [User routes](#user-routes)  
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
@@ -145,7 +146,35 @@ Creates the exact copy of the project with the ID specified in projectId.
 		}
 	</script>
 
-___	
+___
+
+### edmDesignerApi.createFromOwn(projectId, data, callback, onErrorCB)
+This function is similar to the [duplicateProject](#edmdesignerapiduplicateprojectprojectid-callback-onerrorcb) function, expect whit this function you can define the the title and the description of the new (copy) project. The user can only create the new project from one of his/her own project.
+#### Parameters:
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * data {Object}
+    * data.title {String} The title of the new project
+    * data.description {String} The description of the new project
+  * callback {Function} A function to be called if the request succeeds
+  * onErrorCB {Function} A function to be called if the request fails
+
+#### Example:
+	
+	<script>
+		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				edmDesignerApi.createFromOwn(result._id, {title: "createFromOwn example", description: "Created with createFromOwn function"}, function(result) {
+					//the result is the newly created project's object or error obejct with err property
+				});
+			});
+		}, onErrorCB);
+		
+		function onErrorCB(error) {
+			console.log(error);
+		}
+	</script>
+
+___
 
 ### edmDesignerApi.removeProject(projectId, callback, onErrorCB)
 Removes a project.
@@ -223,7 +252,36 @@ Generates the bulletproof responsive HTML e-mail based on the projectId.
 		}
 	</script>
 
-___	
+___
+
+### edmDesignerApi.updateProjectInfo(projectId, data, callback, onErrorCB)
+Generates the bulletproof responsive HTML e-mail based on the projectId.
+#### Parameters:
+  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * data {Object}
+    * data.title {String} The new title of the project
+    * data.description {String} The new description of the project
+    * data.customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+  * callback {Function} A function to be called if the request succeeds
+  * onErrorCB {Function} A function to be called if the request fails
+
+#### Example:
+	
+	<script>
+		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				edmDesignerApi.updateProjectInfo(result._id, {title: "New title", description: "New description", customData: {foo: "BAR"}}, function(result) {
+					//the result is the updated project object
+				});
+			});
+		}, onErrorCB);
+		
+		function onErrorCB(error) {
+			console.log(error);
+		}
+	</script>
+
+___
 	
 ### edmDesignerApi.getDefaultTemplates(callback, onErrorCB)
 You can get the default templates povided by EDMdesigner by calling this funciton.
@@ -320,6 +378,7 @@ Gets a specified group
 					//name {String} (the new group's name)
 					//_id  {String} (the new group's id) and
 					//featureSwitch {Object} (the group's features) properties
+					//customData {Object} The custom infromations you saved for this group
 					console.log(resultGroup);
 				}, onErrorCB);
 			
@@ -334,12 +393,13 @@ Gets a specified group
 ___
 
 ### edmDesignerApi.updateGroup(groupId, data, callback, onErrorCB)
-Updates a specified group's name or the features it provides or both of these two at the same time.
+Updates a specified group's name or the features it provides or both of these two at the same time. You can even add custom informations to the group.
 #### Parameters:
   * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
   * data {Object}
-     data.name {String} The name you want to give to the group
+     * data.name {String} The name you want to give to the group
      * data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
+     * data.customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -354,6 +414,7 @@ Updates a specified group's name or the features it provides or both of these tw
 					//name {String} (the new group's name)
 					//_id  {String} (the new group's id) and
 					//featureSwitch {Object} (the group's features) properties
+					//customData {Object} The custom data you saved for this group
 					console.log(resultGroup);
 				}, onErrorCB);
 			
@@ -366,6 +427,7 @@ Updates a specified group's name or the features it provides or both of these tw
 					//name {String} (the new group's name)
 					//_id  {String} (the new group's id) and
 					//featureSwitch {Object} (the group's features) properties
+					//customData {Object} The custom data you saved for this group
 					console.log(resultGroup);
 				}, onErrorCB);
 				
@@ -373,11 +435,12 @@ Updates a specified group's name or the features it provides or both of these tw
 			
 			edmDesignerApi.createGroup({name: "exampleGroup3", featureSwitch: {feature1: true}}, function(result) {
 			
-				edmDesignerApi.updateGroup(result._id, {name: "newExampleName", featureSwitch: {feature1: true, newFeature: true}}, function(resultGroup) {	
+				edmDesignerApi.updateGroup(result._id, {name: "newExampleName", featureSwitch: {feature1: true, newFeature: true, customData: {foo: "BAR"}}}, function(resultGroup) {	
 					//the resultGroup is an object with
 					//name {String} (the new group's name)
 					//_id  {String} (the new group's id) and
 					//featureSwitch {Object} (the group's features) properties
+					//customData {Object} The custom data you saved for this group
 					console.log(resultGroup);
 				}, onErrorCB);
 			
@@ -407,6 +470,7 @@ Lists the users you have
 				//id (the user's id)
 				//group (The group which the user belongs) and
 				//createTime (Time of creation) properties
+				//customData (The custom informations you saved for the user)
 				console.log(result);
 			}, onErrorCB);
 		});
@@ -498,7 +562,8 @@ Gets a specified user
 					/**the resultUser is an object with
 					id (the user's id)
 					group (The group which the user belongs) and
-					createTime (Time of creation) properties*/
+					createTime (Time of creation) properties
+					customData (the custom data you saved for this user) */
 					console.log(resultUser);
 				}, onErrorCB);
 			
@@ -513,11 +578,12 @@ Gets a specified user
 ___
 
 ### edmDesignerApi.updateUser(userId, data, callback, onErrorCB)
-Updates a specified user. Only the group (which the user belongs) can be changed.
+Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to this user too.
 #### Parameters:
   * userId {String} The id of the user. 
   * data {Object}
     * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+    * data.customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -663,6 +729,7 @@ An array of your groups. Every group is an object with this parameters:
   - _id {String} MongoDB id of the group
   - featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   - name {String} The name of the group
+  - customData {Object} Th custom informations you saved for the group
 
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -708,6 +775,7 @@ A group object:
   - _id {String} MongoDB id of the group
   - featureSwitch {Object} The features that are available for users belong to this group.There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   - name {String} The name of the group
+  - customData {Object} The custom informations you saved for this group
 
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -715,7 +783,7 @@ Or it can be an error object:
 ___
 
 ### Update one group
-Updates a specified group's name or the features it provides or both of these two at the same time.
+Updates a specified group's name or the features it provides or both of these two at the same time. You can even add custom informations to the group.
 
 #####Type
   + POST
@@ -727,12 +795,14 @@ Updates a specified group's name or the features it provides or both of these tw
    * _id {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
    * name {String} The name you want to give to the group
    * featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
+   * customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
 
 ####Answer:
 A newly updated group object:
   - _id {String} MongoDB id of the group
   - featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   - name {String} The name of the group
+  - customData {Object} The custom data you saved for this group
 
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -909,6 +979,7 @@ An array of your users. Every user is an object with this parameters:
   - id {String} The id of the user
   - group {String} The MongoDB _id of the group the user belongs to
   - createTime {String} The time when the user was created
+  - customData {Object} The custom informations you saved for the user
 
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -984,6 +1055,7 @@ User object:
   - id {String} The id of the user
   - group {String} The MongoDB _id of the group the user belongs to
   - createTime {String} The time when the user was created
+  - customData {Object} The custom informations you saved for the user
 
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -991,7 +1063,7 @@ Or it can be an error object:
 ___
 
 ### Update user
-Updates a specified user. Only the group (which the user belongs) can be changed.
+Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to the user too.
 
 #####Type
   + POST
@@ -1002,6 +1074,7 @@ Updates a specified user. Only the group (which the user belongs) can be changed
 #### Parameters (you should post):
    * id {String} The id of the user. 
    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
+   * customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
 
 ####Answer:
 User object:
@@ -1994,6 +2067,53 @@ An object containing two arrays:
 
 ___
 
+### Custom Data
+If you want to save any kind of plus information for some of your data you can do it with using the customData field
+You can save custom informations to:  
+  - yourself /apiPartner/ ([addCustomData](#add-custom-data-to-yourself))
+  - users (update user [server side](#update-user) or [client side](#edmdesignerapiupdateuseruserid-data-callback-onerrorcb))
+  - groups (update group [server side](#update-one-group) or [client side](#edmdesignerapiupdategroupgroupid-data-callback-onerrorcb))
+  - project (update project [server side](#update-information) or [client side](#edmdesignerapiupdateprojectinfoprojectid-data-callback-onerrorcb))  
+
+___
+
+### Add Custom Data to yourself
+You can save any kind of custom information to your apiPartner database entry
+
+####Type
+  + POST
+
+####Route
+  + //api.edmdesigner.com/json/general/saveCustomData
+
+#### Parameters (you should post):
+  * customData {Object} The custom informations you want to save
+
+####Answer
+Http status code 200
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Get my custom data
+You can get the custom informations you previously saved for yourself
+
+####Type
+  + GET
+
+####Route
+  + //api.edmdesigner.com/json/general/getMyCustomData
+
+####Answer
+An object containing your custom data
+  - customData {Object} The custom informations you saved for yourself
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
 
 ##User routes
 
@@ -2018,6 +2138,7 @@ List of projects. Every project is an object with the following parameters:
   - _id {String} MongoDB _id of the project
   - title {String} Title of the template
   - description {String} Description of the template
+  - customData {Object} The custom informations you saved for the project
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -2031,7 +2152,7 @@ Creates a new project (a new e-mail template).
   + POST
 
 #####Route
-  + //api.edmdesigner.com/json/project/list
+  + //api.edmdesigner.com/json/project/create
 
 #### Parameters (you should post):
   * title {String} The title of the new project.
@@ -2068,7 +2189,33 @@ Project object:
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
-___	
+___
+
+### Create from own
+It is very similar to the duplicate route, the only difference is that here you can define the title and the description of the new (copy) project. Whit this route user can only create project from one of his/her own project.
+
+#####Type
+  + Post
+
+#####Route
+  + //api.edmdesigner.com/json/project/createFromOwn
+
+#### Parameters (you should post):
+  * _id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
+  * title {String} The title of the new project
+  * description {String} The description of the new project
+
+#### Answer:
+Project object:
+  - _id {String} The MongoDB _id of the new template
+  - title {String} The title of the new template
+  - description {String} The description of the new template
+  - document {Object} An object, which represents the new template
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
 
 ### Remove
 Removes a project.
@@ -2132,7 +2279,7 @@ or it can be an error object:
 ___
 
 ### Update information
-Updates the title or/and the description of the specified project
+Updates the title or/and the description of the specified project. You can add custom informations to this project too.
 
 #####Type
   + POST
@@ -2144,12 +2291,14 @@ Updates the title or/and the description of the specified project
   * projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
   * title {String} The title of the new project.
   * description {String} The description of the new project.
+  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
 
 #### Answer:
   - _id {String} MongoDB _id of the newly created project
   - title {String} The title of the new template
   - description {String} The description of the new template
   - document {Object} An object, which represents the new template
+  - customData {Object} Th custom informations you saved for this project.
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
