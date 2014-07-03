@@ -102,6 +102,7 @@ Creates a new project (a new e-mail template).
     * data.title {String} The title of the new project.
     * data.description {String} The description of the new project.
     * data.document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.
+    * * data.customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
     * the result param is an object in which you can find an _id property, which identifies the newly created project
     * result._id {String} The id of the new project. (This is a [MongoDB](http://www.mongodb.org/) id.)
@@ -155,6 +156,7 @@ This function is similar to the [duplicateProject](#edmdesignerapiduplicateproje
   * data {Object}
     * data.title {String} The title of the new project
     * data.description {String} The description of the new project
+    * * data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -295,7 +297,7 @@ You can get the default templates povided by EDMdesigner by calling this funcito
 	<script>
 		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
 			edmDesignerApi.getDefaultTemplates(function(result) {
-			//the result is an array, containing the default projects, provided by EDMdesigner
+			//the result is an array, containing your default projects
 			}, onErrorCB);
 		});
 		
@@ -336,6 +338,7 @@ Creates a new group
   * data {Object}
     * data.name {String} /REQUIRED/ The name you want to give to the new group
     * data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
+    * data.customData {Object} You can add custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
  
@@ -488,6 +491,7 @@ Creates a new user
   * data {Object}
     * data.id {String} /REQUIRED/ The id you want to use for this new user
     * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+    * data.customData {Object} You can aupload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -518,6 +522,7 @@ Creates multiple user
   * data {Array} It contains user objects. User object should have the following properties:
     * id {String} /REQUIRED/ The id you want to use for this new user
     * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+    * customData {Object} You can aupload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -748,6 +753,7 @@ Creates a new group
 #### Parameters (you should post):
   * name {String} /REQUIRED/ The name you want to give to the new group
   * featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
+  * customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
 
 ####Answer
 An object containing the MongoDB _id of the newly created group:
@@ -998,6 +1004,7 @@ Creates a new user
 #### Parameters (you should post):
   * id {String} /REQUIRED/ The id you want to use for this new user
   * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
+  * customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
 
 ####Answer:
 User object:
@@ -1021,6 +1028,7 @@ Creates multiple user
   * users {Array} It contains user objects. User object should have the following properties:
     * id {String} /REQUIRED/ The id you want to use for this new user. Please note that if there is no id then the server will automatically ignore that input! (In this way you can get an empty array as an answer)
     * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
+    * customData {Object} You can upload custom informations to the user. You can save any kind of information. It is up to you, how you want to use it!
 
 ####Answer:
 Three different arrays:
@@ -1548,6 +1556,7 @@ Creates a project/template to a specified user
   * title {String} The title of the new template, if it is not given, then the project's name will be 'Untitled'
   * description {String} Description of the template, by defaullt it is an empty string
   * document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates
+  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
 
 ####Answer:
 Project object:
@@ -1573,6 +1582,7 @@ Creates a project/template to a specified user using an another template
   * title {String} The title of the new template, if it is not given, then the project's name will be 'Untitled'
   * description {String} Description of the template, by defaullt it is an empty string
   * document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates
+  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
 
 ####Answer:
 Project object:
@@ -1627,6 +1637,7 @@ List of projects. Every project is an object with the following parameters:
   - title {String} Title of the template
   - document {Object} An object, which represents a template
   - description {String} Description of the template
+  - customData {Object} The custom informations you saved for the projects 
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -2158,6 +2169,7 @@ Creates a new project (a new e-mail template).
   * title {String} The title of the new project.
   * description {String} The description of the new project.
   * document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.
+  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
 
 #### Answer:
   - _id {String} MongoDB _id of the newly created project
@@ -2204,6 +2216,7 @@ It is very similar to the duplicate route, the only difference is that here you 
   * _id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
   * title {String} The title of the new project
   * description {String} The description of the new project
+  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
 
 #### Answer:
 Project object:
