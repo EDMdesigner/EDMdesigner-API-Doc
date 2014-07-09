@@ -273,7 +273,7 @@ Generates the bulletproof responsive HTML e-mail based on the projectId.
 		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
 			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
 				edmDesignerApi.updateProjectInfo(result._id, {title: "New title", description: "New description", customData: {foo: "BAR"}}, function(result) {
-					//the result is the updated project object
+					//the result is an object with success {Boolean} property or err {String} property.
 				});
 			});
 		}, onErrorCB);
@@ -414,10 +414,7 @@ Updates a specified group's name or the features it provides or both of these tw
 			
 				edmDesignerApi.updateGroup(result._id, {name: "newName"}, function(resultGroup) {	
 					//the resultGroup is an object with
-					//name {String} (the new group's name)
-					//_id  {String} (the new group's id) and
-					//featureSwitch {Object} (the group's features) properties
-					//customData {Object} The custom data you saved for this group
+					//success {Boolean} or err {String} property
 					console.log(resultGroup);
 				}, onErrorCB);
 			
@@ -427,10 +424,7 @@ Updates a specified group's name or the features it provides or both of these tw
 			
 				edmDesignerApi.updateGroup(result._id, {featureSwitch: {feature1: true, newFeature: true}}, function(resultGroup) {	
 					//the resultGroup is an object with
-					//name {String} (the new group's name)
-					//_id  {String} (the new group's id) and
-					//featureSwitch {Object} (the group's features) properties
-					//customData {Object} The custom data you saved for this group
+					//success {Boolean} or err {String} property
 					console.log(resultGroup);
 				}, onErrorCB);
 				
@@ -440,10 +434,7 @@ Updates a specified group's name or the features it provides or both of these tw
 			
 				edmDesignerApi.updateGroup(result._id, {name: "newExampleName", featureSwitch: {feature1: true, newFeature: true, customData: {foo: "BAR"}}}, function(resultGroup) {	
 					//the resultGroup is an object with
-					//name {String} (the new group's name)
-					//_id  {String} (the new group's id) and
-					//featureSwitch {Object} (the group's features) properties
-					//customData {Object} The custom data you saved for this group
+					//success {Boolean} or err {String} property
 					console.log(resultGroup);
 				}, onErrorCB);
 			
@@ -804,11 +795,8 @@ Updates a specified group's name or the features it provides or both of these tw
    * customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
 
 ####Answer:
-A newly updated group object:
-  - _id {String} MongoDB id of the group
-  - featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
-  - name {String} The name of the group
-  - customData {Object} The custom data you saved for this group
+An object:
+  - success {Boolean} It should be true if the update was successful
 
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -2370,11 +2358,7 @@ Updates the title or/and the description of the specified project. You can add c
   * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
 
 #### Answer:
-  - _id {String} MongoDB _id of the newly created project
-  - title {String} The title of the new template
-  - description {String} The description of the new template
-  - document {Object} An object, which represents the new template
-  - customData {Object} Th custom informations you saved for this project.
+  - success {Boolean} It should be true if the update was successful
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
