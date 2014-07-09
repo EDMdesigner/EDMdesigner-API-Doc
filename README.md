@@ -1392,11 +1392,46 @@ You should implement a route on your server side which we can use for deleting i
 
 Type: POST
 
-We will post an objact with two parameters:
+We will post an object with two parameters:
   * url {String} The url of the deleted image
   * userId {String} The id of the user who deleted the image.
 
 Your response to our post request should be 200. (HTTP status code) 
+
+___
+
+### Copy route
+IF you want to copy a project from a user to an other and want to copy the images (which are used in the project) too, you need to use the [create from to with images route](#creat-from-to-with-images). This route will collect the urls of the images (which you host) of the project and send it to you. After that you should make a copy of this images to the target user and sent us back the parameters of this new images.
+
+Type: POST  
+
+We will post an object whit only one parameter:
+  * urls {Array} It contains the urls of the images which are used in the template
+
+Your response to our post request should be an object. This object the following "key - value" pairs: the old url (which you get from the urls array we sent with the post request). should be the key and the value should be the parameters of the new image (like the one you need to send beack in the [upload route](#upload-route):
+  * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
+  * secure_url {String} Http secure version og the image url
+  * thumb_url {String} An url where the thumbnail version of the image is available (Tha gallery can work a lot faster if you can provide a thumbnail)
+  * name {String} The name of the image. If it is not given then we will you the last segment of the url
+  * width {Number} The original width of the image (It can save a lot of process if you can provide this information)
+  * height {Number} The original height of the image (It can save a lot of process if you can provide this information)
+
+For example: 
+If we uploaded the following array: ["www.foo.bar", "http://test.com/image.jpg"] then your asnwer should be something like this object:
+	
+	var answer = {
+		"www.foo.bar": {
+			url: "www.copy.of.foo.bar"
+		},
+		"http://test.com/image.jpg": {
+			url: "http://test.com/copyimage.jpg",
+			secure_url: "https://test.com/copyimage.jpg",
+			thumb_url: "http://test.com/thumb/copyimage.jpg",
+			name: "copyimage.jpg",
+			width: 600,
+			height: 200
+		}
+	};
 
 ___
 
@@ -1412,14 +1447,16 @@ Configure the api's gallery.
 #### Parameters (you should post):
   * uploadRoute {String} /REQUIRED/ The [route](#upload-route) which we can use for uploading the images. (This route should be implemented on your server.)
   * deleteRoute {String} /REQUIRED/ The [route](#delete-route) which we can use for deleting the images. (This route should be implemented on your server.)
+  * copyRoute {String} The [route](#copy-route) which we can use for the [create from to width images route](#create-from-to-width-images) (If you want to use this functionality, you need to implement this route on your server)
   * noUploadText {Object} It contains the language code (see [available languages](#available-languages)) - html(string) pairs. The given content will be displayed if the upload is not allowed. 
   * limitReached {Object} It contains the language code (see [available languages](#available-languages)) - html(string) pairs. The given content will be displayed if a user reached the upload limit. It is not required to impose a limit on the upload. If you want to know how you can set the limit, please read the [feature switch](#feature-switch) chapter.
   * noUrl {Boolean} With this boolean you can forbid the image handling from absolute urls. If you set this parameter true, then none of your users will be able to use images from absoulte url.
- 
+
 ####Answer:
 The data you posted:
   - uploadRoute {String}
   - deleteRoute {String}
+  - copyRoute {String}
   - noUploadText {Object}
   - limitReached {Object}
   - noUrl {Boolean}
@@ -1436,11 +1473,12 @@ Gets the configuration of the api gallery.
 
 #####Route
   + //api.edmdesigner.com/json/gallery/config
-  
+
 ####Answer:
 Config object: 
   - uploadRoute {String} The [route](#upload-route) you set for the uploading or nothing if you not configured our server yet.
   - deleteRoute {String} The [route](#delete-route) you set for the deleting or nothing if you not configured our server yet.
+  - copyRoute {String} The [route](#copy-route) you set for the [create from to width images route](#create-from-to-width-images) (only if you previously set it)
   - noUploadText {Object} (only if you previously set it in)
   - limitReached {Object} (only if you previously set it)
   - noUrl {Boolean} (only if you previously set it true)
@@ -1487,8 +1525,8 @@ Add one or more images to one or more specified users
     * name {String} The name of the image. If it is not given then we will you the last segment of the url
     * width {Number} The original width of the image (It can save a lot of process if you can provide this information)
     * height {Number} The original height of the image (It can save a lot of process if you can provide this information)
-  * users {Array} /REQUIRED/ should contain the ids of the users
-  
+  * users {Array} /REQUIRED/ should contain the ids of the users  
+
 ####Answer:
 Three different array:
   - added {Array} contains the image user pairs which were successfully created. An object in this array looks like this:
@@ -1519,7 +1557,7 @@ Delete one or more images from one or more specified users
 ####Parameters (you should post):
   * images {Array} /REQUIRED/ should contain the urls of the images you want to remove from the given users.
   * users {Array} /REQUIRED/ should contain the ids of the users.
-  
+
 ####Answer:
 Three different array:
   - deleted {Array} contains the image user pairs where the image was successfully deleted. An object in this array looks like this:
@@ -1592,6 +1630,31 @@ or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
 ___
+
+###Create from to with images
+It is quiet similar to the [create from to route](#create-from-to), basic with this route you can do the same thing except, here not only the project will be copied, but the images (which are used in the template) too. If you want to use this route, first you need to implement a [copy route](#copy-route) on your server side and [config](#configure-api-servers-gallery) it's address to the gallery.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/project/createFromToWithImages
+
+####Parameters (you should post):
+  * userId {String} /REQUIRED/ The target user's id
+  * _id {String} /REQUIRED/ The MongoDB _id of the template we want to copy to the target user
+  * title {String} The title of the new template, if it is not given, then the project's name will be 'Untitled'
+  * description {String} Description of the template, by defaullt it is an empty string
+  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+
+####Answer:
+Project object:
+  - _id {String} MongoDB _id of the newly created project
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+____
 
 ###Get Project
 Get a specified project as json. The result  will contain almost every information about the selected project.
