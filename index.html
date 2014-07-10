@@ -155,7 +155,7 @@
 <a name="user-functions" class="anchor" href="#user-functions"><span class="octicon octicon-link"></span></a>User functions</h2>
 
 <h3>
-<a name="edmdesignerapilistprojectscallback-onerrorcb" class="anchor" href="#edmdesignerapilistprojectscallback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.listProjects(callback, onErrorCB)</h3>
+<a name="edmdesignerapilistprojectsquery-callback-onerrorcb" class="anchor" href="#edmdesignerapilistprojectsquery-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.listProjects([query], callback, onErrorCB)</h3>
 
 <p>Lists the projects of the actual user.</p>
 
@@ -163,6 +163,15 @@
 <a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
+<li>query {Object} /OPTIONAL/ You can set the parameters of the db search (you have to use the moongose.js query syntax, please check their <a href="http://mongoosejs.com/docs/guide.html">documentation</a> for more information)
+
+<ul>
+<li>find {Object} You can set the search terms. (For example: you can list only those projects which title starts with "foo": var query = {find: {title: {$regex: "foo.*"}})</li>
+<li>skip {Number} The number of project the search will skip </li>
+<li>limit {Number} The number of projects you want to get back</li>
+<li>sort {Object} You can set the order how you want to get back the projects</li>
+</ul>
+</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
@@ -3034,6 +3043,21 @@ You can save custom informations to:  </p>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/list</li>
+</ul><h4>
+<a name="query-options" class="anchor" href="#query-options"><span class="octicon octicon-link"></span></a>Query options:</h4>
+
+<p>You can set the parameters of the db search. You need to place your settings object to the query of the get request. Please note that it is an optional feature. If you don't want to use it, call the route without any kind of settings (in the query) and it will send back all of the user projects!</p>
+
+<ul>
+<li>settings {Object} You can set the parameters of the db search (you have to use the moongose.js query syntax, please check their <a href="http://mongoosejs.com/docs/guide.html">documentation</a> for more information)
+
+<ul>
+<li>find {Object} You can set the search terms. (For example: you can list only those projects which title starts with "foo": var query = {find: {title: {$regex: "foo.*"}})</li>
+<li>skip {Number} The number of project the search will skip </li>
+<li>limit {Number} The number of projects you want to get back</li>
+<li>sort {Object} You can set the order how you want to get back the projects</li>
+</ul>
+</li>
 </ul><h4>
 <a name="answer-42" class="anchor" href="#answer-42"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
