@@ -73,9 +73,14 @@ If everything goes well, you get back a token, with which your user can be ident
 
 # API functions
 ## User functions
-### edmDesignerApi.listProjects(callback, onErrorCB)
+### edmDesignerApi.listProjects([query], callback, onErrorCB)
 Lists the projects of the actual user.
 #### Parameters:
+  * query {Object} /OPTIONAL/ You can set the parameters of the db search (you have to use the moongose.js query syntax, please check their [documentation](http://mongoosejs.com/docs/guide.html) for more information)
+    - find {Object} You can set the search terms. (For example: you can list only those projects which title starts with "foo": var query = {find: {title: {$regex: "foo.*"}})
+    - skip {Number} The number of project the search will skip 
+    - limit {Number} The number of projects you want to get back
+    - sort {Object} You can set the order how you want to get back the projects
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -2194,6 +2199,14 @@ Lists the projects of the actual user.
 
 #####Route
   + //api.edmdesigner.com/json/project/list
+
+####Query options:
+You can set the parameters of the db search. You need to place your settings object to the query of the get request. Please note that it is an optional feature. If you don't want to use it, call the route without any kind of settings (in the query) and it will send back all of the user projects!
+  - settings {Object} You can set the parameters of the db search (you have to use the moongose.js query syntax, please check their [documentation](http://mongoosejs.com/docs/guide.html) for more information)
+    - find {Object} You can set the search terms. (For example: you can list only those projects which title starts with "foo": var query = {find: {title: {$regex: "foo.*"}})
+    - skip {Number} The number of project the search will skip 
+    - limit {Number} The number of projects you want to get back
+    - sort {Object} You can set the order how you want to get back the projects
 
 ####Answer:
 List of projects. Every project is an object with the following parameters:
