@@ -2637,10 +2637,18 @@ ___
 List of the events the iframe can send to your application (as a message).
 
 ###Save result
-It is the answer for the [save project](#save project) request. It can have to different status:  
+It is the answer for the [save project](#save project) request. It can have to different statuses:  
 In case of success the answer message will be the following: __Save result: success__  
 In case of failure the answer message will be the following: __Save result: failed__  
 
+###Project Loading Started
+The iframe will send you a message at the begining of the project loading.
+The message will be the following: __ProjectLoadingStarted__
+
+###Project Loading Finished
+The iframe will send you a message when the project loading is done. It can have different statuses:
+In case the project loading was succesful, the message will be the following: __ProjectLoadingSuccess__
+In case the project loading failed, the message will be the following: __ProjectLoadingFailed__
 
 Available Languages
 -------------------
