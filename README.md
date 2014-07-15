@@ -1403,7 +1403,7 @@ We will post an object whit the following parameters:
   * from_userId {String} The id of the users from who we want to copy the template to the target user
   * target_userId {String} The id of the user who will get the new template. (This user needs the new urls)
 
-Your response to our post request should be an object. This object the following "key - value" pairs: the old url (which you get from the urls array we sent with the post request). should be the key and the value should be the parameters of the new image (like the one you need to send beack in the [upload route](#upload-route):
+Your response to our post request should be an object. The object should have an "urls" property which should be another object. This object should have the following "key - value" pairs: the old url (which you get from the urls array we sent with the post request) should be the key and the value should be the parameters of the new image (like the one you need to send beack in the [upload route](#upload-route):
   * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
   * secure_url {String} Http secure version og the image url
   * thumb_url {String} An url where the thumbnail version of the image is available (Tha gallery can work a lot faster if you can provide a thumbnail)
@@ -1414,17 +1414,19 @@ Your response to our post request should be an object. This object the following
 For example: 
 If we uploaded the following array: ["www.foo.bar", "http://test.com/image.jpg"] then your asnwer should be something like this object:
 	
-	var answer = {
-		"www.foo.bar": {
-			url: "www.copy.of.foo.bar"
-		},
-		"http://test.com/image.jpg": {
-			url: "http://test.com/copyimage.jpg",
-			secure_url: "https://test.com/copyimage.jpg",
-			thumb_url: "http://test.com/thumb/copyimage.jpg",
-			name: "copyimage.jpg",
-			width: 600,
-			height: 200
+	var answer = { 
+		urls: {
+			"www.foo.bar": {
+				url: "www.copy.of.foo.bar"
+			},
+			"http://test.com/image.jpg": {
+				url: "http://test.com/copyimage.jpg",
+				secure_url: "https://test.com/copyimage.jpg",
+				thumb_url: "http://test.com/thumb/copyimage.jpg",
+				name: "copyimage.jpg",
+				width: 600,
+				height: 200
+			}
 		}
 	};
 
