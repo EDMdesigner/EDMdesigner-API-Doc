@@ -2,9 +2,9 @@
 <html>
 
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="EDMdesigner-API : Documentation of the EDMdesigner API for integration projects" />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="EDMdesigner-API : Documentation of the EDMdesigner API for integration projects">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -963,7 +963,7 @@
 <ul>
 <li>//api.edmdesigner.com/json/groups/list</li>
 </ul><h4>
-<a name="answer" class="anchor" href="#answer"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response" class="anchor" href="#response"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An array of your groups. Every group is an object with this parameters:</p>
 
@@ -999,7 +999,7 @@
 <li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
 <li>customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-1" class="anchor" href="#answer-1"><span class="octicon octicon-link"></span></a>Answer</h4>
+<a name="response-1" class="anchor" href="#response-1"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>An object containing the MongoDB _id of the newly created group:</p>
 
@@ -1030,7 +1030,7 @@
 <ul>
 <li>id {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 </ul><h4>
-<a name="answer-2" class="anchor" href="#answer-2"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-2" class="anchor" href="#response-2"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>A group object:</p>
 
@@ -1067,7 +1067,7 @@
 <li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
 <li>customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-3" class="anchor" href="#answer-3"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-3" class="anchor" href="#response-3"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object:</p>
 
@@ -1100,7 +1100,7 @@ If you want to know what a header is good for, please read the <a href="#headers
 <li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>headers {Array} /REQUIRED/ The list of headers which the users of the specified group will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a header object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-4" class="anchor" href="#answer-4"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-4" class="anchor" href="#response-4"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1140,7 +1140,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>footers {Array} /REQUIRED/ The list of footers which the users of the specified group will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a footer object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-5" class="anchor" href="#answer-5"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-5" class="anchor" href="#response-5"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1180,7 +1180,7 @@ If you want to know what is a Complex elem, please read the <a href="#complexele
 <li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>items {Array} /REQUIRED/ The list of Complex elems which the users of the specified group will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-6" class="anchor" href="#answer-6"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-6" class="anchor" href="#response-6"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with 3 child objects:</p>
 
@@ -1211,7 +1211,7 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <li>structureIds {Array} /REQUIRED/ It should contain the ids of the structures you want to assign to all of your users.</li>
 <li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 </ul><h4>
-<a name="answer-7" class="anchor" href="#answer-7"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-7" class="anchor" href="#response-7"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the following two arrays: </p>
 
@@ -1258,7 +1258,7 @@ If you want to know what exactly a template is good for, please read the <a href
 </ul>
 </li>
 </ul><h4>
-<a name="answer-8" class="anchor" href="#answer-8"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-8" class="anchor" href="#response-8"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
 
@@ -1304,7 +1304,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 </ul>
 </li>
 </ul><h4>
-<a name="answer-9" class="anchor" href="#answer-9"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-9" class="anchor" href="#response-9"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
 
@@ -1338,7 +1338,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <ul>
 <li>//api.edmdesigner.com/json/user/list</li>
 </ul><h4>
-<a name="answer-10" class="anchor" href="#answer-10"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-10" class="anchor" href="#response-10"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An array of your users. Every user is an object with this parameters:</p>
 
@@ -1374,7 +1374,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-11" class="anchor" href="#answer-11"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-11" class="anchor" href="#response-11"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>User object:</p>
 
@@ -1412,7 +1412,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 </ul>
 </li>
 </ul><h4>
-<a name="answer-12" class="anchor" href="#answer-12"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-12" class="anchor" href="#response-12"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Three different arrays:</p>
 
@@ -1462,7 +1462,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <ul>
 <li>:id {String} The id of the user.</li>
 </ul><h4>
-<a name="answer-13" class="anchor" href="#answer-13"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-13" class="anchor" href="#response-13"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>User object:</p>
 
@@ -1498,7 +1498,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-14" class="anchor" href="#answer-14"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-14" class="anchor" href="#response-14"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>User object:</p>
 
@@ -1529,7 +1529,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <ul>
 <li>:id {String} The id of the user.</li>
 </ul><h4>
-<a name="answer-15" class="anchor" href="#answer-15"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-15" class="anchor" href="#response-15"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>User object:</p>
 
@@ -1562,7 +1562,7 @@ If you want to know what a header is good for, please read the <a href="#headers
 <li>users {Array} /REQUIRED/ List of the ids of the users you want to upload the headers.</li>
 <li>headers {Array} /REQUIRED/ The list of headers which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a header object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-16" class="anchor" href="#answer-16"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-16" class="anchor" href="#response-16"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1609,7 +1609,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <li>users {Array} /REQUIRED/ List of the ids of the users you want to upload the footers.</li>
 <li>footers {Array} /REQUIRED/ The list of footers which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a footer object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-17" class="anchor" href="#answer-17"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-17" class="anchor" href="#response-17"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1713,7 +1713,7 @@ If you want to know what a Complex elem is good for, please read the <a href="#c
 <li>userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.</li>
 <li>items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-18" class="anchor" href="#answer-18"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-18" class="anchor" href="#response-18"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object:</p>
 
@@ -1743,7 +1743,7 @@ If you want to know what a Complex elem is good for, please read the <a href="#c
 <li>userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.</li>
 <li>items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-19" class="anchor" href="#answer-19"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-19" class="anchor" href="#response-19"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object:</p>
 
@@ -1775,7 +1775,7 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <li>structureIds {Array} It should contain the ids of the structures you want to assign to the specified users<br>
 </li>
 </ul><h4>
-<a name="answer-20" class="anchor" href="#answer-20"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-20" class="anchor" href="#response-20"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the following four arrays: </p>
 
@@ -1828,7 +1828,7 @@ If you want to know what exactly a template is good for, please read the <a href
 </ul>
 </li>
 </ul><h4>
-<a name="answer-21" class="anchor" href="#answer-21"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-21" class="anchor" href="#response-21"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the following four arrays: </p>
 
@@ -1881,7 +1881,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 </ul>
 </li>
 </ul><h4>
-<a name="answer-22" class="anchor" href="#answer-22"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-22" class="anchor" href="#response-22"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the following four arrays: </p>
 
@@ -1908,7 +1908,9 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <p>If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.</p>
 
-<p>Basic operation: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and <a href="#configure-api-servers-gallery">configure</a> our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the <a href="#configure-api-servers-gallery">gallery configuration</a>) .</p>
+<p>Basic operations: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and <a href="#configure-api-servers-gallery">configure</a> our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the <a href="#configure-api-servers-gallery">gallery configuration</a>) .</p>
+
+<p>We will create a md5 hash from a timestamp and your magic word. This two (the hash and the timestamp) will be sent to you in each of our request. You recreate the hash in your server side and compare the two hash. With this methode you can ensure that the request really came from us.</p>
 
 <hr><h3>
 <a name="upload-route" class="anchor" href="#upload-route"><span class="octicon octicon-link"></span></a>Upload route</h3>
@@ -1917,7 +1919,14 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <p>Type: POST</p>
 
-<p>We will upload the images as the following. There will be a "userId" field in the query of the request, it will contain the id of the user (who wants to upload the image). The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.</p>
+<p>We will upload the images as the following. There will be "userId", "hash" and "time" fields in the query of the request:</p>
+
+<ul>
+<li>The "userId" will contain the id of the user (who wants to upload the image).</li>
+<li>The "hash" will be a string we use for authenticat ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us. </li>
+<li>The "time" will be the timestamp we used for creating the hash </li>
+</ul><p>The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.<br>
+Please note that if you use php on your server side then checking the content-tpye of the uploaded image with the $_Files["file"]["type"] is not possible (it will be Application/octet-stream) but if you use our hash to authenticate us, then you do not have to worry about the uploaded file. We will make sure that it will be what it has to be.</p>
 
 <p>The response to our post request should be an image object. The object should have the following properties:</p>
 
@@ -1928,7 +1937,16 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>name {String} The name of the image. If it is not given then we will you the last segment of the url</li>
 <li>width {Number} The original width of the image (It can save a lot of process if you can provide this information)</li>
 <li>height {Number} The original height of the image (It can save a lot of process if you can provide this information)</li>
-</ul><hr><h3>
+</ul><p>Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:</p>
+
+<ul>
+<li>err</li>
+</ul><p>For example:<br>
+    var error = {
+        err: "Not my user!"
+    };</p>
+
+<hr><h3>
 <a name="delete-route" class="anchor" href="#delete-route"><span class="octicon octicon-link"></span></a>Delete route</h3>
 
 <p>You should implement a route on your server side which we can use for deleting images.</p>
@@ -1940,7 +1958,17 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <ul>
 <li>url {String} The url of the deleted image</li>
 <li>userId {String} The id of the user who deleted the image.</li>
-</ul><p>Your response to our post request should be 200. (HTTP status code) </p>
+<li>hash {String} Hash we use for authenticat ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us.</li>
+<li>time {String} The timestamp we used for creating the hash</li>
+</ul><p>Your response to our post request should be 200. (HTTP status code)<br>
+Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:</p>
+
+<ul>
+<li>err</li>
+</ul><p>For example:<br>
+    var error = {
+        err: "Not my user!"
+    };</p>
 
 <hr><h3>
 <a name="copy-route" class="anchor" href="#copy-route"><span class="octicon octicon-link"></span></a>Copy route</h3>
@@ -1955,6 +1983,8 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>urls {Array} It contains the urls of the images which are used in the template</li>
 <li>from_userId {String} The id of the users from who we want to copy the template to the target user</li>
 <li>target_userId {String} The id of the user who will get the new template. (This user needs the new urls)</li>
+<li>hash {String} Hash we use for authenticat ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us.</li>
+<li>time {String} The timestamp we used for creating the hash</li>
 </ul><p>Your response to our post request should be an object. The object should have an "urls" property which should be another object. This object should have the following "key - value" pairs: the old url (which you get from the urls array we sent with the post request) should be the key and the value should be the parameters of the new image (like the one you need to send beack in the <a href="#upload-route">upload route</a>:</p>
 
 <ul>
@@ -1965,7 +1995,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>width {Number} The original width of the image (It can save a lot of process if you can provide this information)</li>
 <li>height {Number} The original height of the image (It can save a lot of process if you can provide this information)</li>
 </ul><p>For example: 
-If we uploaded the following array: ["<a href="http://www.foo.bar">www.foo.bar</a>", "<a href="http://test.com/image.jpg%22">http://test.com/image.jpg"</a>] then your asnwer should be something like this object:</p>
+If we uploaded the following array: ["www.foo.bar", "<a href="http://test.com/image.jpg%22">http://test.com/image.jpg"</a>] then your asnwer should be something like this object:</p>
 
 <pre><code>var answer = { 
     urls: {
@@ -1983,6 +2013,15 @@ If we uploaded the following array: ["<a href="http://www.foo.bar">www.foo.bar</
     }
 };
 </code></pre>
+
+<p>Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:</p>
+
+<ul>
+<li>err</li>
+</ul><p>For example:<br>
+    var error = {
+        err: "Not my user!"
+    };</p>
 
 <hr><h3>
 <a name="configure-api-servers-gallery" class="anchor" href="#configure-api-servers-gallery"><span class="octicon octicon-link"></span></a>Configure api server's gallery</h3>
@@ -2010,7 +2049,7 @@ If we uploaded the following array: ["<a href="http://www.foo.bar">www.foo.bar</
 <li>limitReached {Object} It contains the language code (see <a href="#available-languages">available languages</a>) - html(string) pairs. The given content will be displayed if a user reached the upload limit. It is not required to impose a limit on the upload. If you want to know how you can set the limit, please read the <a href="#feature-switch">feature switch</a> chapter.</li>
 <li>noUrl {Boolean} With this boolean you can forbid the image handling from absolute urls. If you set this parameter true, then none of your users will be able to use images from absoulte url.</li>
 </ul><h4>
-<a name="answer-23" class="anchor" href="#answer-23"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-23" class="anchor" href="#response-23"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>The data you posted:</p>
 
@@ -2039,7 +2078,7 @@ or it can be an error object:</li>
 <ul>
 <li>//api.edmdesigner.com/json/gallery/config</li>
 </ul><h4>
-<a name="answer-24" class="anchor" href="#answer-24"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-24" class="anchor" href="#response-24"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Config object: </p>
 
@@ -2075,7 +2114,7 @@ or it can be an error object:</li>
 <ul>
 <li>:id {String} The id of the target user</li>
 </ul><h4>
-<a name="answer-25" class="anchor" href="#answer-25"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-25" class="anchor" href="#response-25"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Array of urls</p>
 
@@ -2116,7 +2155,7 @@ or it can be an error object:</li>
 <li>users {Array} /REQUIRED/ should contain the ids of the users<br>
 </li>
 </ul><h4>
-<a name="answer-26" class="anchor" href="#answer-26"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-26" class="anchor" href="#response-26"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Three different array:</p>
 
@@ -2169,7 +2208,7 @@ or it can be an error object:</li>
 <li>images {Array} /REQUIRED/ should contain the urls of the images you want to remove from the given users.</li>
 <li>users {Array} /REQUIRED/ should contain the ids of the users.</li>
 </ul><h4>
-<a name="answer-27" class="anchor" href="#answer-27"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-27" class="anchor" href="#response-27"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Three different array:</p>
 
@@ -2238,7 +2277,7 @@ or it can be an error object:</li>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-28" class="anchor" href="#answer-28"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-28" class="anchor" href="#response-28"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Project object:</p>
 
@@ -2274,7 +2313,7 @@ or it can be an error object:</li>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-29" class="anchor" href="#answer-29"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-29" class="anchor" href="#response-29"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Project object:</p>
 
@@ -2309,7 +2348,7 @@ or it can be an error object:</li>
 <li>description {String} Description of the template, by defaullt it is an empty string</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-30" class="anchor" href="#answer-30"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-30" class="anchor" href="#response-30"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Project object:</p>
 
@@ -2335,7 +2374,7 @@ or it can be an error object:</li>
 <ul>
 <li>//api.edmdesigner.com/json/project/getProject</li>
 </ul><h4>
-<a name="answer-31" class="anchor" href="#answer-31"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-31" class="anchor" href="#response-31"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Project object:</p>
 
@@ -2376,7 +2415,7 @@ or it can be an error object:</li>
 <ul>
 <li>//api.edmdesigner.com/json/project/defaults</li>
 </ul><h4>
-<a name="answer-32" class="anchor" href="#answer-32"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-32" class="anchor" href="#response-32"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>List of projects. Every project is an object with the following parameters:</p>
 
@@ -2531,7 +2570,7 @@ If you want to know what a header is good for, please read the <a href="#headers
 <li>headers {Array} The list of headers which all of your users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a header object should look like, please read <a href="#structure">this</a>
 </li>
 </ul><h4>
-<a name="answer-33" class="anchor" href="#answer-33"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-33" class="anchor" href="#response-33"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -2570,7 +2609,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>footers {Array} The list of footers which all of your users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a footer object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
 </ul><h4>
-<a name="answer-34" class="anchor" href="#answer-34"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-34" class="anchor" href="#response-34"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -2800,7 +2839,7 @@ You can assign any number of data to a structure.  </p>
 </ul>
 </li>
 </ul><h4>
-<a name="answer-35" class="anchor" href="#answer-35"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-35" class="anchor" href="#response-35"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with three arrays:</p>
 
@@ -2831,7 +2870,7 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/listDynamicElemStructure</li>
 </ul><h4>
-<a name="answer-36" class="anchor" href="#answer-36"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-36" class="anchor" href="#response-36"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the followinf property: </p>
 
@@ -2862,7 +2901,7 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <li>id {String} The id of the structure you want to delete. <strong>Please try to avoid using this id again!!</strong>
 </li>
 </ul><h4>
-<a name="answer-37" class="anchor" href="#answer-37"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-37" class="anchor" href="#response-37"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the followinf property: </p>
 
@@ -2891,7 +2930,7 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <ul>
 <li>structureIds {Array} It should contain the ids of the structures you want to assign to all of your users.</li>
 </ul><h4>
-<a name="answer-38" class="anchor" href="#answer-38"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-38" class="anchor" href="#response-38"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
 
@@ -2937,7 +2976,7 @@ If you want to know what exactly a template is good for, please read the <a href
 </ul>
 </li>
 </ul><h4>
-<a name="answer-39" class="anchor" href="#answer-39"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-39" class="anchor" href="#response-39"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
 
@@ -2985,7 +3024,7 @@ You can save custom informations to:  </p>
 <ul>
 <li>customData {Object} The custom informations you want to save</li>
 </ul><h4>
-<a name="answer-40" class="anchor" href="#answer-40"><span class="octicon octicon-link"></span></a>Answer</h4>
+<a name="response-40" class="anchor" href="#response-40"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
 
@@ -3009,7 +3048,7 @@ You can save custom informations to:  </p>
 <ul>
 <li>//api.edmdesigner.com/json/general/getMyCustomData</li>
 </ul><h4>
-<a name="answer-41" class="anchor" href="#answer-41"><span class="octicon octicon-link"></span></a>Answer</h4>
+<a name="response-41" class="anchor" href="#response-41"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>An object containing your custom data</p>
 
@@ -3063,7 +3102,7 @@ You can save custom informations to:  </p>
 </ul>
 </li>
 </ul><h4>
-<a name="answer-42" class="anchor" href="#answer-42"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-42" class="anchor" href="#response-42"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>List of projects. Every project is an object with the following parameters:</p>
 
@@ -3100,7 +3139,7 @@ You can save custom informations to:  </p>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-43" class="anchor" href="#answer-43"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer" class="anchor" href="#answer"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <ul>
 <li>_id {String} MongoDB _id of the newly created project</li>
@@ -3129,7 +3168,7 @@ You can save custom informations to:  </p>
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-44" class="anchor" href="#answer-44"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-1" class="anchor" href="#answer-1"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Project object:</p>
 
@@ -3166,7 +3205,7 @@ You can save custom informations to:  </p>
 <li>description {String} The description of the new project</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-45" class="anchor" href="#answer-45"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-2" class="anchor" href="#answer-2"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Project object:</p>
 
@@ -3200,7 +3239,7 @@ You can save custom informations to:  </p>
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-46" class="anchor" href="#answer-46"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="response-43" class="anchor" href="#response-43"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>A number, it is 1 if the project was successfully deleted</p>
 
@@ -3229,7 +3268,7 @@ You can save custom informations to:  </p>
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-47" class="anchor" href="#answer-47"><span class="octicon octicon-link"></span></a>Answer</h4>
+<a name="response-44" class="anchor" href="#response-44"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>A bulletproof responsive HTML version of the given template</p>
 
@@ -3258,7 +3297,7 @@ You can save custom informations to:  </p>
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="answer-48" class="anchor" href="#answer-48"><span class="octicon octicon-link"></span></a>Answer</h4>
+<a name="response-45" class="anchor" href="#response-45"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Title object:</p>
 
@@ -3292,7 +3331,7 @@ You can save custom informations to:  </p>
 <li>description {String} The description of the new project.</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul><h4>
-<a name="answer-49" class="anchor" href="#answer-49"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-3" class="anchor" href="#answer-3"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <ul>
 <li>success {Boolean} It should be true if the update was successful</li>
