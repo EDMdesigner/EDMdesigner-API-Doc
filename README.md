@@ -725,7 +725,7 @@ Lists the groups you have
 #####Route
   + //api.edmdesigner.com/json/groups/list
 
-####Answer:
+####Response:
 An array of your groups. Every group is an object with this parameters:
   - _id {String} MongoDB id of the group
   - featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
@@ -751,7 +751,7 @@ Creates a new group
   * featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   * customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
 
-####Answer
+####Response
 An object containing the MongoDB _id of the newly created group:
   - _id {String}
 
@@ -772,7 +772,7 @@ Gets a specified group
 #### Parameters (in the route):
    * id {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
 
-####Answer:
+####Response:
 A group object:
   - _id {String} MongoDB id of the group
   - featureSwitch {Object} The features that are available for users belong to this group.There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
@@ -799,7 +799,7 @@ Updates a specified group's name or the features it provides or both of these tw
    * featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
    * customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
 
-####Answer:
+####Response:
 An object:
   - success {Boolean} It should be true if the update was successful
 
@@ -822,7 +822,7 @@ If you want to know what a header is good for, please read the [headers & footer
    * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
    * headers {Array} /REQUIRED/ The list of headers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, please read [this](#structure) part of the documentation.
 
-####Answer:
+####Response:
 An object with two arrays:
   - success {Array} The list of the headers which were successfully added to the group
   - failed {Array} The list of the object: 
@@ -848,7 +848,7 @@ If you want to know what a footer is good for, please read the [headers & footer
    * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
    * footers {Array} /REQUIRED/ The list of footers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, please read [this](#structure) part of the documentation.
 
-####Answer:
+####Response:
 An object with two arrays:
   - success {Array} list of the footers which were successfully added to the group
   - failed {Array} list of the object: 
@@ -874,7 +874,7 @@ If you want to know what is a Complex elem, please read the [complexElements](#c
    * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
    * items {Array} /REQUIRED/ The list of Complex elems which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a Complex elem object should look like, please read [this](#structure) part of the documentation.
 
-####Answer:
+####Response:
 An object with 3 child objects:
   - result {Array} list of the complex elems which were successfully added to the group
   - fails {Array} if some of the items failed it contains the reason, if none of them failed it is null 
@@ -896,7 +896,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
    * structureIds {Array} /REQUIRED/ It should contain the ids of the structures you want to assign to all of your users.
    * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
 
-####Answer:
+####Response:
 An object with the following two arrays: 
   - fails {Array} It contains objects with the following properties:
     - item {Object} The structure which cannot be assigned
@@ -924,7 +924,7 @@ If you want to know what exactly a template is good for, please read the [dynami
     * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
     * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
 
-####Answer:
+####Response:
 An object containing two arrays: 
   - fails {Array} It contains objects with the following properties:
     - item {Object} The template which cannot be created
@@ -952,7 +952,7 @@ If you want to know what exactly a data is good for, please read the [dynamic el
     * palceHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](dynamic-element-data))
     * structureId {String} /REQUIRED/ The id of the structure which the data belongs to.
 
-####Answer:
+####Response:
 An object containing two arrays: 
   - fails {Array} It contains objects with the following properties:
     - item {Object} The data which cannot be added
@@ -973,7 +973,7 @@ Lists the users you have
 #####Route
   + //api.edmdesigner.com/json/user/list
 
-####Answer:
+####Response:
 An array of your users. Every user is an object with this parameters:
   - id {String} The id of the user
   - group {String} The MongoDB _id of the group the user belongs to
@@ -999,7 +999,7 @@ Creates a new user
   * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
   * customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
 
-####Answer:
+####Response:
 User object:
   - id {String} The id of the user (your id, not the MongoDB _id)
 
@@ -1023,7 +1023,7 @@ Creates multiple user
     * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
     * customData {Object} You can upload custom informations to the user. You can save any kind of information. It is up to you, how you want to use it!
 
-####Answer:
+####Response:
 Three different arrays:
   - created {Array} Contains the ids of the users who was successfully created
     - id {String} The id of the user 
@@ -1051,7 +1051,7 @@ Gets a specified user
 ####Parameters (in the route):
    * :id {String} The id of the user.
 
-####Answer:
+####Response:
 User object:
   - id {String} The id of the user
   - group {String} The MongoDB _id of the group the user belongs to
@@ -1077,7 +1077,7 @@ Updates a specified user. Only the group (which the user belongs) can be changed
    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
    * customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
 
-####Answer:
+####Response:
 User object:
   - id {String} The id of the updated user
 
@@ -1097,8 +1097,8 @@ Deletes a specified user
   
 #### Parameters (in the route):
    * :id {String} The id of the user.
- 
-####Answer:
+
+####Response:
 User object:
   - id {String} The id of the deleted user
 
@@ -1121,7 +1121,7 @@ If you want to know what a header is good for, please read the [headers & footer
    * users {Array} /REQUIRED/ List of the ids of the users you want to upload the headers.
    * headers {Array} /REQUIRED/ The list of headers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, please read [this](#structure) part of the documentation.
 
-####Answer:
+####Response:
 An object with two arrays:
   - success {Array} list of the users whose successfully got the headers
   - failed {Array} list of the object: 
@@ -1150,7 +1150,7 @@ If you want to know what a footer is good for, please read the [headers & footer
    * users {Array} /REQUIRED/ List of the ids of the users you want to upload the footers.
    * footers {Array} /REQUIRED/ The list of footers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, please read [this](#structure) part of the documentation.
 
-####Answer:
+####Response:
 An object with two arrays:
   - success {Array} The list of the users whose successfully got the footers
   - failed {Array} The list of the object: 
@@ -1234,7 +1234,7 @@ If you want to know what a Complex elem is good for, please read the [complexEle
    * userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.
    * items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a Complex elem object should look like, please read [this](#structure) part of the documentation.
 
-####Answer:
+####Response:
 An object:
   - error {String} If the whole process is failed, otherwise null.
   - fails {Array} If a part of the items failed to insert, if all items inserted, it is null.
@@ -1256,7 +1256,7 @@ If you want to know what a Complex elem is good for, please read the [complexEle
    * userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.
    * items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a Complex elem object should look like, please read [this](#structure) part of the documentation.
 
-####Answer:
+####Response:
 An object:
   - error {String} If the whole process is failed, otherwise null.
   - fails {Array} If a part of the items failed to insert, if all items inserted, it is null.
@@ -1278,7 +1278,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
    * users {Array} It should contain the ids of the users
    * structureIds {Array} It should contain the ids of the structures you want to assign to the specified users  
 
-####Answer:
+####Response:
 An object with the following four arrays: 
   - failedItems {Array} It contains objects with the following two properties:
     - text {String} The reason why the structure cannot be assigned to the users
@@ -1310,7 +1310,7 @@ If you want to know what exactly a template is good for, please read the [dynami
     * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
     * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
 
-####Answer:
+####Response:
 An object with the following four arrays: 
   - failedItems {Array} It contains objects with the following two properties:
     - text {String} The reason why the template cannot be created to the users
@@ -1342,7 +1342,7 @@ If you want to know what exactly a data is good for, please read the [dynamic el
     * palceHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](dynamic-element-data))
     * structureId {String} /REQUIRED/ The id of the structure which the data belongs to.
 
-####Answer:
+####Response:
 An object with the following four arrays: 
   - failedItems {Array} It contains objects with the following two properties:
     - text {String} The reason why the data cannot be added to the users
@@ -1359,7 +1359,9 @@ ___
 ##Gallery handling
 If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.
 
-Basic operation: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and [configure](#configure-api-servers-gallery) our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the [gallery configuration](#configure-api-servers-gallery)) .
+Basic operations: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and [configure](#configure-api-servers-gallery) our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the [gallery configuration](#configure-api-servers-gallery)) .
+
+We will create a md5 hash from a timestamp and your magic word. This two (the hash and the timestamp) will be sent to you in each of our request. You recreate the hash in your server side and compare the two hash. With this methode you can ensure that the request really came from us.
 
 ___
 
@@ -1368,7 +1370,13 @@ You should implement a route on your server which we can use for image upload.
 
 Type: POST
 
-We will upload the images as the following. There will be a "userId" field in the query of the request, it will contain the id of the user (who wants to upload the image). The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.
+We will upload the images as the following. There will be "userId", "hash" and "time" fields in the query of the request:
+  - The "userId" will contain the id of the user (who wants to upload the image).
+  - The "hash" will be a string we use for authenticat ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us. 
+  - The "time" will be the timestamp we used for creating the hash 
+
+The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.  
+Please note that if you use php on your server side then checking the content-tpye of the uploaded image with the $_Files["file"]["type"] is not possible (it will be Application/octet-stream) but if you use our hash to authenticate us, then you do not have to worry about the uploaded file. We will make sure that it will be what it has to be.
 
 The response to our post request should be an image object. The object should have the following properties:
   * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
@@ -1377,6 +1385,14 @@ The response to our post request should be an image object. The object should ha
   * name {String} The name of the image. If it is not given then we will you the last segment of the url
   * width {Number} The original width of the image (It can save a lot of process if you can provide this information)
   * height {Number} The original height of the image (It can save a lot of process if you can provide this information)
+
+Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:
+  * err
+
+For example:  
+	var error = {
+		err: "Not my user!"
+	};
 
 ___
 
@@ -1388,8 +1404,17 @@ Type: POST
 We will post an object with two parameters:
   * url {String} The url of the deleted image
   * userId {String} The id of the user who deleted the image.
+  * hash {String} Hash we use for authenticat ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us.
+  * time {String} The timestamp we used for creating the hash
 
-Your response to our post request should be 200. (HTTP status code) 
+Your response to our post request should be 200. (HTTP status code)  
+Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:
+  * err
+
+For example:  
+	var error = {
+		err: "Not my user!"
+	};
 
 ___
 
@@ -1402,6 +1427,8 @@ We will post an object whit the following parameters:
   * urls {Array} It contains the urls of the images which are used in the template
   * from_userId {String} The id of the users from who we want to copy the template to the target user
   * target_userId {String} The id of the user who will get the new template. (This user needs the new urls)
+  * hash {String} Hash we use for authenticat ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us.
+  * time {String} The timestamp we used for creating the hash
 
 Your response to our post request should be an object. The object should have an "urls" property which should be another object. This object should have the following "key - value" pairs: the old url (which you get from the urls array we sent with the post request) should be the key and the value should be the parameters of the new image (like the one you need to send beack in the [upload route](#upload-route):
   * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
@@ -1430,6 +1457,14 @@ If we uploaded the following array: ["www.foo.bar", "http://test.com/image.jpg"]
 		}
 	};
 
+Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:
+  * err
+
+For example:  
+	var error = {
+		err: "Not my user!"
+	};
+
 ___
 
 ###Configure api server's gallery
@@ -1449,7 +1484,7 @@ Configure the api's gallery.
   * limitReached {Object} It contains the language code (see [available languages](#available-languages)) - html(string) pairs. The given content will be displayed if a user reached the upload limit. It is not required to impose a limit on the upload. If you want to know how you can set the limit, please read the [feature switch](#feature-switch) chapter.
   * noUrl {Boolean} With this boolean you can forbid the image handling from absolute urls. If you set this parameter true, then none of your users will be able to use images from absoulte url.
 
-####Answer:
+####Response:
 The data you posted:
   - uploadRoute {String}
   - deleteRoute {String}
@@ -1471,7 +1506,7 @@ Gets the configuration of the api gallery.
 #####Route
   + //api.edmdesigner.com/json/gallery/config
 
-####Answer:
+####Response:
 Config object: 
   - uploadRoute {String} The [route](#upload-route) you set for the uploading or nothing if you not configured our server yet.
   - deleteRoute {String} The [route](#delete-route) you set for the deleting or nothing if you not configured our server yet.
@@ -1496,8 +1531,8 @@ Lists all images of a specified user
 
 ####Parameters (in the route):
   * :id {String} The id of the target user
-  
-####Answer:
+
+####Response:
 Array of urls
 
 or it can be an error object:
@@ -1524,7 +1559,7 @@ Add one or more images to one or more specified users
     * height {Number} The original height of the image (It can save a lot of process if you can provide this information)
   * users {Array} /REQUIRED/ should contain the ids of the users  
 
-####Answer:
+####Response:
 Three different array:
   - added {Array} contains the image user pairs which were successfully created. An object in this array looks like this:
     - image {Object} One image from the posted images array
@@ -1555,7 +1590,7 @@ Delete one or more images from one or more specified users
   * images {Array} /REQUIRED/ should contain the urls of the images you want to remove from the given users.
   * users {Array} /REQUIRED/ should contain the ids of the users.
 
-####Answer:
+####Response:
 Three different array:
   - deleted {Array} contains the image user pairs where the image was successfully deleted. An object in this array looks like this:
     - image {Object} One image from the posted images array
@@ -1593,7 +1628,7 @@ Creates a project/template to a specified user
   * document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates
   * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
 
-####Answer:
+####Response:
 Project object:
   - _id {String} MongoDB _id of the newly created project
 
@@ -1619,7 +1654,7 @@ Creates a project/template to a specified user using an another template
   * document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates
   * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
 
-####Answer:
+####Response:
 Project object:
   - _id {String} MongoDB _id of the newly created project
 
@@ -1644,7 +1679,7 @@ It is quiet similar to the [create from to route](#create-from-to), basic with t
   * description {String} Description of the template, by defaullt it is an empty string
   * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
 
-####Answer:
+####Response:
 Project object:
   - _id {String} MongoDB _id of the newly created project
 
@@ -1662,7 +1697,7 @@ Get a specified project as json. The result  will contain almost every informati
 #####Route
   + //api.edmdesigner.com/json/project/getProject
 
-####Answer:
+####Response:
 Project object:
   - _id {String} MongoDB _id of the newly created project
   - title {String} The title of the project.
@@ -1691,7 +1726,7 @@ Every api partner get a templater user. (id = "templater"). This speciel user ha
 #####Route
   + //api.edmdesigner.com/json/project/defaults
 
-####Answer:
+####Response:
 List of projects. Every project is an object with the following parameters:
   - _id {String} MongoDB _id of the project
   - title {String} Title of the template
@@ -1822,7 +1857,7 @@ If you want to know what a header is good for, please read the [headers & footer
 #### Parameters (you should post):
    * headers {Array} The list of headers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, please read [this](#structure)
 
-####Answer:
+####Response:
 An object with two arrays:
   - success {Array} The list of the headers which were successfully saved
   - failed {Array} The list of the object: 
@@ -1847,7 +1882,7 @@ If you want to know what a footer is good for, please read the [headers & footer
 #### Parameters (you should post):
    * footers {Array} The list of footers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, please read [this](#structure) part of the documentation.
 
-####Answer:
+####Response:
 An object with two arrays:
   - success {Array} The list of the footers which were successfully saved
   - failed {Array} The list of the object: 
@@ -2040,7 +2075,7 @@ You can create one or more structure for your [dynamic elements](#dynamic-elemen
      * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
      * placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](#dynamic-element-structure))
 
-####Answer:
+####Response:
 An object with three arrays:
   - inserted {Array} The list of the structures which were successfully saved
   - fails {Array} list of the folllowing objects: 
@@ -2062,7 +2097,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
   + //api.edmdesigner.com/json/dynamicElems/listDynamicElemStructure
 
 
-####Answer:
+####Response:
 An object with the followinf property: 
   - result {Array} The list of your structures.
   - err {String} only in case of error, contains the error description
@@ -2081,7 +2116,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
 #### Parameters (you should post):
    * id {String} The id of the structure you want to delete. __Please try to avoid using this id again!!__
 
-####Answer:
+####Response:
 An object with the followinf property: 
   - deleted {object} The structure you deleted
   - err {String} only in case of error, contains the error description
@@ -2101,7 +2136,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
 #### Parameters (you should post):
    * structureIds {Array} It should contain the ids of the structures you want to assign to all of your users.
 
-####Answer:
+####Response:
 An object containing two arrays: 
   - fails {Array} It contains objects with the following properties:
     - item {Object} The structure which cannot be assigned
@@ -2128,7 +2163,7 @@ If you want to know what exactly a template is good for, please read the [dynami
     * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
     * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
 
-####Answer:
+####Response:
 An object containing two arrays: 
   - fails {Array} It contains objects with the following properties:
     - item {Object} The template which cannot be created
@@ -2160,7 +2195,7 @@ You can save any kind of custom information to your apiPartner database entry
 #### Parameters (you should post):
   * customData {Object} The custom informations you want to save
 
-####Answer
+####Response
 Http status code 200
   
 Or it can be an error object:
@@ -2177,7 +2212,7 @@ You can get the custom informations you previously saved for yourself
 ####Route
   + //api.edmdesigner.com/json/general/getMyCustomData
 
-####Answer
+####Response
 An object containing your custom data
   - customData {Object} The custom informations you saved for yourself
   
@@ -2212,7 +2247,7 @@ You can set the parameters of the db search. You need to place your settings obj
     - limit {Number} The number of projects you want to get back
     - sort {Object} You can set the order how you want to get back the projects
 
-####Answer:
+####Response:
 List of projects. Every project is an object with the following parameters:
   - _id {String} MongoDB _id of the project
   - title {String} Title of the template
@@ -2310,7 +2345,7 @@ Removes a project.
 #### Parameters (in the route):
   * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
 
-####Answer:
+####Response:
 A number, it is 1 if the project was successfully deleted
 
 or it can be an error object:
@@ -2330,7 +2365,7 @@ Generates the bulletproof responsive HTML e-mail based on the projectId.
 #### Parameters (in the route):
   * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
 
-####Answer
+####Response
 A bulletproof responsive HTML version of the given template
 
 or it can be an error object:
@@ -2350,7 +2385,7 @@ Gets the title of the selected project.
 #### Parameters (in the route):
   * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
 
-####Answer
+####Response
 Title object:
   - title {String} The title of the selected project
 
