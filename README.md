@@ -84,6 +84,8 @@ Lists the projects of the actual user.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
+The response is an array of projects.
+
 #### Example:
 	
 	<script>
@@ -98,7 +100,22 @@ Lists the projects of the actual user.
 		}
 	</script>
 
-___	
+___
+
+### edmDesignerApi.listAndCountProjects([query], callback, onErrorCB)
+Lists the projects of the actual user.
+#### Parameters:
+  * query {Object} /OPTIONAL/ You can set the parameters of the db search (you have to use the moongose.js query syntax, please check their [documentation](http://mongoosejs.com/docs/guide.html) for more information)
+    - find {Object} You can set the search terms. (For example: you can list only those projects which title starts with "foo": var query = {find: {title: {$regex: "foo.*"}})
+    - skip {Number} The number of project the search will skip 
+    - limit {Number} The number of projects you want to get back
+    - sort {Object} You can set the order how you want to get back the projects
+  * callback {Function} A function to be called if the request succeeds
+  * onErrorCB {Function} A function to be called if the request fails
+
+Compared to listProjects, listAndCountProjects' response is an object with two properties: count and response. The first is the number of entries which satisfies the query, the second is the actual array of items. The count property will hold a value if and only if you set the limit and skip property.
+
+___
 
 ### edmDesignerApi.createProject(data, callback, onErrorCB)
 Creates a new project (a new e-mail template).
