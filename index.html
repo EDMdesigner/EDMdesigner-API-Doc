@@ -174,7 +174,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul><p>The response is an array of projects.</p>
+
+<h4>
 <a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -191,12 +193,34 @@
 </code></pre>
 
 <hr><h3>
+<a name="edmdesignerapilistandcountprojectsquery-callback-onerrorcb" class="anchor" href="#edmdesignerapilistandcountprojectsquery-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.listAndCountProjects([query], callback, onErrorCB)</h3>
+
+<p>Lists the projects of the actual user.</p>
+
+<h4>
+<a name="parameters-1" class="anchor" href="#parameters-1"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>query {Object} /OPTIONAL/ You can set the parameters of the db search (you have to use the moongose.js query syntax, please check their <a href="http://mongoosejs.com/docs/guide.html">documentation</a> for more information)
+
+<ul>
+<li>find {Object} You can set the search terms. (For example: you can list only those projects which title starts with "foo": var query = {find: {title: {$regex: "foo.*"}})</li>
+<li>skip {Number} The number of project the search will skip </li>
+<li>limit {Number} The number of projects you want to get back</li>
+<li>sort {Object} You can set the order how you want to get back the projects</li>
+</ul>
+</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><p>Compared to listProjects, listAndCountProjects' response is an object with two properties: count and response. The first is the number of entries which satisfies the query, the second is the actual array of items. The count property will hold a value if and only if you set the limit and skip property.</p>
+
+<hr><h3>
 <a name="edmdesignerapicreateprojectdata-callback-onerrorcb" class="anchor" href="#edmdesignerapicreateprojectdata-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createProject(data, callback, onErrorCB)</h3>
 
 <p>Creates a new project (a new e-mail template).</p>
 
 <h4>
-<a name="parameters-1" class="anchor" href="#parameters-1"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-2" class="anchor" href="#parameters-2"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>data {Object}
@@ -238,7 +262,7 @@
 <p>Creates the exact copy of the project with the ID specified in projectId.</p>
 
 <h4>
-<a name="parameters-2" class="anchor" href="#parameters-2"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-3" class="anchor" href="#parameters-3"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
@@ -268,7 +292,7 @@
 <p>This function is similar to the <a href="#edmdesignerapiduplicateprojectprojectid-callback-onerrorcb">duplicateProject</a> function, expect whit this function you can define the the title and the description of the new (copy) project. The user can only create the new project from one of his/her own project.</p>
 
 <h4>
-<a name="parameters-3" class="anchor" href="#parameters-3"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-4" class="anchor" href="#parameters-4"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
@@ -306,7 +330,7 @@
 <p>Removes a project.</p>
 
 <h4>
-<a name="parameters-4" class="anchor" href="#parameters-4"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-5" class="anchor" href="#parameters-5"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
@@ -336,7 +360,7 @@
 <p>Opens a project.</p>
 
 <h4>
-<a name="parameters-5" class="anchor" href="#parameters-5"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-6" class="anchor" href="#parameters-6"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
@@ -373,7 +397,7 @@
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
 <h4>
-<a name="parameters-6" class="anchor" href="#parameters-6"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-7" class="anchor" href="#parameters-7"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
@@ -403,7 +427,7 @@
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
 <h4>
-<a name="parameters-7" class="anchor" href="#parameters-7"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-8" class="anchor" href="#parameters-8"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
@@ -441,7 +465,7 @@
 <p>You can get the default templates povided by EDMdesigner by calling this funciton.</p>
 
 <h4>
-<a name="parameters-8" class="anchor" href="#parameters-8"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-9" class="anchor" href="#parameters-9"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>callback {Function} A function to be called if the request succeeds</li>
@@ -471,7 +495,7 @@
 <p>Lists the groups you have</p>
 
 <h4>
-<a name="parameters-9" class="anchor" href="#parameters-9"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-10" class="anchor" href="#parameters-10"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>callback {Function} A function to be called if the request succeeds</li>
@@ -498,7 +522,7 @@
 <p>Creates a new group</p>
 
 <h4>
-<a name="parameters-10" class="anchor" href="#parameters-10"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-11" class="anchor" href="#parameters-11"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>data {Object}
@@ -537,7 +561,7 @@
 <p>Gets a specified group</p>
 
 <h4>
-<a name="parameters-11" class="anchor" href="#parameters-11"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-12" class="anchor" href="#parameters-12"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#edmdesignerapilistgroupscallback-onerrorcb">edmDesignerAPI.listGroups</a> function.</li>
@@ -574,7 +598,7 @@
 <p>Updates a specified group's name or the features it provides or both of these two at the same time. You can even add custom informations to the group.</p>
 
 <h4>
-<a name="parameters-12" class="anchor" href="#parameters-12"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-13" class="anchor" href="#parameters-13"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#edmdesignerapilistgroupscallback-onerrorcb">edmDesignerAPI.listGroups</a> function.</li>
@@ -636,7 +660,7 @@
 <p>Lists the users you have</p>
 
 <h4>
-<a name="parameters-13" class="anchor" href="#parameters-13"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-14" class="anchor" href="#parameters-14"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>callback {Function} A function to be called if the request succeeds</li>
@@ -669,7 +693,7 @@
 <p>Creates a new user</p>
 
 <h4>
-<a name="parameters-14" class="anchor" href="#parameters-14"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-15" class="anchor" href="#parameters-15"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>data {Object}
@@ -709,7 +733,7 @@
 <p>Creates multiple user</p>
 
 <h4>
-<a name="parameters-15" class="anchor" href="#parameters-15"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-16" class="anchor" href="#parameters-16"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>data {Array} It contains user objects. User object should have the following properties:
@@ -752,7 +776,7 @@
 <p>Gets a specified user</p>
 
 <h4>
-<a name="parameters-16" class="anchor" href="#parameters-16"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-17" class="anchor" href="#parameters-17"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>userId {String} The id of the user.</li>
@@ -789,7 +813,7 @@
 <p>Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to this user too.</p>
 
 <h4>
-<a name="parameters-17" class="anchor" href="#parameters-17"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-18" class="anchor" href="#parameters-18"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>userId {String} The id of the user. </li>
@@ -831,7 +855,7 @@
 <p>Deletes a specified user</p>
 
 <h4>
-<a name="parameters-18" class="anchor" href="#parameters-18"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-19" class="anchor" href="#parameters-19"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>userId {String} The id of the user.</li>
@@ -864,7 +888,7 @@
 <p>Get a specified project as json. The result will contain almost every information about the selected project.</p>
 
 <h4>
-<a name="parameters-19" class="anchor" href="#parameters-19"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-20" class="anchor" href="#parameters-20"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String}  The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
