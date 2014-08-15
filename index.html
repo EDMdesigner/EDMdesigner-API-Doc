@@ -1934,7 +1934,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <p>Basic operations: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and <a href="#configure-api-servers-gallery">configure</a> our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the <a href="#configure-api-servers-gallery">gallery configuration</a>) .</p>
 
-<p>We will create a md5 hash from a timestamp and your magic word. This two (the hash and the timestamp) will be sent to you in each of our request. You recreate the hash in your server side and compare the two hash. With this methode you can ensure that the request really came from us.</p>
+<p>We will create a md5 hash from a timestamp and your magic word (The right order of the string concatenation: timestam + magic word). This two (the hash and the timestamp) will be sent to you in each of our requests (in the query). You recreate the hash in your server side and compare the two hashes. With this method you can ensure that the request really came from us.</p>
 
 <hr><h3>
 <a name="upload-route" class="anchor" href="#upload-route"><span class="octicon octicon-link"></span></a>Upload route</h3>
@@ -1947,7 +1947,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <ul>
 <li>The "userId" will contain the id of the user (who wants to upload the image).</li>
-<li>The "hash" will be a string we use for authenticat ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us. </li>
+<li>The "hash" will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (the right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us. </li>
 <li>The "time" will be the timestamp we used for creating the hash </li>
 </ul><p>The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.<br>
 Please note that if you use php on your server side then checking the content-tpye of the uploaded image with the $_Files["file"]["type"] is not possible (it will be Application/octet-stream) but if you use our hash to authenticate us, then you do not have to worry about the uploaded file. We will make sure that it will be what it has to be.</p>
@@ -1977,13 +1977,16 @@ Please note that if you use php on your server side then checking the content-tp
 
 <p>Type: POST</p>
 
-<p>We will post an object with two parameters:</p>
+<p>There will be "hash" and "time" fields in the query of the request:</p>
+
+<ul>
+<li>The "hash" will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (the right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us.</li>
+<li>The "time" will be the timestamp we used for creating the hash </li>
+</ul><p>We will post an object with two parameters:</p>
 
 <ul>
 <li>url {String} The url of the deleted image</li>
 <li>userId {String} The id of the user who deleted the image.</li>
-<li>hash {String} Hash we use for authenticat ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us.</li>
-<li>time {String} The timestamp we used for creating the hash</li>
 </ul><p>Your response to our post request should be 200. (HTTP status code)<br>
 Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:</p>
 
@@ -2001,14 +2004,17 @@ Or if you want to response with some kind of error (for example an error message
 
 <p>Type: POST  </p>
 
-<p>We will post an object whit the following parameters:</p>
+<p>There will be "hash" and "time" fields in the query of the request:</p>
+
+<ul>
+<li>The "hash" will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (he right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us. </li>
+<li>The "time" will be the timestamp we used for creating the hash </li>
+</ul><p>We will post an object whit the following parameters:</p>
 
 <ul>
 <li>urls {Array} It contains the urls of the images which are used in the template</li>
 <li>from_userId {String} The id of the users from who we want to copy the template to the target user</li>
 <li>target_userId {String} The id of the user who will get the new template. (This user needs the new urls)</li>
-<li>hash {String} Hash we use for authenticat ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us.</li>
-<li>time {String} The timestamp we used for creating the hash</li>
 </ul><p>Your response to our post request should be an object. The object should have an "urls" property which should be another object. This object should have the following "key - value" pairs: the old url (which you get from the urls array we sent with the post request) should be the key and the value should be the parameters of the new image (like the one you need to send beack in the <a href="#upload-route">upload route</a>:</p>
 
 <ul>
@@ -2715,7 +2721,7 @@ The structure is very important , because every templates and data have to be as
 <p>You can assign structures to:  </p>
 
 <ul>
-<li>all of your users (<a href="#add-structures-to-everyone">add to apiPartner</a>)</li>
+<li>all of your users (<a href="#add-structures-to-everyone">add to apiClientInstance</a>)</li>
 <li>a specified group (<a href="#add-structures-to-group">add to group</a>)</li>
 <li>a specified user or users (<a href="#add-structures-to-users">add to user</a>)</li>
 </ul><p>A structure object should have the following properties:</p>
@@ -2750,7 +2756,7 @@ You can assign any number of templates to a structure.  </p>
 <p>You can create templates to:</p>
 
 <ul>
-<li>all of your users (<a href="#add-templates-to-everyone">add to apiPartner</a>)</li>
+<li>all of your users (<a href="#add-templates-to-everyone">add to apiClientInstance</a>)</li>
 <li>a specified group (<a href="#add-templates-to-group">add to group</a>)</li>
 <li>a specified user or users (<a href="#add-templates-to-users">add to user</a>)</li>
 </ul><p>A template object should have the following properties:</p>
@@ -3022,7 +3028,7 @@ If you want to know what exactly a template is good for, please read the <a href
 You can save custom informations to:  </p>
 
 <ul>
-<li>yourself /apiPartner/ (<a href="#add-custom-data-to-yourself">addCustomData</a>)</li>
+<li>yourself /apiClientInstance/ (<a href="#add-custom-data-to-yourself">addCustomData</a>)</li>
 <li>users (update user <a href="#update-user">server side</a> or <a href="#edmdesignerapiupdateuseruserid-data-callback-onerrorcb">client side</a>)</li>
 <li>groups (update group <a href="#update-one-group">server side</a> or <a href="#edmdesignerapiupdategroupgroupid-data-callback-onerrorcb">client side</a>)</li>
 <li>project (update project <a href="#update-information">server side</a> or <a href="#edmdesignerapiupdateprojectinfoprojectid-data-callback-onerrorcb">client side</a>)<br>
@@ -3030,7 +3036,7 @@ You can save custom informations to:  </p>
 </ul><hr><h3>
 <a name="add-custom-data-to-yourself" class="anchor" href="#add-custom-data-to-yourself"><span class="octicon octicon-link"></span></a>Add Custom Data to yourself</h3>
 
-<p>You can save any kind of custom information to your apiPartner database entry</p>
+<p>You can save any kind of custom information to your apiClientInstance database entry</p>
 
 <h4>
 <a name="type-40" class="anchor" href="#type-40"><span class="octicon octicon-link"></span></a>Type</h4>
