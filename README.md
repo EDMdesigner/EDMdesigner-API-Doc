@@ -1970,7 +1970,7 @@ The structure is the main part of the dynamic element. It specifies the type of 
 The structure is very important , because every templates and data have to be assign to one of your structures!
 
 You can assign structures to:  
-  - all of your users ([add to apiPartner](#add-structures-to-everyone))
+  - all of your users ([add to apiClientInstance](#add-structures-to-everyone))
   - a specified group ([add to group](#add-structures-to-group))
   - a specified user or users ([add to user](#add-structures-to-users))
 
@@ -2001,7 +2001,7 @@ The template is responsible for the visual appearance of a dynamic element. A te
 You can assign any number of templates to a structure.  
 
 You can create templates to:
-  - all of your users ([add to apiPartner](#add-templates-to-everyone))
+  - all of your users ([add to apiClientInstance](#add-templates-to-everyone))
   - a specified group ([add to group](#add-templates-to-group))
   - a specified user or users ([add to user](#add-templates-to-users))
 
@@ -2198,7 +2198,7 @@ ___
 ### Custom Data
 If you want to save any kind of plus information for some of your data you can do it with using the customData field
 You can save custom informations to:  
-  - yourself /apiPartner/ ([addCustomData](#add-custom-data-to-yourself))
+  - yourself /apiClientInstance/ ([addCustomData](#add-custom-data-to-yourself))
   - users (update user [server side](#update-user) or [client side](#edmdesignerapiupdateuseruserid-data-callback-onerrorcb))
   - groups (update group [server side](#update-one-group) or [client side](#edmdesignerapiupdategroupgroupid-data-callback-onerrorcb))
   - project (update project [server side](#update-information) or [client side](#edmdesignerapiupdateprojectinfoprojectid-data-callback-onerrorcb))  
@@ -2206,7 +2206,7 @@ You can save custom informations to:
 ___
 
 ### Add Custom Data to yourself
-You can save any kind of custom information to your apiPartner database entry
+You can save any kind of custom information to your apiClientInstance database entry
 
 ####Type
   + POST
