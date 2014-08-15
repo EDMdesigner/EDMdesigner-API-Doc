@@ -1378,7 +1378,8 @@ If you want to host the uploaded images yourself and want to use your other host
 
 Basic operations: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and [configure](#configure-api-servers-gallery) our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the [gallery configuration](#configure-api-servers-gallery)) .
 
-We will create a md5 hash from a timestamp and your magic word. This two (the hash and the timestamp) will be sent to you in each of our requests (in the query). You recreate the hash in your server side and compare the two hashes. With this method you can ensure that the request really came from us.
+We will create a md5 hash from a timestamp and your magic word (The right order of the string concatenation: timestam + magic word). This two (the hash and the timestamp) will be sent to you in each of our requests (in the query). You recreate the hash in your server side and compare the two hashes. With this method you can ensure that the request really came from us.
+
 
 ___
 
@@ -1389,7 +1390,7 @@ Type: POST
 
 We will upload the images as the following. There will be "userId", "hash" and "time" fields in the query of the request:
   - The "userId" will contain the id of the user (who wants to upload the image).
-  - The "hash" will be a string we use for authenticate ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us. 
+  - The "hash" will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (the right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us. 
   - The "time" will be the timestamp we used for creating the hash 
 
 The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.  
@@ -1419,7 +1420,7 @@ You should implement a route on your server side which we can use for deleting i
 Type: POST
 
 There will be "hash" and "time" fields in the query of the request:
-  - The "hash" will be a string we use for authenticate ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us. 
+  - The "hash" will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (the right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us.
   - The "time" will be the timestamp we used for creating the hash 
 
 We will post an object with two parameters:
@@ -1443,7 +1444,7 @@ IF you want to copy a project from a user to an other and want to copy the image
 Type: POST  
 
 There will be "hash" and "time" fields in the query of the request:
-  - The "hash" will be a string we use for authenticate ourself. We concatenate your magic world with a timestamp and create an md5 hash from it. With this hash you can ensure that the request came from us. 
+  - The "hash" will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (he right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us. 
   - The "time" will be the timestamp we used for creating the hash 
 
 
