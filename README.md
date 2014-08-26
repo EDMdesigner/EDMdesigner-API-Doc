@@ -308,7 +308,7 @@ Generates the bulletproof responsive HTML e-mail based on the projectId.
 ___
 	
 ### edmDesignerApi.getDefaultTemplates(callback, onErrorCB)
-You can get the default templates povided by EDMdesigner by calling this funciton.
+You can get the default templates povided by your templater user by calling this funciton. It means that if you have a user called templater, this route will result its projects.
 #### Parameters:
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
