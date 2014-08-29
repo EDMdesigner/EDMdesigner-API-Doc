@@ -920,6 +920,7 @@ An object with the following two arrays:
     - text {String} The reason why it cannot be assigned
   - saved {Array} It contains the objects of the successfully saved structures  
   - err {String} only in case of error, contains the error description
+
 ___
 
 
@@ -1709,10 +1710,10 @@ Project object:
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
-____
+___
 
 ###Get Project
-Get a specified project as json. The result  will contain almost every information about the selected project.
+Get a specified project as json. The result will contain almost every information about the selected project.
 
 #####Type
   + GET
@@ -1734,6 +1735,29 @@ Project object:
     - header {Object} The header of the template
     - footer {Object} The footer of the template 
   - customData {Object} Your custom data
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+###Set Project
+Sets the root of a selected user's selected project's document. 
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/project/setProject
+
+####Parameters (you should post):
+  * userId {String} /REQUIRED/ the id of the user whose project you want to update
+  * projectId {Sring} /REQUIRED/ the id of the project you want to update
+  * documentRoot {Object} /REQUIRED/ The EDM template json you want to set to the selected project. It should start with [Root](#root) elem
+
+####Response:
+Success object:
+  - success {boolean} 
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -2124,6 +2148,7 @@ If you want to know what exactly a structure is good for, please read the [dynam
 An object with the followinf property: 
   - result {Array} The list of your structures.
   - err {String} only in case of error, contains the error description
+
 ___
 
 ### Delete Structure
@@ -2166,8 +2191,8 @@ An object containing two arrays:
     - text {String} The reason why it cannot be assigned
   - saved {Array} It contains the objects of the successfully saved structures  
   - err {String} only in case of error, contains the error description
-___
 
+___
 
 ### Add templates to everyone
 You can assign templates to all of your users. If you do so, then each of your user will be able to use the given templates.  
