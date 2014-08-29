@@ -1719,7 +1719,10 @@ Get a specified project as json. The result will contain almost every informatio
   + GET
 
 #####Route
-  + //api.edmdesigner.com/json/project/getProject
+  + //api.edmdesigner.com/json/project/getProject/:id
+
+####Parameters (in the route):
+  * :id {String} The id of the target project
 
 ####Response:
 Project object:
