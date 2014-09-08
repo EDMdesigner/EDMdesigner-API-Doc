@@ -2281,7 +2281,7 @@ You can add custom strings to
 - or to users of a specified group.
 
 The custom strings can be added by bunch of custom string items. Each bunch contains a title what will be displayed as the label of the drop-down list in the text editor, and an id, what provides the identification. 
-The id can not contain any special characters, the title is a string or a language object. In case of language object it what must contain 'en' property.
+The id can not contain any special characters, the title is a string or a localization object. In case of localization object it what must contain 'en' property.
 Within an item the label property has the same rules.
 
 A valid custom string object looks like this:
@@ -2306,24 +2306,78 @@ A valid custom string object looks like this:
 	};
 ___
 
-### Add Custom Data to yourself
-You can save any kind of custom information to your apiClientInstance database entry
+### Add Custom Strings to all of the users of the apiClientInstance
 
 ####Type
   + POST
 
 ####Route
-  + //api.edmdesigner.com/json/general/saveCustomData
+  + //api.edmdesigner.com/json/customStrings/add
 
 #### Parameters (you should post):
-  * customData {Object} The custom informations you want to save
+  * id {String} The identification of the custom strings bunch
+  * title {String or  localization Object with 'en' property} the displayed name of the bunch
+  * items {Array} Array of customStrings Object, see here: 
 
 ####Response
 Http status code 200
+- id {String} the saved custom strings id
+- customStrings {Object} the saved custom stings object
+- overwritten {Boolean} describes if the save updated an existing bunch or created a new one 
   
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
+___
+
+### Add Custom Strings to specified users
+
+####Type
+  + POST
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/addToUsers
+
+#### Parameters (you should post):
+  * users {Array} Array of the userIds
+  * id {String} The identification of the custom strings bunch
+  * title {String or  localization Object with 'en' property} the displayed name of the bunch
+  * items {Array} Array of customStrings Object, see here: 
+
+####Response
+Http status code 200
+- updatedUsers {Array} list of objects with the property of:
+       - id {String} the user id
+       - updated {Boolean} describes if the save updated an existing bunch or created a new one 
+- id {String} the saved custom strings id
+- customStrings {Object} the saved custom stings object
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+
+### Add Custom Strings to all of the users of the apiClientInstance
+
+####Type
+  + POST
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/addToGroup
+
+#### Parameters (you should post):
+  * group {String} MongoDb ObjectId (24 chars length id of the group)
+  * id {String} The identification of the custom strings bunch
+  * title {String or  localization Object with 'en' property} the displayed name of the bunch
+  * items {Array} Array of customStrings Object, see here: 
+
+####Response
+Http status code 200
+- id {String} the saved custom strings id
+- customStrings {Object} the saved custom stings object
+- overwritten {Boolean} describes if the save updated an existing bunch or created a new one 
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
 ___
 
 ##User routes
