@@ -29,6 +29,7 @@ We provide example implementations that include the handshaking as well. You can
     * _[ComplexElements](#complexelements)_  
     * _[Dynamic Elements](#dynamic-elements)_  
     * _[Custom Data](#custom-data)_
+    * _[Custom Strings](#custom-strings)_
   2. [User routes](#user-routes)  
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
@@ -2267,6 +2268,58 @@ You can get the custom informations you previously saved for yourself
 ####Response
 An object containing your custom data
   - customData {Object} The custom informations you saved for yourself
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Custom Strings
+The custom strings are an option to provide predefined texts to your users what they can insert while editing text contents.
+You can add custom strings to 
+- all of your users 
+- to specified users
+- or to users of a specified group.
+
+The custom strings can be added by bunch of custom string items. Each bunch contains a title what will be displayed as the label of the drop-down list in the text editor, and an id, what provides the identification. 
+The id can not contain any special characters, the title is a string or a language object. In case of language object it what must contain 'en' property.
+Within an item the label property has the same rules.
+
+A valid custom string object looks like this:
+
+ 	var customStringsObject = {
+		id: 'validId',
+		title: {
+			'en': 'EDM beer'
+		},
+		items: [
+                                  {
+                                        replacer: '##Svijany##',
+                                        label: 'good beer 1'            
+                                  },
+                                  {
+                                        replacer: '##Poutník##',
+                                        label: {
+                                                       en: 'good beer 2'
+                                                   }
+                                  }
+		]
+	};
+___
+
+### Add Custom Data to yourself
+You can save any kind of custom information to your apiClientInstance database entry
+
+####Type
+  + POST
+
+####Route
+  + //api.edmdesigner.com/json/general/saveCustomData
+
+#### Parameters (you should post):
+  * customData {Object} The custom informations you want to save
+
+####Response
+Http status code 200
   
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
