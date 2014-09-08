@@ -2289,7 +2289,7 @@ ___
   * users {Array} Array of the userIds
   * id {String} The identification of the custom strings bunch
   * title {String or  localization Object with 'en' property} the displayed name of the bunch
-  * items {Array} Array of customStrings Object, see here: 
+  * items {Array} Array of customStrings Object, [see here](#example-of-custom-string-object)
 
 ####Response
 Http status code 200
@@ -2315,7 +2315,7 @@ Or it can be an error object:
   * group {String} MongoDb ObjectId (24 chars length id of the group)
   * id {String} The identification of the custom strings bunch
   * title {String or  localization Object with 'en' property} the displayed name of the bunch
-  * items {Array} Array of customStrings Object, see here: 
+  * items {Array} Array of customStrings Object, [see here](#example-of-custom-string-object)
 
 ####Response
 Http status code 200
