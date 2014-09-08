@@ -2317,7 +2317,7 @@ ___
 #### Parameters (you should post):
   * id {String} The identification of the custom strings bunch
   * title {String or  localization Object with 'en' property} the displayed name of the bunch
-  * items {Array} Array of customStrings Object, see here: 
+  * items {Array} Array of customStrings Object, see here: TODO: link
 
 ####Response
 Http status code 200
@@ -2375,6 +2375,105 @@ Http status code 200
 - id {String} the saved custom strings id
 - customStrings {Object} the saved custom stings object
 - overwritten {Boolean} describes if the save updated an existing bunch or created a new one 
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Get Custom Strings of all of the users of the apiClientInstance
+
+####Type
+  + GET
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/getCustomStringsOfApiInstance
+
+#### Parameters (you should post):
+  no parameters needed
+
+####Response
+Http status code 200
+- err {null} null  value
+- the custom string objects as the property names are the id of the custom strings bunch
+
+example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: 'csTitle'
+         },
+        items: [
+            ...items of custom string Objects....
+        ]
+   }
+}
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Get Custom Strings of a specified user
+
+####Type
+  + GET
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/getCustomStringsOfUser
+
+#### Parameters (you should post):
+ * userId {String} the id of the user
+
+####Response
+Http status code 200
+- err {null} null  value
+- the custom string objects as the property names are the id of the custom strings bunch
+
+example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: 'csTitle'
+         },
+        items: [
+            ...items of custom string Objects....
+        ]
+   }
+}
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Get Custom Strings of a specified group
+
+####Type
+  + GET
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/getCustomStringsOfGroup
+
+#### Parameters (you should post):
+ * groupId {String} mongoDb ObjectID of the id group
+
+####Response
+Http status code 200
+- err {null} null  value
+- the custom string objects as the property names are the id of the custom strings bunch
+
+example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: 'csTitle'
+         },
+        items: [
+            ...items of custom string Objects....
+        ]
+   }
+}
   
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
