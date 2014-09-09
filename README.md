@@ -178,7 +178,7 @@ This function is similar to the [duplicateProject](#edmdesignerapiduplicateproje
   * data {Object}
     * data.title {String} The title of the new project
     * data.description {String} The description of the new project
-    * * data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+    * data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -192,6 +192,41 @@ This function is similar to the [duplicateProject](#edmdesignerapiduplicateproje
 				});
 			});
 		}, onErrorCB);
+		
+		function onErrorCB(error) {
+			console.log(error);
+		}
+	</script>
+
+___
+
+### edmDesignerApi.createFromDefaults(projectId, data, callback, onErrorCB)
+The user can create a new project from one of the templater user's projects.
+#### Parameters:
+  * projectId {String} The id of the project. The project's owner hs to be your templater user. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * data {Object}
+    * data.title {String} The title of the new project
+    * data.description {String} The description of the new project
+    * data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+  * callback {Function} A function to be called if the request succeeds
+  * onErrorCB {Function} A function to be called if the request fails
+
+#### Example:
+	
+	<script>
+		var templaterProjectId = null;
+		
+		initEDMdesignerPlugin("Templater", function(edmDesignerApi) {
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				templaterProjectId = result._id;
+			});
+		}, onErrorCB);
+		
+		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+
+			edmDesignerApi.createFromDefaults(templaterProjectId, {title: "createFromDefaults example", description: "Created with createFromDefaults function"}, function(result) {
+				//the result is the newly created project's object or error obejct with err property
+			});
 		
 		function onErrorCB(error) {
 			console.log(error);
@@ -2368,6 +2403,33 @@ It is very similar to the duplicate route, the only difference is that here you 
 
 #### Parameters (you should post):
   * _id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
+  * title {String} The title of the new project
+  * description {String} The description of the new project
+  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+
+#### Answer:
+Project object:
+  - _id {String} The MongoDB _id of the new template
+  - title {String} The title of the new template
+  - description {String} The description of the new template
+  - document {Object} An object, which represents the new template
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Create from defaults
+The user can copy a project from the templater user's projects.
+
+#####Type
+  + Post
+
+#####Route
+  + //api.edmdesigner.com/json/project/createFromDefaults
+
+#### Parameters (you should post):
+  * _id {String} The id of the project. The project owner has to be the templater user. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
   * title {String} The title of the new project
   * description {String} The description of the new project
   * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
