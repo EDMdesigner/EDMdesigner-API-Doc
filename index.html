@@ -229,7 +229,7 @@
 <li>data.title {String} The title of the new project.</li>
 <li>data.description {String} The description of the new project.</li>
 <li>data.document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.</li>
-<li>* data.customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>data.customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul>
 </li>
 <li>callback {Function} A function to be called if the request succeeds
@@ -301,7 +301,7 @@
 <ul>
 <li>data.title {String} The title of the new project</li>
 <li>data.description {String} The description of the new project</li>
-<li>* data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul>
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
@@ -325,19 +325,63 @@
 </code></pre>
 
 <hr><h3>
+<a name="edmdesignerapicreatefromdefaultsprojectid-data-callback-onerrorcb" class="anchor" href="#edmdesignerapicreatefromdefaultsprojectid-data-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createFromDefaults(projectId, data, callback, onErrorCB)</h3>
+
+<p>The user can create a new project from one of the templater user's projects.</p>
+
+<h4>
+<a name="parameters-5" class="anchor" href="#parameters-5"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+
+<ul>
+<li>projectId {String} The id of the project. The project's owner hs to be your templater user. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
+<li>data {Object}
+
+<ul>
+<li>data.title {String} The title of the new project</li>
+<li>data.description {String} The description of the new project</li>
+<li>data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
+</ul>
+</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul><h4>
+<a name="example-4" class="anchor" href="#example-4"><span class="octicon octicon-link"></span></a>Example:</h4>
+
+<pre><code>&lt;script&gt;
+    var templaterProjectId = null;
+
+    initEDMdesignerPlugin("Templater", function(edmDesignerApi) {
+        edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+            templaterProjectId = result._id;
+        });
+    }, onErrorCB);
+
+    initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+
+        edmDesignerApi.createFromDefaults(templaterProjectId, {title: "createFromDefaults example", description: "Created with createFromDefaults function"}, function(result) {
+            //the result is the newly created project's object or error obejct with err property
+        });
+
+    function onErrorCB(error) {
+        console.log(error);
+    }
+&lt;/script&gt;
+</code></pre>
+
+<hr><h3>
 <a name="edmdesignerapiremoveprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapiremoveprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.removeProject(projectId, callback, onErrorCB)</h3>
 
 <p>Removes a project.</p>
 
 <h4>
-<a name="parameters-5" class="anchor" href="#parameters-5"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-6" class="anchor" href="#parameters-6"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-4" class="anchor" href="#example-4"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-5" class="anchor" href="#example-5"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
@@ -360,7 +404,7 @@
 <p>Opens a project.</p>
 
 <h4>
-<a name="parameters-6" class="anchor" href="#parameters-6"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-7" class="anchor" href="#parameters-7"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
@@ -374,7 +418,7 @@
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-5" class="anchor" href="#example-5"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-6" class="anchor" href="#example-6"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
@@ -397,14 +441,14 @@
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
 <h4>
-<a name="parameters-7" class="anchor" href="#parameters-7"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-8" class="anchor" href="#parameters-8"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-6" class="anchor" href="#example-6"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-7" class="anchor" href="#example-7"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
@@ -427,7 +471,7 @@
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
 <h4>
-<a name="parameters-8" class="anchor" href="#parameters-8"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-9" class="anchor" href="#parameters-9"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
@@ -437,12 +481,13 @@
 <li>data.title {String} The new title of the project</li>
 <li>data.description {String} The new description of the project</li>
 <li>data.customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
 </ul>
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-7" class="anchor" href="#example-7"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-8" class="anchor" href="#example-8"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
@@ -465,13 +510,13 @@
 <p>You can get the default templates povided by your templater user by calling this funciton. It means that if you have a user called templater, this route will result its projects.</p>
 
 <h4>
-<a name="parameters-9" class="anchor" href="#parameters-9"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-10" class="anchor" href="#parameters-10"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-8" class="anchor" href="#example-8"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-9" class="anchor" href="#example-9"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
@@ -495,13 +540,13 @@
 <p>Lists the groups you have</p>
 
 <h4>
-<a name="parameters-10" class="anchor" href="#parameters-10"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-11" class="anchor" href="#parameters-11"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-9" class="anchor" href="#example-9"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-10" class="anchor" href="#example-10"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -522,7 +567,7 @@
 <p>Creates a new group</p>
 
 <h4>
-<a name="parameters-11" class="anchor" href="#parameters-11"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-12" class="anchor" href="#parameters-12"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>data {Object}
@@ -536,7 +581,7 @@
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-10" class="anchor" href="#example-10"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-11" class="anchor" href="#example-11"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -561,14 +606,14 @@
 <p>Gets a specified group</p>
 
 <h4>
-<a name="parameters-12" class="anchor" href="#parameters-12"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-13" class="anchor" href="#parameters-13"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#edmdesignerapilistgroupscallback-onerrorcb">edmDesignerAPI.listGroups</a> function.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-11" class="anchor" href="#example-11"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-12" class="anchor" href="#example-12"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -598,7 +643,7 @@
 <p>Updates a specified group's name or the features it provides or both of these two at the same time. You can even add custom informations to the group.</p>
 
 <h4>
-<a name="parameters-13" class="anchor" href="#parameters-13"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-14" class="anchor" href="#parameters-14"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#edmdesignerapilistgroupscallback-onerrorcb">edmDesignerAPI.listGroups</a> function.</li>
@@ -608,12 +653,13 @@
 <li>data.name {String} The name you want to give to the group</li>
 <li>data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
 <li>data.customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
 </ul>
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-12" class="anchor" href="#example-12"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-13" class="anchor" href="#example-13"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -660,13 +706,13 @@
 <p>Lists the users you have</p>
 
 <h4>
-<a name="parameters-14" class="anchor" href="#parameters-14"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-15" class="anchor" href="#parameters-15"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-13" class="anchor" href="#example-13"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-14" class="anchor" href="#example-14"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -693,7 +739,7 @@
 <p>Creates a new user</p>
 
 <h4>
-<a name="parameters-15" class="anchor" href="#parameters-15"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-16" class="anchor" href="#parameters-16"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>data {Object}
@@ -707,7 +753,7 @@
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-14" class="anchor" href="#example-14"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-15" class="anchor" href="#example-15"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -733,7 +779,7 @@
 <p>Creates multiple user</p>
 
 <h4>
-<a name="parameters-16" class="anchor" href="#parameters-16"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-17" class="anchor" href="#parameters-17"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>data {Array} It contains user objects. User object should have the following properties:
@@ -747,7 +793,7 @@
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-15" class="anchor" href="#example-15"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-16" class="anchor" href="#example-16"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -776,14 +822,14 @@
 <p>Gets a specified user</p>
 
 <h4>
-<a name="parameters-17" class="anchor" href="#parameters-17"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-18" class="anchor" href="#parameters-18"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>userId {String} The id of the user.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-16" class="anchor" href="#example-16"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-17" class="anchor" href="#example-17"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -813,7 +859,7 @@
 <p>Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to this user too.</p>
 
 <h4>
-<a name="parameters-18" class="anchor" href="#parameters-18"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-19" class="anchor" href="#parameters-19"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>userId {String} The id of the user. </li>
@@ -822,12 +868,13 @@
 <ul>
 <li>data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#edmdesignerapilistgroupscallback-onerrorcb">edmDesignerAPI.listGroups</a> function.</li>
 <li>data.customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
 </ul>
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-17" class="anchor" href="#example-17"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-18" class="anchor" href="#example-18"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -855,14 +902,14 @@
 <p>Deletes a specified user</p>
 
 <h4>
-<a name="parameters-19" class="anchor" href="#parameters-19"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-20" class="anchor" href="#parameters-20"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>userId {String} The id of the user.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-18" class="anchor" href="#example-18"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-19" class="anchor" href="#example-19"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -888,14 +935,14 @@
 <p>Get a specified project as json. The result will contain almost every information about the selected project.</p>
 
 <h4>
-<a name="parameters-20" class="anchor" href="#parameters-20"><span class="octicon octicon-link"></span></a>Parameters:</h4>
+<a name="parameters-21" class="anchor" href="#parameters-21"><span class="octicon octicon-link"></span></a>Parameters:</h4>
 
 <ul>
 <li>projectId {String}  The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
 </ul><h4>
-<a name="example-19" class="anchor" href="#example-19"><span class="octicon octicon-link"></span></a>Example:</h4>
+<a name="example-20" class="anchor" href="#example-20"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
     initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
@@ -1090,6 +1137,7 @@
 <li>name {String} The name you want to give to the group</li>
 <li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
 <li>customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
 </ul><h4>
 <a name="response-3" class="anchor" href="#response-3"><span class="octicon octicon-link"></span></a>Response:</h4>
 
@@ -1520,6 +1568,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>id {String} The id of the user. </li>
 <li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
 </ul><h4>
 <a name="response-14" class="anchor" href="#response-14"><span class="octicon octicon-link"></span></a>Response:</h4>
 
@@ -3088,6 +3137,7 @@ You can save custom informations to:  </p>
 
 <ul>
 <li>customData {Object} The custom informations you want to save</li>
+<li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
 </ul><h4>
 <a name="response-41" class="anchor" href="#response-41"><span class="octicon octicon-link"></span></a>Response</h4>
 
@@ -3284,17 +3334,54 @@ You can save custom informations to:  </p>
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
 </ul><hr><h3>
-<a name="remove" class="anchor" href="#remove"><span class="octicon octicon-link"></span></a>Remove</h3>
+<a name="create-from-defaults" class="anchor" href="#create-from-defaults"><span class="octicon octicon-link"></span></a>Create from defaults</h3>
 
-<p>Removes a project.</p>
+<p>The user can copy a project from the templater user's projects.</p>
 
 <h5>
 <a name="type-47" class="anchor" href="#type-47"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
-<li>DELETE</li>
+<li>Post</li>
 </ul><h5>
 <a name="route-47" class="anchor" href="#route-47"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/createFromDefaults</li>
+</ul><h4>
+<a name="parameters-you-should-post-34" class="anchor" href="#parameters-you-should-post-34"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>_id {String} The id of the project. The project owner has to be the templater user. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
+<li>title {String} The title of the new project</li>
+<li>description {String} The description of the new project</li>
+<li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
+</ul><h4>
+<a name="answer-3" class="anchor" href="#answer-3"><span class="octicon octicon-link"></span></a>Answer:</h4>
+
+<p>Project object:</p>
+
+<ul>
+<li>_id {String} The MongoDB _id of the new template</li>
+<li>title {String} The title of the new template</li>
+<li>description {String} The description of the new template</li>
+<li>document {Object} An object, which represents the new template</li>
+</ul><p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="remove" class="anchor" href="#remove"><span class="octicon octicon-link"></span></a>Remove</h3>
+
+<p>Removes a project.</p>
+
+<h5>
+<a name="type-48" class="anchor" href="#type-48"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>DELETE</li>
+</ul><h5>
+<a name="route-48" class="anchor" href="#route-48"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/remove/:id</li>
@@ -3318,12 +3405,12 @@ You can save custom informations to:  </p>
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
 <h5>
-<a name="type-48" class="anchor" href="#type-48"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-49" class="anchor" href="#type-49"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-48" class="anchor" href="#route-48"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-49" class="anchor" href="#route-49"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/generate/:id</li>
@@ -3347,12 +3434,12 @@ You can save custom informations to:  </p>
 <p>Gets the title of the selected project.</p>
 
 <h5>
-<a name="type-49" class="anchor" href="#type-49"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-50" class="anchor" href="#type-50"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-49" class="anchor" href="#route-49"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-50" class="anchor" href="#route-50"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/title/:id</li>
@@ -3378,25 +3465,26 @@ You can save custom informations to:  </p>
 <p>Updates the title or/and the description of the specified project. You can add custom informations to this project too.</p>
 
 <h5>
-<a name="type-50" class="anchor" href="#type-50"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-51" class="anchor" href="#type-51"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-50" class="anchor" href="#route-50"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-51" class="anchor" href="#route-51"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/updateInfo</li>
 </ul><h4>
-<a name="parameters-you-should-post-34" class="anchor" href="#parameters-you-should-post-34"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-35" class="anchor" href="#parameters-you-should-post-35"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 <li>title {String} The title of the new project.</li>
 <li>description {String} The description of the new project.</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
 </ul><h4>
-<a name="answer-3" class="anchor" href="#answer-3"><span class="octicon octicon-link"></span></a>Answer:</h4>
+<a name="answer-4" class="anchor" href="#answer-4"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <ul>
 <li>success {Boolean} It should be true if the update was successful</li>
