@@ -124,7 +124,7 @@ Creates a new project (a new e-mail template).
     * data.title {String} The title of the new project.
     * data.description {String} The description of the new project.
     * data.document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.
-    * * data.customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+    * data.customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
     * the result param is an object in which you can find an _id property, which identifies the newly created project
     * result._id {String} The id of the new project. (This is a [MongoDB](http://www.mongodb.org/) id.)
@@ -178,7 +178,7 @@ This function is similar to the [duplicateProject](#edmdesignerapiduplicateproje
   * data {Object}
     * data.title {String} The title of the new project
     * data.description {String} The description of the new project
-    * * data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+    * data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -192,6 +192,41 @@ This function is similar to the [duplicateProject](#edmdesignerapiduplicateproje
 				});
 			});
 		}, onErrorCB);
+		
+		function onErrorCB(error) {
+			console.log(error);
+		}
+	</script>
+
+___
+
+### edmDesignerApi.createFromDefaults(projectId, data, callback, onErrorCB)
+The user can create a new project from one of the templater user's projects.
+#### Parameters:
+  * projectId {String} The id of the project. The project's owner hs to be your templater user. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
+  * data {Object}
+    * data.title {String} The title of the new project
+    * data.description {String} The description of the new project
+    * data.customData {Object} You can add custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+  * callback {Function} A function to be called if the request succeeds
+  * onErrorCB {Function} A function to be called if the request fails
+
+#### Example:
+	
+	<script>
+		var templaterProjectId = null;
+		
+		initEDMdesignerPlugin("Templater", function(edmDesignerApi) {
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+				templaterProjectId = result._id;
+			});
+		}, onErrorCB);
+		
+		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+
+			edmDesignerApi.createFromDefaults(templaterProjectId, {title: "createFromDefaults example", description: "Created with createFromDefaults function"}, function(result) {
+				//the result is the newly created project's object or error obejct with err property
+			});
 		
 		function onErrorCB(error) {
 			console.log(error);
@@ -286,6 +321,7 @@ Generates the bulletproof responsive HTML e-mail based on the projectId.
     * data.title {String} The new title of the project
     * data.description {String} The new description of the project
     * data.customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+    * data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -425,6 +461,7 @@ Updates a specified group's name or the features it provides or both of these tw
      * data.name {String} The name you want to give to the group
      * data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
      * data.customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
+     * data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -602,6 +639,7 @@ Updates a specified user. Only the group (which the user belongs) can be changed
   * data {Object}
     * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
     * data.customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
+    * data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
@@ -815,6 +853,7 @@ Updates a specified group's name or the features it provides or both of these tw
    * name {String} The name you want to give to the group
    * featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
    * customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
+   * override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
 
 ####Response:
 An object:
@@ -1094,6 +1133,7 @@ Updates a specified user. Only the group (which the user belongs) can be changed
    * id {String} The id of the user. 
    * group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
    * customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
+   * override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
 
 ####Response:
 User object:
@@ -2245,6 +2285,7 @@ You can save any kind of custom information to your apiClientInstance database e
 
 #### Parameters (you should post):
   * customData {Object} The custom informations you want to save
+  * override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
 
 ####Response
 Http status code 200
@@ -2384,6 +2425,33 @@ or it can be an error object:
 
 ___
 
+### Create from defaults
+The user can copy a project from the templater user's projects.
+
+#####Type
+  + Post
+
+#####Route
+  + //api.edmdesigner.com/json/project/createFromDefaults
+
+#### Parameters (you should post):
+  * _id {String} The id of the project. The project owner has to be the templater user. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
+  * title {String} The title of the new project
+  * description {String} The description of the new project
+  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+
+#### Answer:
+Project object:
+  - _id {String} The MongoDB _id of the new template
+  - title {String} The title of the new template
+  - description {String} The description of the new template
+  - document {Object} An object, which represents the new template
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
 ### Remove
 Removes a project.
 
@@ -2459,6 +2527,7 @@ Updates the title or/and the description of the specified project. You can add c
   * title {String} The title of the new project.
   * description {String} The description of the new project.
   * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
+  * override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
 
 #### Answer:
   - success {Boolean} It should be true if the update was successful
