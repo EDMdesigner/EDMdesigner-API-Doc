@@ -93,6 +93,7 @@
 <em><a href="#dynamic-elements">Dynamic Elements</a></em><br>
 </li>
 <li><em><a href="#custom-data">Custom Data</a></em></li>
+<li><em><a href="#custom-strings">Custom Strings</a></em></li>
 </ul>
 </li>
 <li>
@@ -1706,63 +1707,6 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
 </ul><hr><h3>
-<a name="add-custom-string-to-all-users" class="anchor" href="#add-custom-string-to-all-users"><span class="octicon octicon-link"></span></a>Add custom string to all users</h3>
-
-<p>Add customstrings to all of your users.
-Note that every calls overwrites the previous, so if you want to remove all the custom strings, just do the call with   $customStrings['items'] or dont send the items at all</p>
-
-<pre><code>    $url = "http://api.edmdesigner.com/json/user/addCustomStrings?token=".$token."&amp;user=".$user;
-    //the $token is the string received from token validation and the $user is an existing userId
-
-    $customStrings = array();
-    $customStrings['items'] = array();
-    $customStrings['items'][] = array('label' =&gt; 'testLabel1', 'replacer' =&gt; 'testReplacer1');
-    $customStrings['items'][] = array('label' =&gt; 'testLabel2', 'replacer' =&gt; 'testReplacer2');
-    $customStrings['items'][] = array('label' =&gt; 'testLabel3', 'replacer' =&gt; 'testReplacer3');
-
-    $options = array(
-        'http' =&gt; array(
-            'header'  =&gt; "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  =&gt; 'POST',
-            'content' =&gt; http_build_query($data),
-        )
-    );
-
-    $context  = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    $savedResult = json_decode($result, TRUE);
-</code></pre>
-
-<hr><h3>
-<a name="add-custom-string-to-specified-user" class="anchor" href="#add-custom-string-to-specified-user"><span class="octicon octicon-link"></span></a>Add custom string to specified user</h3>
-
-<p>Add customstrings to just some of your users. 
-Note that every calls overwrites the previous, so if you want to remove all the custom strings, just do the call with   $customStrings['items'] or dont send the items at all</p>
-
-<pre><code>    $url = "http://api.edmdesigner.com/json/user/addCustomStringsToUser?token=".$token."&amp;user=".$user;
-    //the $token is the string received from token validation and the $user is an existing userId
-
-    $customStrings = array();
-    $customStrings['userId'] = 'your user id'; // It must be one of your existing user's id, otherwise returns error
-    $customStrings['items'] = array();
-    $customStrings['items'][] = array('label' =&gt; 'testLabel1', 'replacer' =&gt; 'testReplacer1');
-    $customStrings['items'][] = array('label' =&gt; 'testLabel2', 'replacer' =&gt; 'testReplacer2');
-    $customStrings['items'][] = array('label' =&gt; 'testLabel3', 'replacer' =&gt; 'testReplacer3');
-
-    $options = array(
-        'http' =&gt; array(
-            'header'  =&gt; "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  =&gt; 'POST',
-            'content' =&gt; http_build_query($data),
-        )
-    );
-
-    $context  = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    $savedResult = json_decode($result, TRUE);
-</code></pre>
-
-<hr><h3>
 <a name="upload-complex-elems-to-specified-users" class="anchor" href="#upload-complex-elems-to-specified-users"><span class="octicon octicon-link"></span></a>Upload Complex elems to specified users</h3>
 
 <p>Upload a list of Complex elems to a specified user or users. Please note that every upload will overwrite the previous uploads!<br>
@@ -3173,7 +3117,387 @@ You can save custom informations to:  </p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h2>
+</ul><hr><h3>
+<a name="custom-strings" class="anchor" href="#custom-strings"><span class="octicon octicon-link"></span></a>Custom Strings</h3>
+
+<p>The custom strings are an option to provide predefined texts to your users what they can insert while editing text contents.
+You can add custom strings to </p>
+
+<ul>
+<li>all of your users </li>
+<li>to specified users</li>
+<li>or to users of a specified group.</li>
+</ul><p>The custom strings can be added by bunch of custom string items. Each bunch contains a title what will be displayed as the label of the drop-down list in the text editor, and an id, what provides the identification. By this id it will be possible to remove the bunch.
+The id can not contain any special characters, the title is a string or a localization object. In case of localization object it what must contain 'en' property.
+Within an item the label property has the same rules.</p>
+
+<h3>
+<a name="example-of-custom-string-object" class="anchor" href="#example-of-custom-string-object"><span class="octicon octicon-link"></span></a>Example of Custom String object:</h3>
+
+<pre><code>var customStringsObject = {
+    id: 'validId',
+    title: {
+        'en': 'EDM beer'
+    },
+    items: [
+                          {
+                             replacer: '##Svijany##',
+                             label: 'good beer 1'            
+                          },
+                          {
+                             replacer: '##Poutník##',
+                             label: {
+                                en: 'good beer 2'
+                             }
+                         }
+    ]
+};
+</code></pre>
+
+<hr><h3>
+<a name="add-custom-strings-to-all-of-the-users-of-the-apiclientinstance" class="anchor" href="#add-custom-strings-to-all-of-the-users-of-the-apiclientinstance"><span class="octicon octicon-link"></span></a>Add Custom Strings to all of the users of the apiClientInstance</h3>
+
+<h4>
+<a name="type-43" class="anchor" href="#type-43"><span class="octicon octicon-link"></span></a>Type</h4>
+
+<ul>
+<li>POST</li>
+</ul><h4>
+<a name="route-43" class="anchor" href="#route-43"><span class="octicon octicon-link"></span></a>Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/add</li>
+</ul><h4>
+<a name="parameters-you-should-post-32" class="anchor" href="#parameters-you-should-post-32"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>id {String} The identification of the custom strings bunch</li>
+<li>title {String or  localization Object with 'en' property} the displayed name of the bunch</li>
+<li>items {Array} Array of customStrings Object <a href="#example-of-custom-string-object">see here</a>
+</li>
+</ul><h4>
+<a name="response-43" class="anchor" href="#response-43"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>Http status code 200</p>
+
+<ul>
+<li>id {String} the saved custom strings id</li>
+<li>customStrings {Object} the saved custom stings object</li>
+<li>overwritten {Boolean} describes if the save updated an existing bunch or created a new one </li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><hr><h3>
+<a name="add-custom-strings-to-specified-users" class="anchor" href="#add-custom-strings-to-specified-users"><span class="octicon octicon-link"></span></a>Add Custom Strings to specified users</h3>
+
+<h4>
+<a name="type-44" class="anchor" href="#type-44"><span class="octicon octicon-link"></span></a>Type</h4>
+
+<ul>
+<li>POST</li>
+</ul><h4>
+<a name="route-44" class="anchor" href="#route-44"><span class="octicon octicon-link"></span></a>Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/addToUsers</li>
+</ul><h4>
+<a name="parameters-you-should-post-33" class="anchor" href="#parameters-you-should-post-33"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>users {Array} Array of the userIds</li>
+<li>id {String} The identification of the custom strings bunch</li>
+<li>title {String or  localization Object with 'en' property} the displayed name of the bunch</li>
+<li>items {Array} Array of customStrings Object, <a href="#example-of-custom-string-object">see here</a>
+</li>
+</ul><h4>
+<a name="response-44" class="anchor" href="#response-44"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>Http status code 200</p>
+
+<ul>
+<li>updatedUsers {Array} list of objects with the property of:
+
+<ul>
+<li>id {String} the user id</li>
+<li>updated {Boolean} describes if the save updated an existing bunch or created a new one </li>
+</ul>
+</li>
+<li>id {String} the saved custom strings id</li>
+<li>customStrings {Object} the saved custom stings object</li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul><h3>
+<a name="add-custom-strings-to-all-of-the-users-of-the-apiclientinstance-1" class="anchor" href="#add-custom-strings-to-all-of-the-users-of-the-apiclientinstance-1"><span class="octicon octicon-link"></span></a>Add Custom Strings to all of the users of the apiClientInstance</h3>
+
+<h4>
+<a name="type-45" class="anchor" href="#type-45"><span class="octicon octicon-link"></span></a>Type</h4>
+
+<ul>
+<li>POST</li>
+</ul><h4>
+<a name="route-45" class="anchor" href="#route-45"><span class="octicon octicon-link"></span></a>Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/addToGroup</li>
+</ul><h4>
+<a name="parameters-you-should-post-34" class="anchor" href="#parameters-you-should-post-34"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>group {String} MongoDb ObjectId (24 chars length id of the group)</li>
+<li>id {String} The identification of the custom strings bunch</li>
+<li>title {String or  localization Object with 'en' property} the displayed name of the bunch</li>
+<li>items {Array} Array of customStrings Object, <a href="#example-of-custom-string-object">see here</a>
+</li>
+</ul><h4>
+<a name="response-45" class="anchor" href="#response-45"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>Http status code 200</p>
+
+<ul>
+<li>id {String} the saved custom strings id</li>
+<li>customStrings {Object} the saved custom stings object</li>
+<li>overwritten {Boolean} describes if the save updated an existing bunch or created a new one </li>
+</ul><p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.
+___</li>
+</ul><h3>
+<a name="get-custom-strings-of-all-of-the-users-of-the-apiclientinstance" class="anchor" href="#get-custom-strings-of-all-of-the-users-of-the-apiclientinstance"><span class="octicon octicon-link"></span></a>Get Custom Strings of all of the users of the apiClientInstance</h3>
+
+<h4>
+<a name="type-46" class="anchor" href="#type-46"><span class="octicon octicon-link"></span></a>Type</h4>
+
+<ul>
+<li>GET</li>
+</ul><h4>
+<a name="route-46" class="anchor" href="#route-46"><span class="octicon octicon-link"></span></a>Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfApiInstance</li>
+</ul><h4>
+<a name="parameters-you-should-post-35" class="anchor" href="#parameters-you-should-post-35"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<p>no parameters needed</p>
+
+<h4>
+<a name="response-46" class="anchor" href="#response-46"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>Http status code 200</p>
+
+<ul>
+<li>err {null} null  value</li>
+<li>the custom string objects as the property names are the id of the custom strings bunch</li>
+</ul><p>example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: 'csTitle'
+         },
+        items: [
+            ...items of custom string Objects....
+        ]
+   }
+}</p>
+
+<p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.
+___</li>
+</ul><h3>
+<a name="get-custom-strings-of-a-specified-user" class="anchor" href="#get-custom-strings-of-a-specified-user"><span class="octicon octicon-link"></span></a>Get Custom Strings of a specified user</h3>
+
+<h4>
+<a name="type-47" class="anchor" href="#type-47"><span class="octicon octicon-link"></span></a>Type</h4>
+
+<ul>
+<li>GET</li>
+</ul><h4>
+<a name="route-47" class="anchor" href="#route-47"><span class="octicon octicon-link"></span></a>Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfUser</li>
+</ul><h4>
+<a name="parameters-you-should-post-36" class="anchor" href="#parameters-you-should-post-36"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>userId {String} the id of the user</li>
+</ul><h4>
+<a name="response-47" class="anchor" href="#response-47"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>Http status code 200</p>
+
+<ul>
+<li>err {null} null  value</li>
+<li>the custom string objects as the property names are the id of the custom strings bunch</li>
+</ul><p>example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: 'csTitle'
+         },
+        items: [
+            ...items of custom string Objects....
+        ]
+   }
+}</p>
+
+<p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.
+___</li>
+</ul><h3>
+<a name="get-custom-strings-of-a-specified-group" class="anchor" href="#get-custom-strings-of-a-specified-group"><span class="octicon octicon-link"></span></a>Get Custom Strings of a specified group</h3>
+
+<h4>
+<a name="type-48" class="anchor" href="#type-48"><span class="octicon octicon-link"></span></a>Type</h4>
+
+<ul>
+<li>GET</li>
+</ul><h4>
+<a name="route-48" class="anchor" href="#route-48"><span class="octicon octicon-link"></span></a>Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfGroup</li>
+</ul><h4>
+<a name="parameters-you-should-post-37" class="anchor" href="#parameters-you-should-post-37"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>groupId {String} mongoDb ObjectID of the group</li>
+</ul><h4>
+<a name="response-48" class="anchor" href="#response-48"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>Http status code 200</p>
+
+<ul>
+<li>err {null} null  value</li>
+<li>the custom string objects as the property names are the id of the custom strings bunch</li>
+</ul><p>example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: 'csTitle'
+         },
+        items: [
+            ...items of custom string Objects....
+        ]
+   }
+}</p>
+
+<p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.
+___</li>
+</ul><h3>
+<a name="remove-a-general-custom-strings-by-its-id" class="anchor" href="#remove-a-general-custom-strings-by-its-id"><span class="octicon octicon-link"></span></a>Remove a general Custom Strings by it's id</h3>
+
+<h4>
+<a name="type-49" class="anchor" href="#type-49"><span class="octicon octicon-link"></span></a>Type</h4>
+
+<ul>
+<li>DELETE</li>
+</ul><h4>
+<a name="route-49" class="anchor" href="#route-49"><span class="octicon octicon-link"></span></a>Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/:id</li>
+</ul><h4>
+<a name="parameters-you-should-post-38" class="anchor" href="#parameters-you-should-post-38"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>:id {String} the id of the custom string bunch</li>
+</ul><h4>
+<a name="response-49" class="anchor" href="#response-49"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>Http status code 200</p>
+
+<ul>
+<li>id {String} the id of the deleted custom strings bunch
+Or it can be an error object:
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.
+___</li>
+</ul>
+</li>
+</ul><h3>
+<a name="remove-a-users-custom-strings-by-its-id" class="anchor" href="#remove-a-users-custom-strings-by-its-id"><span class="octicon octicon-link"></span></a>Remove a user's Custom Strings by it's id</h3>
+
+<h4>
+<a name="type-50" class="anchor" href="#type-50"><span class="octicon octicon-link"></span></a>Type</h4>
+
+<ul>
+<li>DELETE</li>
+</ul><h4>
+<a name="route-50" class="anchor" href="#route-50"><span class="octicon octicon-link"></span></a>Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/:id/removeFromUser/:user</li>
+</ul><h4>
+<a name="parameters-you-should-post-39" class="anchor" href="#parameters-you-should-post-39"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>:id {String} the id of the custom string bunch</li>
+<li>:user {String} the id of the user what you want to remove from</li>
+</ul><h4>
+<a name="response-50" class="anchor" href="#response-50"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>Http status code 200</p>
+
+<ul>
+<li>id {String} the id of the deleted custom strings bunch</li>
+<li>userId {Sting} the id of the user what you removed from
+Or it can be an error object:
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.
+___</li>
+</ul>
+</li>
+</ul><h3>
+<a name="remove-a-groups-custom-strings-by-its-id" class="anchor" href="#remove-a-groups-custom-strings-by-its-id"><span class="octicon octicon-link"></span></a>Remove a group's Custom Strings by it's id</h3>
+
+<h4>
+<a name="type-51" class="anchor" href="#type-51"><span class="octicon octicon-link"></span></a>Type</h4>
+
+<ul>
+<li>DELETE</li>
+</ul><h4>
+<a name="route-51" class="anchor" href="#route-51"><span class="octicon octicon-link"></span></a>Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/:id/removeFromUser/:group</li>
+</ul><h4>
+<a name="parameters-you-should-post-40" class="anchor" href="#parameters-you-should-post-40"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+
+<ul>
+<li>:id {String} the id of the custom string bunch</li>
+<li>:group {String} the MongoDb ObjectId of the group what you want to remove from</li>
+</ul><h4>
+<a name="response-51" class="anchor" href="#response-51"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>Http status code 200</p>
+
+<ul>
+<li>id {String} the id of the deleted custom strings bunch</li>
+<li>group {Sting} the id of the group what you removed from
+Or it can be an error object:
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.
+___</li>
+</ul>
+</li>
+</ul><h2>
 <a name="user-routes" class="anchor" href="#user-routes"><span class="octicon octicon-link"></span></a>User routes</h2>
 
 <h2>
@@ -3192,12 +3516,12 @@ You can save custom informations to:  </p>
 <p>Lists the projects of the actual user.</p>
 
 <h5>
-<a name="type-43" class="anchor" href="#type-43"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-52" class="anchor" href="#type-52"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-43" class="anchor" href="#route-43"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-52" class="anchor" href="#route-52"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/list</li>
@@ -3217,7 +3541,7 @@ You can save custom informations to:  </p>
 </ul>
 </li>
 </ul><h4>
-<a name="response-43" class="anchor" href="#response-43"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a name="response-52" class="anchor" href="#response-52"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>List of projects. Every project is an object with the following parameters:</p>
 
@@ -3236,17 +3560,17 @@ You can save custom informations to:  </p>
 <p>Creates a new project (a new e-mail template).</p>
 
 <h5>
-<a name="type-44" class="anchor" href="#type-44"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-53" class="anchor" href="#type-53"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-44" class="anchor" href="#route-44"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-53" class="anchor" href="#route-53"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/create</li>
 </ul><h4>
-<a name="parameters-you-should-post-32" class="anchor" href="#parameters-you-should-post-32"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-41" class="anchor" href="#parameters-you-should-post-41"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>title {String} The title of the new project.</li>
@@ -3268,12 +3592,12 @@ You can save custom informations to:  </p>
 <p>Creates the exact copy of the project with the ID specified in projectId.</p>
 
 <h5>
-<a name="type-45" class="anchor" href="#type-45"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-54" class="anchor" href="#type-54"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-45" class="anchor" href="#route-45"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-54" class="anchor" href="#route-54"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/duplicate/:id</li>
@@ -3302,17 +3626,17 @@ You can save custom informations to:  </p>
 <p>It is very similar to the duplicate route, the only difference is that here you can define the title and the description of the new (copy) project. Whit this route user can only create project from one of his/her own project.</p>
 
 <h5>
-<a name="type-46" class="anchor" href="#type-46"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-55" class="anchor" href="#type-55"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>Post</li>
 </ul><h5>
-<a name="route-46" class="anchor" href="#route-46"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-55" class="anchor" href="#route-55"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromOwn</li>
 </ul><h4>
-<a name="parameters-you-should-post-33" class="anchor" href="#parameters-you-should-post-33"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-42" class="anchor" href="#parameters-you-should-post-42"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>_id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
@@ -3339,17 +3663,17 @@ You can save custom informations to:  </p>
 <p>The user can copy a project from the templater user's projects.</p>
 
 <h5>
-<a name="type-47" class="anchor" href="#type-47"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-56" class="anchor" href="#type-56"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>Post</li>
 </ul><h5>
-<a name="route-47" class="anchor" href="#route-47"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-56" class="anchor" href="#route-56"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromDefaults</li>
 </ul><h4>
-<a name="parameters-you-should-post-34" class="anchor" href="#parameters-you-should-post-34"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-43" class="anchor" href="#parameters-you-should-post-43"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>_id {String} The id of the project. The project owner has to be the templater user. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
@@ -3376,12 +3700,12 @@ You can save custom informations to:  </p>
 <p>Removes a project.</p>
 
 <h5>
-<a name="type-48" class="anchor" href="#type-48"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-57" class="anchor" href="#type-57"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>DELETE</li>
 </ul><h5>
-<a name="route-48" class="anchor" href="#route-48"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-57" class="anchor" href="#route-57"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/remove/:id</li>
@@ -3391,7 +3715,7 @@ You can save custom informations to:  </p>
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="response-44" class="anchor" href="#response-44"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a name="response-53" class="anchor" href="#response-53"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>A number, it is 1 if the project was successfully deleted</p>
 
@@ -3405,12 +3729,12 @@ You can save custom informations to:  </p>
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
 <h5>
-<a name="type-49" class="anchor" href="#type-49"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-58" class="anchor" href="#type-58"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-49" class="anchor" href="#route-49"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-58" class="anchor" href="#route-58"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/generate/:id</li>
@@ -3420,7 +3744,7 @@ You can save custom informations to:  </p>
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="response-45" class="anchor" href="#response-45"><span class="octicon octicon-link"></span></a>Response</h4>
+<a name="response-54" class="anchor" href="#response-54"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>A bulletproof responsive HTML version of the given template</p>
 
@@ -3434,12 +3758,12 @@ You can save custom informations to:  </p>
 <p>Gets the title of the selected project.</p>
 
 <h5>
-<a name="type-50" class="anchor" href="#type-50"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-59" class="anchor" href="#type-59"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul><h5>
-<a name="route-50" class="anchor" href="#route-50"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-59" class="anchor" href="#route-59"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/title/:id</li>
@@ -3449,7 +3773,7 @@ You can save custom informations to:  </p>
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul><h4>
-<a name="response-46" class="anchor" href="#response-46"><span class="octicon octicon-link"></span></a>Response</h4>
+<a name="response-55" class="anchor" href="#response-55"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Title object:</p>
 
@@ -3465,17 +3789,17 @@ You can save custom informations to:  </p>
 <p>Updates the title or/and the description of the specified project. You can add custom informations to this project too.</p>
 
 <h5>
-<a name="type-51" class="anchor" href="#type-51"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-60" class="anchor" href="#type-60"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul><h5>
-<a name="route-51" class="anchor" href="#route-51"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-60" class="anchor" href="#route-60"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/updateInfo</li>
 </ul><h4>
-<a name="parameters-you-should-post-35" class="anchor" href="#parameters-you-should-post-35"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
+<a name="parameters-you-should-post-44" class="anchor" href="#parameters-you-should-post-44"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
