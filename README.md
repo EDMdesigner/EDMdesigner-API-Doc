@@ -29,6 +29,7 @@ We provide example implementations that include the handshaking as well. You can
     * _[ComplexElements](#complexelements)_  
     * _[Dynamic Elements](#dynamic-elements)_  
     * _[Custom Data](#custom-data)_
+    * _[Custom Strings](#custom-strings)_
   2. [User routes](#user-routes)  
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
@@ -37,6 +38,7 @@ We provide example implementations that include the handshaking as well. You can
 7. __[Available languages](#available-languages)__  
 8. __[Examples](#example-implementations)__
 9. __[Dependencies](#dependencies)__  
+
 
 
 Initializing
@@ -1223,60 +1225,6 @@ Or it can be an error object:
 
 ___
 
-### Add custom string to all users
-Add customstrings to all of your users.
-Note that every calls overwrites the previous, so if you want to remove all the custom strings, just do the call with 	$customStrings['items'] or dont send the items at all
-	
-		$url = "http://api.edmdesigner.com/json/user/addCustomStrings?token=".$token."&user=".$user;
-		//the $token is the string received from token validation and the $user is an existing userId
-		
-		$customStrings = array();
-		$customStrings['items'] = array();
-		$customStrings['items'][] = array('label' => 'testLabel1', 'replacer' => 'testReplacer1');
-		$customStrings['items'][] = array('label' => 'testLabel2', 'replacer' => 'testReplacer2');
-		$customStrings['items'][] = array('label' => 'testLabel3', 'replacer' => 'testReplacer3');
-		
-		$options = array(
-		    'http' => array(
-		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-		        'method'  => 'POST',
-		        'content' => http_build_query($data),
-		    )
-		);
-
-		$context  = stream_context_create($options);
-		$result = file_get_contents($url, false, $context);
-		$savedResult = json_decode($result, TRUE);
-		
-___
-
-### Add custom string to specified user
-Add customstrings to just some of your users. 
-Note that every calls overwrites the previous, so if you want to remove all the custom strings, just do the call with 	$customStrings['items'] or dont send the items at all
-	
-		$url = "http://api.edmdesigner.com/json/user/addCustomStringsToUser?token=".$token."&user=".$user;
-		//the $token is the string received from token validation and the $user is an existing userId
-		
-		$customStrings = array();
-		$customStrings['userId'] = 'your user id'; // It must be one of your existing user's id, otherwise returns error
-		$customStrings['items'] = array();
-		$customStrings['items'][] = array('label' => 'testLabel1', 'replacer' => 'testReplacer1');
-		$customStrings['items'][] = array('label' => 'testLabel2', 'replacer' => 'testReplacer2');
-		$customStrings['items'][] = array('label' => 'testLabel3', 'replacer' => 'testReplacer3');
-		
-		$options = array(
-		    'http' => array(
-		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-		        'method'  => 'POST',
-		        'content' => http_build_query($data),
-		    )
-		);
-
-		$context  = stream_context_create($options);
-		$result = file_get_contents($url, false, $context);
-		$savedResult = json_decode($result, TRUE);
-
-___
 
 ### Upload Complex elems to specified users 
 Upload a list of Complex elems to a specified user or users. Please note that every upload will overwrite the previous uploads!  
@@ -2311,6 +2259,270 @@ An object containing your custom data
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
+___
+
+### Custom Strings
+The custom strings are an option to provide predefined texts to your users what they can insert while editing text contents.
+You can add custom strings to 
+- all of your users 
+- to specified users
+- or to users of a specified group.
+
+The custom strings can be added by bunch of custom string items. Each bunch contains a title what will be displayed as the label of the drop-down list in the text editor, and an id, what provides the identification. By this id it will be possible to remove the bunch.
+The id can not contain any special characters, the title is a string or a localization object. In case of localization object it what must contain 'en' property.
+Within an item the label property has the same rules.
+
+###Example of Custom String object:
+
+ 	var customStringsObject = {
+		id: 'validId',
+		title: {
+			'en': 'EDM beer'
+		},
+		items: [
+                              {
+                                 replacer: '##Svijany##',
+                                 label: 'good beer 1'            
+                              },
+                              {
+                                 replacer: '##Poutník##',
+                                 label: {
+                                    en: 'good beer 2'
+                                 }
+                             }
+		]
+	};
+___
+
+### Add Custom Strings to all of the users of the apiClientInstance
+
+####Type
+  + POST
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/add
+
+#### Parameters (you should post):
+  * id {String} The identification of the custom strings bunch
+  * title {String or  localization Object with 'en' property} the displayed name of the bunch
+  * items {Array} Array of customStrings Object [see here](#example-of-custom-string-object)
+
+####Response
+Http status code 200
+- id {String} the saved custom strings id
+- customStrings {Object} the saved custom stings object
+- overwritten {Boolean} describes if the save updated an existing bunch or created a new one 
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+### Add Custom Strings to specified users
+
+####Type
+  + POST
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/addToUsers
+
+#### Parameters (you should post):
+  * users {Array} Array of the userIds
+  * id {String} The identification of the custom strings bunch
+  * title {String or  localization Object with 'en' property} the displayed name of the bunch
+  * items {Array} Array of customStrings Object, [see here](#example-of-custom-string-object)
+
+####Response
+Http status code 200
+- updatedUsers {Array} list of objects with the property of:
+       - id {String} the user id
+       - updated {Boolean} describes if the save updated an existing bunch or created a new one 
+- id {String} the saved custom strings id
+- customStrings {Object} the saved custom stings object
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+
+### Add Custom Strings to all of the users of the apiClientInstance
+
+####Type
+  + POST
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/addToGroup
+
+#### Parameters (you should post):
+  * group {String} MongoDb ObjectId (24 chars length id of the group)
+  * id {String} The identification of the custom strings bunch
+  * title {String or  localization Object with 'en' property} the displayed name of the bunch
+  * items {Array} Array of customStrings Object, [see here](#example-of-custom-string-object)
+
+####Response
+Http status code 200
+- id {String} the saved custom strings id
+- customStrings {Object} the saved custom stings object
+- overwritten {Boolean} describes if the save updated an existing bunch or created a new one 
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Get Custom Strings of all of the users of the apiClientInstance
+
+####Type
+  + GET
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/getCustomStringsOfApiInstance
+
+#### Parameters (you should post):
+  no parameters needed
+
+####Response
+Http status code 200
+- err {null} null  value
+- the custom string objects as the property names are the id of the custom strings bunch
+
+example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: 'csTitle'
+         },
+        items: [
+            ...items of custom string Objects....
+        ]
+   }
+}
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Get Custom Strings of a specified user
+
+####Type
+  + GET
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/getCustomStringsOfUser
+
+#### Parameters (you should post):
+ * userId {String} the id of the user
+
+####Response
+Http status code 200
+- err {null} null  value
+- the custom string objects as the property names are the id of the custom strings bunch
+
+example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: 'csTitle'
+         },
+        items: [
+            ...items of custom string Objects....
+        ]
+   }
+}
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Get Custom Strings of a specified group
+
+####Type
+  + GET
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/getCustomStringsOfGroup
+
+#### Parameters (you should post):
+ * groupId {String} mongoDb ObjectID of the group
+
+####Response
+Http status code 200
+- err {null} null  value
+- the custom string objects as the property names are the id of the custom strings bunch
+
+example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: 'csTitle'
+         },
+        items: [
+            ...items of custom string Objects....
+        ]
+   }
+}
+  
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Remove a general Custom Strings by it's id
+
+####Type
+  + DELETE
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/:id
+
+#### Parameters (you should post):
+ * :id {String} the id of the custom string bunch
+
+####Response
+Http status code 200
+- id {String} the id of the deleted custom strings bunch
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Remove a user's Custom Strings by it's id
+
+####Type
+  + DELETE
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/:id/removeFromUser/:user
+
+#### Parameters (you should post):
+ * :id {String} the id of the custom string bunch
+ * :user {String} the id of the user what you want to remove from
+
+####Response
+Http status code 200
+- id {String} the id of the deleted custom strings bunch
+- userId {Sting} the id of the user what you removed from
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+___
+
+### Remove a group's Custom Strings by it's id
+
+####Type
+  + DELETE
+
+####Route
+  + //api.edmdesigner.com/json/customStrings/:id/removeFromUser/:group
+
+#### Parameters (you should post):
+ * :id {String} the id of the custom string bunch
+ * :group {String} the MongoDb ObjectId of the group what you want to remove from
+
+####Response
+Http status code 200
+- id {String} the id of the deleted custom strings bunch
+- group {Sting} the id of the group what you removed from
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
 ___
 
 ##User routes
