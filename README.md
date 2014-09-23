@@ -115,7 +115,7 @@ Lists the projects of the actual user.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
-Compared to listProjects, listAndCountProjects' response is an object with two properties: count and response. The first is the number of entries which satisfies the query, the second is the actual array of items. The count property will hold a value if and only if you set the limit and skip property.
+Compared to [listProjects](#edmdesignerapilistprojectsquery-callback-onerrorcb), listAndCountProjects' response is an object with two properties: count and response. The first is the number of entries which satisfies the query, the second is the actual array of items. __The count property will hold a value if and only if you set the limit and skip property.__
 
 ___
 
@@ -2552,16 +2552,51 @@ You can set the parameters of the db search. You need to place your settings obj
     - sort {Object} You can set the order how you want to get back the projects
 
 ####Response:
-List of projects. Every project is an object with the following parameters:
+List of projects. Every project is an object with the following parameters (by default):
   - _id {String} MongoDB _id of the project
   - title {String} Title of the template
+  - createdOn {Date} The time when the template was created
+  - lastModified {Date} The last time when the template was modified
   - description {String} Description of the template
   - customData {Object} The custom informations you saved for the project
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
-___	
+___
+
+### List and Count projects
+Lists the projects of the actual user and return a counter too.
+
+#####Type
+  + GET
+
+#####Route
+  + //api.edmdesigner.com/json/project/listAndCount
+
+####Query options:
+You can set the parameters of the db search. You need to place your settings object to the query of the get request. Please note that it is an optional feature. If you don't want to use it, call the route without any kind of settings (in the query) and it will send back all of the user projects!
+  - settings {Object} You can set the parameters of the db search (you have to use the moongose.js query syntax, please check their [documentation](http://mongoosejs.com/docs/guide.html) for more information)
+    - find {Object} You can set the search terms. (For example: you can list only those projects which title starts with "foo": var query = {find: {title: {$regex: "foo.*"}})
+    - skip {Number} The number of project the search will skip 
+    - limit {Number} The number of projects you want to get back
+    - sort {Object} You can set the order how you want to get back the projects
+
+####Response:
+Compared to [list projects](#list-projects), list and count  projects' response is an object with two properties: count and response. The first is the number of entries which satisfies the query, the second is the actual array of items:
+  - result {Array} the list of the projects. One project has the following properties (by default):
+    - _id {String} MongoDB _id of the project
+    - title {String} Title of the template
+    - createdOn {Date} The time when the template was created
+    - lastModified {Date} The last time when the template was modified
+    - description {String} Description of the template
+    - customData {Object} The custom informations you saved for the project
+  - totalCount {Number} the number of entries which satisfies the query (Please note that __the totalCount property will hold a value if and only if you set the limit and skip property.__)
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
 
 ### Create
 Creates a new project (a new e-mail template).
