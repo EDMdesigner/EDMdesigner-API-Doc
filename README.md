@@ -2344,7 +2344,7 @@ Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
 
-### Add Custom Strings to all of the users of the apiClientInstance
+### Add Custom Strings to specified groups of the apiClientInstance
 
 ####Type
   + POST
