@@ -1385,7 +1385,18 @@ We will upload the images as the following. There will be "userId", "hash" and "
 The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.  
 Please note that if you use php on your server side then checking the content-tpye of the uploaded image with the $_Files["file"]["type"] is not possible (it will be Application/octet-stream) but if you use our hash to authenticate us, then you do not have to worry about the uploaded file. We will make sure that it will be what it has to be.
 
-The response to our post request should be an image object. The object should have the following properties:
+If you progress our request by php, reading our sent data may need a special way like the example below: 
+
+	$json = file_get_contents("php://input");
+	$values = json_decode($json, true);
+
+	$someValue = $values["someValue"];
+
+Further info about this issue can be read in this article: 
+http://stackoverflow.com/questions/11990767/post-empty-when-curling-json
+
+  
+The response to our post request should be a json object. The object should have the following properties:
   * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
   * secure_url {String} Http secure version og the image url
   * thumb_url {String} An url where the thumbnail version of the image is available (Tha gallery can work a lot faster if you can provide a thumbnail)
@@ -1416,6 +1427,17 @@ We will post an object with two parameters:
   * url {String} The url of the deleted image
   * userId {String} The id of the user who deleted the image.
 
+If you progress our request by php, reading our sent data may need a special way like the example below: 
+
+	$json = file_get_contents("php://input");
+	$values = json_decode($json, true);
+
+	$someValue = $values["someValue"];
+
+Further info about this issue can be read in this article: 
+http://stackoverflow.com/questions/11990767/post-empty-when-curling-json
+
+  
 Your response to our post request should be 200. (HTTP status code)  
 Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:
   * err
@@ -1442,6 +1464,18 @@ We will post an object whit the following parameters:
   * from_userId {String} The id of the users from who we want to copy the template to the target user
   * target_userId {String} The id of the user who will get the new template. (This user needs the new urls)
 
+
+If you progress our request by php, reading our sent data may need a special way like the example below: 
+
+	$json = file_get_contents("php://input");
+	$values = json_decode($json, true);
+
+	$someValue = $values["someValue"];
+
+Further info about this issue can be read in this article: 
+http://stackoverflow.com/questions/11990767/post-empty-when-curling-json
+
+  
 Your response to our post request should be an object. The object should have an "urls" property which should be another object. This object should have the following "key - value" pairs: the old url (which you get from the urls array we sent with the post request) should be the key and the value should be the parameters of the new image (like the one you need to send beack in the [upload route](#upload-route):
   * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
   * secure_url {String} Http secure version og the image url
