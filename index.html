@@ -55,7 +55,9 @@
 <strong><a href="#handshaking">Handshaking</a></strong><br>
 </li>
 <li>
-<strong><a href="#api-functions">Api functions</a></strong><br><ol>
+<strong><a href="#api-functions">Api functions</a></strong><br>
+
+<ol>
 <li>
 <a href="#user-functions">User functions</a><br>
 </li>
@@ -65,9 +67,13 @@
 </ol>
 </li>
 <li>
-<strong><a href="#server-side-routes">Server side routes</a></strong><br><ol>
+<strong><a href="#server-side-routes">Server side routes</a></strong><br>
+
+<ol>
 <li>
-<a href="#admin-routes">Admin routes</a><br><ul>
+<a href="#admin-routes">Admin routes</a><br>
+
+<ul>
 <li>
 <em><a href="#authentication">Authentication</a></em><br>
 </li>
@@ -97,7 +103,9 @@
 </ul>
 </li>
 <li>
-<a href="#user-routes">User routes</a><br><ul>
+<a href="#user-routes">User routes</a><br>
+
+<ul>
 <li> <em><a href="#authentication-1">Authentication</a></em><br>
 </li>
 <li> <em><a href="#project-routes">Project routes</a></em><br>
@@ -115,7 +123,9 @@
 <li>
 <strong><a href="#dependencies">Dependencies</a></strong><br>
 </li>
-</ol><h2>
+</ol>
+
+<h2>
 <a name="initializing" class="anchor" href="#initializing"><span class="octicon octicon-link"></span></a>Initializing</h2>
 
 <pre><code>&lt;script src="path_to_your_jquery.js"&gt;&lt;/script&gt;
@@ -175,7 +185,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><p>The response is an array of projects.</p>
+</ul>
+
+<p>The response is an array of projects.</p>
 
 <h4>
 <a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example:</h4>
@@ -193,7 +205,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapilistandcountprojectsquery-callback-onerrorcb" class="anchor" href="#edmdesignerapilistandcountprojectsquery-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.listAndCountProjects([query], callback, onErrorCB)</h3>
 
 <p>Lists the projects of the actual user.</p>
@@ -213,9 +227,13 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><p>Compared to <a href="#edmdesignerapilistprojectsquery-callback-onerrorcb">listProjects</a>, listAndCountProjects' response is an object with two properties: count and response. The first is the number of entries which satisfies the query, the second is the actual array of items. <strong>The count property will hold a value if and only if you set the limit and skip property.</strong></p>
+</ul>
 
-<hr><h3>
+<p>Compared to <a href="#edmdesignerapilistprojectsquery-callback-onerrorcb">listProjects</a>, listAndCountProjects' response is an object with two properties: count and response. The first is the number of entries which satisfies the query, the second is the actual array of items. <strong>The count property will hold a value if and only if you set the limit and skip property.</strong></p>
+
+<hr>
+
+<h3>
 <a name="edmdesignerapicreateprojectdata-callback-onerrorcb" class="anchor" href="#edmdesignerapicreateprojectdata-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createProject(data, callback, onErrorCB)</h3>
 
 <p>Creates a new project (a new e-mail template).</p>
@@ -241,7 +259,9 @@
 </ul>
 </li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-1" class="anchor" href="#example-1"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -257,7 +277,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapiduplicateprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapiduplicateprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.duplicateProject(projectId, callback, onErrorCB)</h3>
 
 <p>Creates the exact copy of the project with the ID specified in projectId.</p>
@@ -269,7 +291,9 @@
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-2" class="anchor" href="#example-2"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -287,7 +311,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapicreatefromownprojectid-data-callback-onerrorcb" class="anchor" href="#edmdesignerapicreatefromownprojectid-data-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createFromOwn(projectId, data, callback, onErrorCB)</h3>
 
 <p>This function is similar to the <a href="#edmdesignerapiduplicateprojectprojectid-callback-onerrorcb">duplicateProject</a> function, expect whit this function you can define the the title and the description of the new (copy) project. The user can only create the new project from one of his/her own project.</p>
@@ -307,7 +333,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-3" class="anchor" href="#example-3"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -325,7 +353,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapicreatefromdefaultsprojectid-data-callback-onerrorcb" class="anchor" href="#edmdesignerapicreatefromdefaultsprojectid-data-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createFromDefaults(projectId, data, callback, onErrorCB)</h3>
 
 <p>The user can create a new project from one of the templater user's projects.</p>
@@ -345,7 +375,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-4" class="anchor" href="#example-4"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -369,7 +401,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapiremoveprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapiremoveprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.removeProject(projectId, callback, onErrorCB)</h3>
 
 <p>Removes a project.</p>
@@ -381,7 +415,9 @@
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-5" class="anchor" href="#example-5"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -399,7 +435,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb" class="anchor" href="#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.openProject(projectId, [languageCode], [settings], callback, onErrorCB)</h3>
 
 <p>Opens a project.</p>
@@ -418,7 +456,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-6" class="anchor" href="#example-6"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -436,7 +476,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapigenerateprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapigenerateprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.generateProject(projectId, callback, onErrorCB)</h3>
 
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
@@ -448,7 +490,9 @@
 <li>projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-7" class="anchor" href="#example-7"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -466,7 +510,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapiupdateprojectinfoprojectid-data-callback-onerrorcb" class="anchor" href="#edmdesignerapiupdateprojectinfoprojectid-data-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.updateProjectInfo(projectId, data, callback, onErrorCB)</h3>
 
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
@@ -487,7 +533,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-8" class="anchor" href="#example-8"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -505,7 +553,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapigetdefaulttemplatescallback-onerrorcb" class="anchor" href="#edmdesignerapigetdefaulttemplatescallback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.getDefaultTemplates(callback, onErrorCB)</h3>
 
 <p>You can get the default templates povided by your templater user by calling this funciton. It means that if you have a user called templater, this route will result its projects.</p>
@@ -516,7 +566,9 @@
 <ul>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-9" class="anchor" href="#example-9"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -532,7 +584,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h2>
+<hr>
+
+<h2>
 <a name="admin-functions" class="anchor" href="#admin-functions"><span class="octicon octicon-link"></span></a>Admin functions</h2>
 
 <h3>
@@ -546,7 +600,9 @@
 <ul>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-10" class="anchor" href="#example-10"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -562,7 +618,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapicreategroupdata-callback-onerrorcb" class="anchor" href="#edmdesignerapicreategroupdata-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createGroup(data, callback, onErrorCB)</h3>
 
 <p>Creates a new group</p>
@@ -581,7 +639,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-11" class="anchor" href="#example-11"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -601,7 +661,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapigetgroupgroupid-callback-onerrorcb" class="anchor" href="#edmdesignerapigetgroupgroupid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.getGroup(groupId, callback, onErrorCB)</h3>
 
 <p>Gets a specified group</p>
@@ -613,7 +675,9 @@
 <li>groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#edmdesignerapilistgroupscallback-onerrorcb">edmDesignerAPI.listGroups</a> function.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-12" class="anchor" href="#example-12"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -638,7 +702,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapiupdategroupgroupid-data-callback-onerrorcb" class="anchor" href="#edmdesignerapiupdategroupgroupid-data-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.updateGroup(groupId, data, callback, onErrorCB)</h3>
 
 <p>Updates a specified group's name or the features it provides or both of these two at the same time. You can even add custom informations to the group.</p>
@@ -659,7 +725,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-13" class="anchor" href="#example-13"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -701,7 +769,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapilistuserscallback-onerrorcb" class="anchor" href="#edmdesignerapilistuserscallback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.listUsers(callback, onErrorCB)</h3>
 
 <p>Lists the users you have</p>
@@ -712,7 +782,9 @@
 <ul>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-14" class="anchor" href="#example-14"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -734,7 +806,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapicreateuserdata-callback-onerrorcb" class="anchor" href="#edmdesignerapicreateuserdata-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createUser(data, callback, onErrorCB)</h3>
 
 <p>Creates a new user</p>
@@ -753,7 +827,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-15" class="anchor" href="#example-15"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -774,7 +850,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapicreatemultipleuserdata-callback-onerrorcb" class="anchor" href="#edmdesignerapicreatemultipleuserdata-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.createMultipleUser(data, callback, onErrorCB)</h3>
 
 <p>Creates multiple user</p>
@@ -793,7 +871,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-16" class="anchor" href="#example-16"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -817,7 +897,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapigetuseruserid-callback-onerrorcb" class="anchor" href="#edmdesignerapigetuseruserid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.getUser(userId, callback, onErrorCB)</h3>
 
 <p>Gets a specified user</p>
@@ -829,7 +911,9 @@
 <li>userId {String} The id of the user.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-17" class="anchor" href="#example-17"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -854,7 +938,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapiupdateuseruserid-data-callback-onerrorcb" class="anchor" href="#edmdesignerapiupdateuseruserid-data-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.updateUser(userId, data, callback, onErrorCB)</h3>
 
 <p>Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to this user too.</p>
@@ -874,7 +960,9 @@
 </li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-18" class="anchor" href="#example-18"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -897,7 +985,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapideleteuseruserid-callback-onerrorcb" class="anchor" href="#edmdesignerapideleteuseruserid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.deleteUser(userId, callback, onErrorCB)</h3>
 
 <p>Deletes a specified user</p>
@@ -909,7 +999,9 @@
 <li>userId {String} The id of the user.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-19" class="anchor" href="#example-19"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -930,7 +1022,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="edmdesignerapigetprojectprojectid-callback-onerrorcb" class="anchor" href="#edmdesignerapigetprojectprojectid-callback-onerrorcb"><span class="octicon octicon-link"></span></a>edmDesignerApi.getProject(projectId, callback, onErrorCB)</h3>
 
 <p>Get a specified project as json. The result will contain almost every information about the selected project.</p>
@@ -942,7 +1036,9 @@
 <li>projectId {String}  The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#edmdesignerapilistprojectscallback-onerrorcb">edmDesignerAPI.listProjects</a> function.</li>
 <li>callback {Function} A function to be called if the request succeeds</li>
 <li>onErrorCB {Function} A function to be called if the request fails</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="example-20" class="anchor" href="#example-20"><span class="octicon octicon-link"></span></a>Example:</h4>
 
 <pre><code>&lt;script&gt;
@@ -973,7 +1069,9 @@
 &lt;/script&gt;
 </code></pre>
 
-<hr><h1>
+<hr>
+
+<h1>
 <a name="server-side-routes" class="anchor" href="#server-side-routes"><span class="octicon octicon-link"></span></a>Server side routes</h1>
 
 <p>Almost every client side functions have a corresponding route on server side.</p>
@@ -1016,7 +1114,9 @@
     $token = json_decode($result, TRUE);
 </code></pre>
 
-<hr><h2>
+<hr>
+
+<h2>
 <a name="group-handler-routes" class="anchor" href="#group-handler-routes"><span class="octicon octicon-link"></span></a>Group handler routes</h2>
 
 <h3>
@@ -1029,12 +1129,16 @@
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route" class="anchor" href="#route"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/list</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response" class="anchor" href="#response"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An array of your groups. Every group is an object with this parameters:</p>
@@ -1044,11 +1148,17 @@
 <li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
 <li>name {String} The name of the group</li>
 <li>customData {Object} Th custom informations you saved for the group</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="create-group" class="anchor" href="#create-group"><span class="octicon octicon-link"></span></a>Create group</h3>
 
 <p>Creates a new group</p>
@@ -1058,30 +1168,42 @@
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-1" class="anchor" href="#route-1"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/create</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post" class="anchor" href="#parameters-you-should-post"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>name {String} /REQUIRED/ The name you want to give to the new group</li>
 <li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
 <li>customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-1" class="anchor" href="#response-1"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>An object containing the MongoDB _id of the newly created group:</p>
 
 <ul>
 <li>_id {String}</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="get-one-group" class="anchor" href="#get-one-group"><span class="octicon octicon-link"></span></a>Get one group</h3>
 
 <p>Gets a specified group</p>
@@ -1091,17 +1213,23 @@
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-2" class="anchor" href="#route-2"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/read/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-in-the-route" class="anchor" href="#parameters-in-the-route"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
 <li>id {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-2" class="anchor" href="#response-2"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>A group object:</p>
@@ -1111,11 +1239,17 @@
 <li>featureSwitch {Object} The features that are available for users belong to this group.There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
 <li>name {String} The name of the group</li>
 <li>customData {Object} The custom informations you saved for this group</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="update-one-group" class="anchor" href="#update-one-group"><span class="octicon octicon-link"></span></a>Update one group</h3>
 
 <p>Updates a specified group's name or the features it provides or both of these two at the same time. You can even add custom informations to the group.</p>
@@ -1125,12 +1259,16 @@
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-3" class="anchor" href="#route-3"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/update</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-1" class="anchor" href="#parameters-you-should-post-1"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -1139,18 +1277,26 @@
 <li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
 <li>customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
 <li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-3" class="anchor" href="#response-3"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object:</p>
 
 <ul>
 <li>success {Boolean} It should be true if the update was successful</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="upload-headers" class="anchor" href="#upload-headers"><span class="octicon octicon-link"></span></a>Upload Headers</h3>
 
 <p>Upload a list of headers to the specified group. Every user who belongs to this group will be able to use these headers. Please note that every upload will overwrite the previous uploads!<br>
@@ -1161,18 +1307,24 @@ If you want to know what a header is good for, please read the <a href="#headers
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-4" class="anchor" href="#route-4"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/uploadHeaders</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-2" class="anchor" href="#parameters-you-should-post-2"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>headers {Array} /REQUIRED/ The list of headers which the users of the specified group will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a header object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-4" class="anchor" href="#response-4"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
@@ -1186,11 +1338,17 @@ If you want to know what a header is good for, please read the <a href="#headers
 <li>error {String} The reason why the header is not valid</li>
 </ul>
 </li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="upload-footers" class="anchor" href="#upload-footers"><span class="octicon octicon-link"></span></a>Upload Footers</h3>
 
 <p>Upload a list of footers to the specified group. Every user who belongs to this group will be able to use these footers. Please note that every upload will overwrite the previous uploads!<br>
@@ -1201,18 +1359,24 @@ If you want to know what a footer is good for, please read the <a href="#headers
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-5" class="anchor" href="#route-5"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/uploadFooters</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-3" class="anchor" href="#parameters-you-should-post-3"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>footers {Array} /REQUIRED/ The list of footers which the users of the specified group will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a footer object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-5" class="anchor" href="#response-5"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
@@ -1226,11 +1390,17 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <li>error {String} The reason why the footer is not valid</li>
 </ul>
 </li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="upload-complex-elems" class="anchor" href="#upload-complex-elems"><span class="octicon octicon-link"></span></a>Upload Complex Elems</h3>
 
 <p>Upload a list of Complex elems to the specified group. Every user who belongs to this group will be able to use these Complex elems. Please note that every upload will overwrite the previous uploads!<br>
@@ -1241,18 +1411,24 @@ If you want to know what is a Complex elem, please read the <a href="#complexele
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-6" class="anchor" href="#route-6"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/complexElem/addComplexElemToGroup</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-4" class="anchor" href="#parameters-you-should-post-4"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>items {Array} /REQUIRED/ The list of Complex elems which the users of the specified group will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-6" class="anchor" href="#response-6"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with 3 child objects:</p>
@@ -1261,7 +1437,11 @@ If you want to know what is a Complex elem, please read the <a href="#complexele
 <li>result {Array} list of the complex elems which were successfully added to the group</li>
 <li>fails {Array} if some of the items failed it contains the reason, if none of them failed it is null </li>
 <li>err {String} If there is any reason why the whole process failed otherwise null</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-structures-to-group" class="anchor" href="#add-structures-to-group"><span class="octicon octicon-link"></span></a>Add structures to group</h3>
 
 <p>You can assign structures to a specified group. If you do so, then each of your users, who belong to the group, will be able to use the given structures.<br>
@@ -1272,18 +1452,24 @@ If you want to know what exactly a structure is good for, please read the <a hre
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-7" class="anchor" href="#route-7"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addStructuresToGroup</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-5" class="anchor" href="#parameters-you-should-post-5"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>structureIds {Array} /REQUIRED/ It should contain the ids of the structures you want to assign to all of your users.</li>
 <li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-7" class="anchor" href="#response-7"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the following two arrays: </p>
@@ -1299,7 +1485,11 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <li>saved {Array} It contains the objects of the successfully saved structures<br>
 </li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-templates-to-group" class="anchor" href="#add-templates-to-group"><span class="octicon octicon-link"></span></a>Add templates to group</h3>
 
 <p>You can assign templates to a specified group. If you do so, then each users , who belong to the selected group, will be able to use the given templates.<br>
@@ -1310,12 +1500,16 @@ If you want to know what exactly a template is good for, please read the <a href
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-8" class="anchor" href="#route-8"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addTemplatesToGroup</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-6" class="anchor" href="#parameters-you-should-post-6"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -1329,7 +1523,9 @@ If you want to know what exactly a template is good for, please read the <a href
 <li>structureId {String} /REQUIRED/ The id of the structure which the template belongs to.</li>
 </ul>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-8" class="anchor" href="#response-8"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
@@ -1345,7 +1541,11 @@ If you want to know what exactly a template is good for, please read the <a href
 <li>saved {Array} It contains the objects of the successfully saved templates<br>
 </li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-data-to-group" class="anchor" href="#add-data-to-group"><span class="octicon octicon-link"></span></a>Add data to group</h3>
 
 <p>You can add data to a specified group.  If you do so, then each users , who belong to the selected group, will be able to use the given data.<br>
@@ -1356,12 +1556,16 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-9" class="anchor" href="#route-9"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addDataToGroup</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-7" class="anchor" href="#parameters-you-should-post-7"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -1375,7 +1579,9 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>structureId {String} /REQUIRED/ The id of the structure which the data belongs to.</li>
 </ul>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-9" class="anchor" href="#response-9"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
@@ -1391,7 +1597,11 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>saved {Array} It contains the objects of the successfully saved data<br>
 </li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h2>
+</ul>
+
+<hr>
+
+<h2>
 <a name="user-handler-routes" class="anchor" href="#user-handler-routes"><span class="octicon octicon-link"></span></a>User handler routes</h2>
 
 <h3>
@@ -1404,12 +1614,16 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-10" class="anchor" href="#route-10"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/list</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-10" class="anchor" href="#response-10"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An array of your users. Every user is an object with this parameters:</p>
@@ -1419,11 +1633,17 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>group {String} The MongoDB _id of the group the user belongs to</li>
 <li>createTime {String} The time when the user was created</li>
 <li>customData {Object} The custom informations you saved for the user</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="create-user" class="anchor" href="#create-user"><span class="octicon octicon-link"></span></a>Create user</h3>
 
 <p>Creates a new user</p>
@@ -1433,30 +1653,42 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-11" class="anchor" href="#route-11"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/create</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-8" class="anchor" href="#parameters-you-should-post-8"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>id {String} /REQUIRED/ The id you want to use for this new user</li>
 <li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-11" class="anchor" href="#response-11"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>User object:</p>
 
 <ul>
 <li>id {String} The id of the user (your id, not the MongoDB _id)</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="create-multiple-user" class="anchor" href="#create-multiple-user"><span class="octicon octicon-link"></span></a>Create multiple user</h3>
 
 <p>Creates multiple user</p>
@@ -1466,12 +1698,16 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-12" class="anchor" href="#route-12"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/multipleCreate</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-9" class="anchor" href="#parameters-you-should-post-9"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -1483,7 +1719,9 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>customData {Object} You can upload custom informations to the user. You can save any kind of information. It is up to you, how you want to use it!</li>
 </ul>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-12" class="anchor" href="#response-12"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Three different arrays:</p>
@@ -1509,11 +1747,17 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>id {String} The id of the user</li>
 </ul>
 </li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="get-one-user" class="anchor" href="#get-one-user"><span class="octicon octicon-link"></span></a>Get one user</h3>
 
 <p>Gets a specified user</p>
@@ -1523,17 +1767,23 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-13" class="anchor" href="#route-13"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/getOne/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-in-the-route-1" class="anchor" href="#parameters-in-the-route-1"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
 <li>:id {String} The id of the user.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-13" class="anchor" href="#response-13"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>User object:</p>
@@ -1543,11 +1793,17 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>group {String} The MongoDB _id of the group the user belongs to</li>
 <li>createTime {String} The time when the user was created</li>
 <li>customData {Object} The custom informations you saved for the user</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="update-user" class="anchor" href="#update-user"><span class="octicon octicon-link"></span></a>Update user</h3>
 
 <p>Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to the user too.</p>
@@ -1557,12 +1813,16 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-14" class="anchor" href="#route-14"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/update</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-10" class="anchor" href="#parameters-you-should-post-10"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -1570,18 +1830,26 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
 <li>customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!</li>
 <li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-14" class="anchor" href="#response-14"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>User object:</p>
 
 <ul>
 <li>id {String} The id of the updated user</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="delete-user" class="anchor" href="#delete-user"><span class="octicon octicon-link"></span></a>Delete user</h3>
 
 <p>Deletes a specified user</p>
@@ -1591,28 +1859,40 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <ul>
 <li>DELETE</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-15" class="anchor" href="#route-15"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/delete/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-in-the-route-2" class="anchor" href="#parameters-in-the-route-2"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
 <li>:id {String} The id of the user.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-15" class="anchor" href="#response-15"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>User object:</p>
 
 <ul>
 <li>id {String} The id of the deleted user</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="upload-headers-1" class="anchor" href="#upload-headers-1"><span class="octicon octicon-link"></span></a>Upload Headers</h3>
 
 <p>Upload a list of headers to a specified user or users. Please note that every upload will overwrite the previous uploads!<br>
@@ -1623,18 +1903,24 @@ If you want to know what a header is good for, please read the <a href="#headers
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-16" class="anchor" href="#route-16"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/uploadHeaders</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-11" class="anchor" href="#parameters-you-should-post-11"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>users {Array} /REQUIRED/ List of the ids of the users you want to upload the headers.</li>
 <li>headers {Array} /REQUIRED/ The list of headers which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a header object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-16" class="anchor" href="#response-16"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
@@ -1655,11 +1941,17 @@ If you want to know what a header is good for, please read the <a href="#headers
 <li>error {String} The reason why the header is not valid</li>
 </ul>
 </li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="upload-footers-1" class="anchor" href="#upload-footers-1"><span class="octicon octicon-link"></span></a>Upload Footers</h3>
 
 <p>Upload a list of footers to a specified user or users. Please note that every upload will overwrite the previous uploads!<br>
@@ -1670,18 +1962,24 @@ If you want to know what a footer is good for, please read the <a href="#headers
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-17" class="anchor" href="#route-17"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/uploadFooters</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-12" class="anchor" href="#parameters-you-should-post-12"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>users {Array} /REQUIRED/ List of the ids of the users you want to upload the footers.</li>
 <li>footers {Array} /REQUIRED/ The list of footers which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a footer object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-17" class="anchor" href="#response-17"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
@@ -1702,11 +2000,17 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <li>error {String} The reason why the footer is not valid</li>
 </ul>
 </li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="upload-complex-elems-to-specified-users" class="anchor" href="#upload-complex-elems-to-specified-users"><span class="octicon octicon-link"></span></a>Upload Complex elems to specified users</h3>
 
 <p>Upload a list of Complex elems to a specified user or users. Please note that every upload will overwrite the previous uploads!<br>
@@ -1717,18 +2021,24 @@ If you want to know what a Complex elem is good for, please read the <a href="#c
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-18" class="anchor" href="#route-18"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/complexElem/addComplexElemToUsers</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-13" class="anchor" href="#parameters-you-should-post-13"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.</li>
 <li>items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-18" class="anchor" href="#response-18"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object:</p>
@@ -1736,7 +2046,11 @@ If you want to know what a Complex elem is good for, please read the <a href="#c
 <ul>
 <li>error {String} If the whole process is failed, otherwise null.</li>
 <li>fails {Array} If a part of the items failed to insert, if all items inserted, it is null.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="upload-complex-elems-to-all-users" class="anchor" href="#upload-complex-elems-to-all-users"><span class="octicon octicon-link"></span></a>Upload Complex elems to all users</h3>
 
 <p>Upload a list of Complex elems to all users. Please note that every upload will overwrite the previous uploads!<br>
@@ -1747,18 +2061,24 @@ If you want to know what a Complex elem is good for, please read the <a href="#c
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-19" class="anchor" href="#route-19"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/complexElem/addComplexElems</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-14" class="anchor" href="#parameters-you-should-post-14"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.</li>
 <li>items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-19" class="anchor" href="#response-19"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object:</p>
@@ -1767,7 +2087,11 @@ If you want to know what a Complex elem is good for, please read the <a href="#c
 <li>error {String} If the whole process is failed, otherwise null.</li>
 <li>fails {Array} If a part of the items failed to insert, if all items inserted, it is null.</li>
 <li>result {Array} List of all inserted Complex elems</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-structures-to-users" class="anchor" href="#add-structures-to-users"><span class="octicon octicon-link"></span></a>Add structures to users</h3>
 
 <p>You can assign structures to one or more users. If you do so, then the selected users will be able to use the given structures.<br>
@@ -1778,19 +2102,25 @@ If you want to know what exactly a structure is good for, please read the <a hre
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-20" class="anchor" href="#route-20"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addStructuresToUsers</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-15" class="anchor" href="#parameters-you-should-post-15"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>users {Array} It should contain the ids of the users</li>
 <li>structureIds {Array} It should contain the ids of the structures you want to assign to the specified users<br>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-20" class="anchor" href="#response-20"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the following four arrays: </p>
@@ -1813,7 +2143,11 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <li>savedItems {Array} It contains the structure which were assigned to the user/users.</li>
 <li>savedToUsers {Array) It contains the ids of the users who successfully get the structures</li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-templates-to-users" class="anchor" href="#add-templates-to-users"><span class="octicon octicon-link"></span></a>Add templates to users</h3>
 
 <p>You can create templates to a specified user or users. If you do so then the selected users will be able to use the given templates.<br>
@@ -1824,12 +2158,16 @@ If you want to know what exactly a template is good for, please read the <a href
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-21" class="anchor" href="#route-21"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addTemplatesToUsers</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-16" class="anchor" href="#parameters-you-should-post-16"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -1843,7 +2181,9 @@ If you want to know what exactly a template is good for, please read the <a href
 <li>structureId {String} /REQUIRED/ The id of the structure which the template belongs to.</li>
 </ul>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-21" class="anchor" href="#response-21"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the following four arrays: </p>
@@ -1866,7 +2206,11 @@ If you want to know what exactly a template is good for, please read the <a href
 <li>savedItems {Array} It contains the templates which were assigned to the user/users.</li>
 <li>savedToUsers {Array) It contains the ids of the users who successfully get the templates </li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-data-to-user" class="anchor" href="#add-data-to-user"><span class="octicon octicon-link"></span></a>Add data to user</h3>
 
 <p>You can add data to a specified user. If you do so then the selected user will be able to use the given data.<br>
@@ -1877,12 +2221,16 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-22" class="anchor" href="#route-22"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addDataToUsers</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-17" class="anchor" href="#parameters-you-should-post-17"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -1896,7 +2244,9 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>structureId {String} /REQUIRED/ The id of the structure which the data belongs to.</li>
 </ul>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-22" class="anchor" href="#response-22"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the following four arrays: </p>
@@ -1919,7 +2269,11 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>savedItems {Array} It contains the data which were assigned to the user/users.</li>
 <li>savedToUsers {Array) It contains the ids of the users who successfully get the data </li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h2>
+</ul>
+
+<hr>
+
+<h2>
 <a name="gallery-handling" class="anchor" href="#gallery-handling"><span class="octicon octicon-link"></span></a>Gallery handling</h2>
 
 <p>If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.</p>
@@ -1928,7 +2282,9 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 
 <p>We will create a md5 hash from a timestamp and your magic word (The right order of the string concatenation: timestam + magic word). This two (the hash and the timestamp) will be sent to you in each of our requests (in the query). You recreate the hash in your server side and compare the two hashes. With this method you can ensure that the request really came from us.</p>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="upload-route" class="anchor" href="#upload-route"><span class="octicon octicon-link"></span></a>Upload route</h3>
 
 <p>You should implement a route on your server which we can use for image upload.</p>
@@ -1941,10 +2297,23 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <li>The "userId" will contain the id of the user (who wants to upload the image).</li>
 <li>The "hash" will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (the right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us. </li>
 <li>The "time" will be the timestamp we used for creating the hash </li>
-</ul><p>The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.<br>
+</ul>
+
+<p>The image will be uplaoded as a file (the field name will be "file") and there will be another field "userId", it will contain the same data as the query field "userId". There is a third field, called "originalFileName" which contains the name of the original file before the user started to upload it.<br>
 Please note that if you use php on your server side then checking the content-tpye of the uploaded image with the $_Files["file"]["type"] is not possible (it will be Application/octet-stream) but if you use our hash to authenticate us, then you do not have to worry about the uploaded file. We will make sure that it will be what it has to be.</p>
 
-<p>The response to our post request should be an image object. The object should have the following properties:</p>
+<p>If you progress our request by php, reading our sent data may need a special way like the example below: </p>
+
+<pre><code>$json = file_get_contents("php://input");
+$values = json_decode($json, true);
+
+$someValue = $values["someValue"];
+</code></pre>
+
+<p>Further info about this issue can be read in this article: 
+<a href="http://stackoverflow.com/questions/11990767/post-empty-when-curling-json">http://stackoverflow.com/questions/11990767/post-empty-when-curling-json</a></p>
+
+<p>The response to our post request should be a json object. The object should have the following properties:</p>
 
 <ul>
 <li>url {String} /REQUIRED/ The url where the newly uploaded image can be found.</li>
@@ -1953,16 +2322,22 @@ Please note that if you use php on your server side then checking the content-tp
 <li>name {String} The name of the image. If it is not given then we will you the last segment of the url</li>
 <li>width {Number} The original width of the image (It can save a lot of process if you can provide this information)</li>
 <li>height {Number} The original height of the image (It can save a lot of process if you can provide this information)</li>
-</ul><p>Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:</p>
+</ul>
+
+<p>Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:</p>
 
 <ul>
 <li>err</li>
-</ul><p>For example:<br>
+</ul>
+
+<p>For example:<br>
     var error = {
         err: "Not my user!"
     };</p>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="delete-route" class="anchor" href="#delete-route"><span class="octicon octicon-link"></span></a>Delete route</h3>
 
 <p>You should implement a route on your server side which we can use for deleting images.</p>
@@ -1974,22 +2349,41 @@ Please note that if you use php on your server side then checking the content-tp
 <ul>
 <li>The "hash" will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (the right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us.</li>
 <li>The "time" will be the timestamp we used for creating the hash </li>
-</ul><p>We will post an object with two parameters:</p>
+</ul>
+
+<p>We will post an object with two parameters:</p>
 
 <ul>
 <li>url {String} The url of the deleted image</li>
 <li>userId {String} The id of the user who deleted the image.</li>
-</ul><p>Your response to our post request should be 200. (HTTP status code)<br>
+</ul>
+
+<p>If you progress our request by php, reading our sent data may need a special way like the example below: </p>
+
+<pre><code>$json = file_get_contents("php://input");
+$values = json_decode($json, true);
+
+$someValue = $values["someValue"];
+</code></pre>
+
+<p>Further info about this issue can be read in this article: 
+<a href="http://stackoverflow.com/questions/11990767/post-empty-when-curling-json">http://stackoverflow.com/questions/11990767/post-empty-when-curling-json</a></p>
+
+<p>Your response to our post request should be 200. (HTTP status code)<br>
 Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:</p>
 
 <ul>
 <li>err</li>
-</ul><p>For example:<br>
+</ul>
+
+<p>For example:<br>
     var error = {
         err: "Not my user!"
     };</p>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="copy-route" class="anchor" href="#copy-route"><span class="octicon octicon-link"></span></a>Copy route</h3>
 
 <p>IF you want to copy a project from a user to an other and want to copy the images (which are used in the project) too, you need to use the <a href="#creat-from-to-with-images">create from to with images route</a>. This route will collect the urls of the images (which you host) of the project and send it to you. After that you should make a copy of this images to the target user and sent us back the parameters of this new images.</p>
@@ -2001,13 +2395,28 @@ Or if you want to response with some kind of error (for example an error message
 <ul>
 <li>The "hash" will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (he right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us. </li>
 <li>The "time" will be the timestamp we used for creating the hash </li>
-</ul><p>We will post an object whit the following parameters:</p>
+</ul>
+
+<p>We will post an object whit the following parameters:</p>
 
 <ul>
 <li>urls {Array} It contains the urls of the images which are used in the template</li>
 <li>from_userId {String} The id of the users from who we want to copy the template to the target user</li>
 <li>target_userId {String} The id of the user who will get the new template. (This user needs the new urls)</li>
-</ul><p>Your response to our post request should be an object. The object should have an "urls" property which should be another object. This object should have the following "key - value" pairs: the old url (which you get from the urls array we sent with the post request) should be the key and the value should be the parameters of the new image (like the one you need to send beack in the <a href="#upload-route">upload route</a>:</p>
+</ul>
+
+<p>If you progress our request by php, reading our sent data may need a special way like the example below: </p>
+
+<pre><code>$json = file_get_contents("php://input");
+$values = json_decode($json, true);
+
+$someValue = $values["someValue"];
+</code></pre>
+
+<p>Further info about this issue can be read in this article: 
+<a href="http://stackoverflow.com/questions/11990767/post-empty-when-curling-json">http://stackoverflow.com/questions/11990767/post-empty-when-curling-json</a></p>
+
+<p>Your response to our post request should be an object. The object should have an "urls" property which should be another object. This object should have the following "key - value" pairs: the old url (which you get from the urls array we sent with the post request) should be the key and the value should be the parameters of the new image (like the one you need to send beack in the <a href="#upload-route">upload route</a>:</p>
 
 <ul>
 <li>url {String} /REQUIRED/ The url where the newly uploaded image can be found.</li>
@@ -2016,7 +2425,9 @@ Or if you want to response with some kind of error (for example an error message
 <li>name {String} The name of the image. If it is not given then we will you the last segment of the url</li>
 <li>width {Number} The original width of the image (It can save a lot of process if you can provide this information)</li>
 <li>height {Number} The original height of the image (It can save a lot of process if you can provide this information)</li>
-</ul><p>For example: 
+</ul>
+
+<p>For example: 
 If we uploaded the following array: ["www.foo.bar", "<a href="http://test.com/image.jpg">http://test.com/image.jpg</a>"] then your asnwer should be something like this object:</p>
 
 <pre><code>var answer = { 
@@ -2040,12 +2451,16 @@ If we uploaded the following array: ["www.foo.bar", "<a href="http://test.com/im
 
 <ul>
 <li>err</li>
-</ul><p>For example:<br>
+</ul>
+
+<p>For example:<br>
     var error = {
         err: "Not my user!"
     };</p>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="configure-api-servers-gallery" class="anchor" href="#configure-api-servers-gallery"><span class="octicon octicon-link"></span></a>Configure api server's gallery</h3>
 
 <p>Configure the api's gallery.</p>
@@ -2055,12 +2470,16 @@ If we uploaded the following array: ["www.foo.bar", "<a href="http://test.com/im
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-23" class="anchor" href="#route-23"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/config</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-18" class="anchor" href="#parameters-you-should-post-18"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -2070,7 +2489,9 @@ If we uploaded the following array: ["www.foo.bar", "<a href="http://test.com/im
 <li>noUploadText {Object} It contains the language code (see <a href="#available-languages">available languages</a>) - html(string) pairs. The given content will be displayed if the upload is not allowed. </li>
 <li>limitReached {Object} It contains the language code (see <a href="#available-languages">available languages</a>) - html(string) pairs. The given content will be displayed if a user reached the upload limit. It is not required to impose a limit on the upload. If you want to know how you can set the limit, please read the <a href="#feature-switch">feature switch</a> chapter.</li>
 <li>noUrl {Boolean} With this boolean you can forbid the image handling from absolute urls. If you set this parameter true, then none of your users will be able to use images from absoulte url.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-23" class="anchor" href="#response-23"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>The data you posted:</p>
@@ -2084,7 +2505,11 @@ If we uploaded the following array: ["www.foo.bar", "<a href="http://test.com/im
 <li>noUrl {Boolean}
 or it can be an error object:</li>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="get-configuration" class="anchor" href="#get-configuration"><span class="octicon octicon-link"></span></a>Get configuration</h3>
 
 <p>Gets the configuration of the api gallery.</p>
@@ -2094,12 +2519,16 @@ or it can be an error object:</li>
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-24" class="anchor" href="#route-24"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/config</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-24" class="anchor" href="#response-24"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Config object: </p>
@@ -2111,11 +2540,17 @@ or it can be an error object:</li>
 <li>noUploadText {Object} (only if you previously set it in)</li>
 <li>limitReached {Object} (only if you previously set it)</li>
 <li>noUrl {Boolean} (only if you previously set it true)</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="list-images" class="anchor" href="#list-images"><span class="octicon octicon-link"></span></a>List images</h3>
 
 <p>Lists all images of a specified user</p>
@@ -2125,17 +2560,23 @@ or it can be an error object:</li>
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-25" class="anchor" href="#route-25"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/list/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-in-the-route-3" class="anchor" href="#parameters-in-the-route-3"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
 <li>:id {String} The id of the target user</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-25" class="anchor" href="#response-25"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Array of urls</p>
@@ -2144,7 +2585,11 @@ or it can be an error object:</li>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-images" class="anchor" href="#add-images"><span class="octicon octicon-link"></span></a>Add images</h3>
 
 <p>Add one or more images to one or more specified users</p>
@@ -2154,12 +2599,16 @@ or it can be an error object:</li>
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-26" class="anchor" href="#route-26"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/add</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-19" class="anchor" href="#parameters-you-should-post-19"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -2176,7 +2625,9 @@ or it can be an error object:</li>
 </li>
 <li>users {Array} /REQUIRED/ should contain the ids of the users<br>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-26" class="anchor" href="#response-26"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Three different array:</p>
@@ -2204,11 +2655,17 @@ or it can be an error object:</li>
 <li>error {String} Description of the error</li>
 </ul>
 </li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="delete-images" class="anchor" href="#delete-images"><span class="octicon octicon-link"></span></a>Delete images</h3>
 
 <p>Delete one or more images from one or more specified users</p>
@@ -2218,18 +2675,24 @@ or it can be an error object:</li>
 
 <ul>
 <li>DELETE</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-27" class="anchor" href="#route-27"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/delete</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-20" class="anchor" href="#parameters-you-should-post-20"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>images {Array} /REQUIRED/ should contain the urls of the images you want to remove from the given users.</li>
 <li>users {Array} /REQUIRED/ should contain the ids of the users.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-27" class="anchor" href="#response-27"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Three different array:</p>
@@ -2267,11 +2730,17 @@ or it can be an error object:</li>
 <li>error {String} Description of the error</li>
 </ul>
 </li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h2>
+</ul>
+
+<hr>
+
+<h2>
 <a name="project-handler-admin-routes" class="anchor" href="#project-handler-admin-routes"><span class="octicon octicon-link"></span></a>Project handler admin routes</h2>
 
 <h3>
@@ -2284,12 +2753,16 @@ or it can be an error object:</li>
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-28" class="anchor" href="#route-28"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createTo</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-21" class="anchor" href="#parameters-you-should-post-21"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -2298,18 +2771,26 @@ or it can be an error object:</li>
 <li>description {String} Description of the template, by defaullt it is an empty string</li>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-28" class="anchor" href="#response-28"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Project object:</p>
 
 <ul>
 <li>_id {String} MongoDB _id of the newly created project</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="create-from-to" class="anchor" href="#create-from-to"><span class="octicon octicon-link"></span></a>Create from to</h3>
 
 <p>Creates a project/template to a specified user using an another template</p>
@@ -2319,12 +2800,16 @@ or it can be an error object:</li>
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-29" class="anchor" href="#route-29"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromTo</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-22" class="anchor" href="#parameters-you-should-post-22"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -2334,18 +2819,26 @@ or it can be an error object:</li>
 <li>description {String} Description of the template, by defaullt it is an empty string</li>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-29" class="anchor" href="#response-29"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Project object:</p>
 
 <ul>
 <li>_id {String} MongoDB _id of the newly created project</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="create-from-to-with-images" class="anchor" href="#create-from-to-with-images"><span class="octicon octicon-link"></span></a>Create from to with images</h3>
 
 <p>It is quiet similar to the <a href="#create-from-to">create from to route</a>, basic with this route you can do the same thing except, here not only the project will be copied, but the images (which are used in the template) too. If you want to use this route, first you need to implement a <a href="#copy-route">copy route</a> on your server side and <a href="#configure-api-servers-gallery">config</a> it's address to the gallery.</p>
@@ -2355,12 +2848,16 @@ or it can be an error object:</li>
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-30" class="anchor" href="#route-30"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromToWithImages</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-23" class="anchor" href="#parameters-you-should-post-23"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -2369,18 +2866,26 @@ or it can be an error object:</li>
 <li>title {String} The title of the new template, if it is not given, then the project's name will be 'Untitled'</li>
 <li>description {String} Description of the template, by defaullt it is an empty string</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-30" class="anchor" href="#response-30"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Project object:</p>
 
 <ul>
 <li>_id {String} MongoDB _id of the newly created project</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="get-project" class="anchor" href="#get-project"><span class="octicon octicon-link"></span></a>Get Project</h3>
 
 <p>Get a specified project as json. The result will contain almost every information about the selected project.</p>
@@ -2390,17 +2895,23 @@ or it can be an error object:</li>
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-31" class="anchor" href="#route-31"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/getProject/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-in-the-route-4" class="anchor" href="#parameters-in-the-route-4"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
 <li>:id {String} The id of the target project</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-31" class="anchor" href="#response-31"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Project object:</p>
@@ -2422,11 +2933,17 @@ or it can be an error object:</li>
 </ul>
 </li>
 <li>customData {Object} Your custom data</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="set-project" class="anchor" href="#set-project"><span class="octicon octicon-link"></span></a>Set Project</h3>
 
 <p>Sets the root of a selected user's selected project's document. </p>
@@ -2436,30 +2953,42 @@ or it can be an error object:</li>
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-32" class="anchor" href="#route-32"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/setProject</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-24" class="anchor" href="#parameters-you-should-post-24"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>userId {String} /REQUIRED/ the id of the user whose project you want to update</li>
 <li>projectId {Sring} /REQUIRED/ the id of the project you want to update</li>
 <li>documentRoot {Object} /REQUIRED/ The EDM template json you want to set to the selected project. It should start with <a href="#root">Root</a> elem</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-32" class="anchor" href="#response-32"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Success object:</p>
 
 <ul>
 <li>success {boolean} </li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="default-templates" class="anchor" href="#default-templates"><span class="octicon octicon-link"></span></a>Default templates</h3>
 
 <p>Every api partner get a templater user. (id = "templater"). This speciel user have a few project by default which can be used for anything you want. With this route you can list this projects.</p>
@@ -2469,12 +2998,16 @@ or it can be an error object:</li>
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-33" class="anchor" href="#route-33"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/defaults</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-33" class="anchor" href="#response-33"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>List of projects. Every project is an object with the following parameters:</p>
@@ -2485,11 +3018,17 @@ or it can be an error object:</li>
 <li>document {Object} An object, which represents a template</li>
 <li>description {String} Description of the template</li>
 <li>customData {Object} The custom informations you saved for the projects </li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h2>
+</ul>
+
+<hr>
+
+<h2>
 <a name="headers--footers" class="anchor" href="#headers--footers"><span class="octicon octicon-link"></span></a>Headers &amp; footers</h2>
 
 <p>You can upload headers and footers which your users will be able to use. A header will appear on the top of their templates and the footer will appear on the bottom.
@@ -2504,13 +3043,17 @@ The newly created document will get a header and/or footer if the user (who crea
 <li>to all your user (<a href="#upload-headers-2">general header upload</a>) </li>
 <li>to a specified group (<a href="#upload-headers">upload headers to group</a>) </li>
 <li>to specified user or users (<a href="#upload-headers-1">upload headers to user</a>)</li>
-</ul><p>Footers can be uploaded in the same ways:</p>
+</ul>
+
+<p>Footers can be uploaded in the same ways:</p>
 
 <ul>
 <li>to everyone (<a href="#upload-footers-2">general footer upload</a>)</li>
 <li>to a specified group (<a href="#upload-footers">upload footers to a group</a>)</li>
 <li>to specified user or users (<a href="#upload-footers-1">upload footers to users</a>)</li>
-</ul><h3>
+</ul>
+
+<h3>
 <a name="structure" class="anchor" href="#structure"><span class="octicon octicon-link"></span></a>Structure</h3>
 
 <p>The representing object fore header or footer should have the following properties:</p>
@@ -2528,7 +3071,9 @@ The newly created document will get a header and/or footer if the user (who crea
 <li>title {Object} it should contains language code - title string pairs. For example: 'en': 'Green-white header'. The title will appear on the dropdown list. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!<br>
 </li>
 <li>placeholders {Object} it is needed when you want to have more than one supported language on your headers or footers. If you want to know how do the placeholders work please read the <a href="#localization">localization</a> part of the <a href="#headers--footers">headers &amp; footers</a> chapter.</li>
-</ul><p>Example:</p>
+</ul>
+
+<p>Example:</p>
 
 <pre><code>var headerOrFooter = {
     "document":  {
@@ -2570,7 +3115,9 @@ The newly created document will get a header and/or footer if the user (who crea
 };
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="localization" class="anchor" href="#localization"><span class="octicon octicon-link"></span></a>Localization</h3>
 
 <p>It is possible to use different localization with the same headers and/or footers but <strong>not required</strong>.<br>
@@ -2603,11 +3150,14 @@ An example title object: </p>
 
 <p>If you support a language but you do not want to give the header or footer a different title in the other language, you do not have to, but please note that this way the default title will be used on the dropdown list for this header, and the default is always the 'en' (english) version of the title.  </p>
 
-<p>Example:<br><em>We support the english and the hungarian languages. We upload two headers with the following two title objects: title: {'en': 'first   header'} and title: {'en': 'second header', 'hu': 'Második fejléc'}. If someone select the hungarian language, then in his dropdown       list there will be two selectable header: 'first header' and 'Második fejléc', but if someone choose the english version, then        the dropdown list will look like the following: 'first header' and 'second header'.</em>  </p>
+<p>Example:<br>
+<em>We support the english and the hungarian languages. We upload two headers with the following two title objects: title: {'en': 'first   header'} and title: {'en': 'second header', 'hu': 'Második fejléc'}. If someone select the hungarian language, then in his dropdown       list there will be two selectable header: 'first header' and 'Második fejléc', but if someone choose the english version, then        the dropdown list will look like the following: 'first header' and 'second header'.</em>  </p>
 
 <p>If you do not give an 'en' (english) title to a header, then it will be generated automatically in our application, so it is suggested to always upload an 'en' version of the title too.</p>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="upload-headers-2" class="anchor" href="#upload-headers-2"><span class="octicon octicon-link"></span></a>Upload Headers</h3>
 
 <p>Upload a list of headers which <strong>all of your users</strong> will be able to use. Please note that every upload will overwrite the previous uploads!<br>
@@ -2618,18 +3168,24 @@ If you want to know what a header is good for, please read the <a href="#headers
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-34" class="anchor" href="#route-34"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/uploadHeaders</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-25" class="anchor" href="#parameters-you-should-post-25"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>headers {Array} The list of headers which all of your users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a header object should look like, please read <a href="#structure">this</a>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-34" class="anchor" href="#response-34"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
@@ -2643,11 +3199,17 @@ If you want to know what a header is good for, please read the <a href="#headers
 <li>error {String} The reason why the header is not valid</li>
 </ul>
 </li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="upload-footers-2" class="anchor" href="#upload-footers-2"><span class="octicon octicon-link"></span></a>Upload Footers</h3>
 
 <p>Upload a list of footers which <strong>all of your users</strong> will be able to use. Please note that every upload will overwrite the previous uploads!<br>
@@ -2658,17 +3220,23 @@ If you want to know what a footer is good for, please read the <a href="#headers
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-35" class="anchor" href="#route-35"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/uploadFooters</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-26" class="anchor" href="#parameters-you-should-post-26"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>footers {Array} The list of footers which all of your users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a footer object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-35" class="anchor" href="#response-35"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
@@ -2682,11 +3250,17 @@ If you want to know what a footer is good for, please read the <a href="#headers
 <li>error {String} The reason why the footer is not valid</li>
 </ul>
 </li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h2>
+</ul>
+
+<hr>
+
+<h2>
 <a name="complexelements" class="anchor" href="#complexelements"><span class="octicon octicon-link"></span></a>complexElements</h2>
 
 <p>The complex elem is a possible tool to save a BOX or MULITCOLL element with all of it contents to be able to reuse it. This feature is created for make the template editing more fast so more effective.
@@ -2703,7 +3277,11 @@ The editor users can also delete those complex elems what are binded to him/hers
 <li>to all your user (<a href="#upload-complex-elems-to-all-users">general complexElems upload</a>) </li>
 <li>to a specified group (<a href="#upload-complex-elems">upload complexElems to group</a>) </li>
 <li>to specified user or users (<a href="#upload-complex-elems-to-specified-users">upload complexElems to user</a>)</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="structure-1" class="anchor" href="#structure-1"><span class="octicon octicon-link"></span></a>Structure</h3>
 
 <p>The representing object for a Complex elem should have the following properties:  </p>
@@ -2720,7 +3298,11 @@ The editor users can also delete those complex elems what are binded to him/hers
 <li>id {String} /optional/ this id is what will identify the item for you if you would like to manage it via admin</li>
 <li>title {Object} /optional/ it should contains language code - title string pairs. For example: 'en': 'Green-white complexElem'. If you miss to give it, we it will receive a default name. The title will appear on the list of the complex element. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!<br>
 </li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="localization-1" class="anchor" href="#localization-1"><span class="octicon octicon-link"></span></a>Localization</h3>
 
 <p>It is possible to use different localization with the same complex elem but <strong>not required</strong>.
@@ -2734,7 +3316,9 @@ An example title object: </p>
     }
 </code></pre>
 
-<hr><h2>
+<hr>
+
+<h2>
 <a name="dynamic-elements" class="anchor" href="#dynamic-elements"><span class="octicon octicon-link"></span></a>Dynamic Elements</h2>
 
 <p>This element is good for those who want their users to be able to change their emails/templates content easily. Users can add a dynamic element to their templates and choose which type of content will it display (<a href="#dynamic-element-structure">structure</a>, how will it look like (<a href="#dynamic-element-template">template</a> and what the actual content will be (<a href="#dynamic-element-data">data</a>).<br>
@@ -2754,13 +3338,17 @@ The structure is very important , because every templates and data have to be as
 <li>all of your users (<a href="#add-structures-to-everyone">add to apiClientInstance</a>)</li>
 <li>a specified group (<a href="#add-structures-to-group">add to group</a>)</li>
 <li>a specified user or users (<a href="#add-structures-to-users">add to user</a>)</li>
-</ul><p>A structure object should have the following properties:</p>
+</ul>
+
+<p>A structure object should have the following properties:</p>
 
 <ul>
 <li>id {String} This id is very <strong>important</strong>. You have to use it everywhere, so choose carefully! It should be unique!</li>
 <li>label {Object} It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it <a href="#localization">here</a>). Please note that the 'en' language code will be the default label! If you do not give any 'en' version, then we will generate one.</li>
 <li>placeHolders {Object} It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). It works almost similar like the headers and footers placeholders (expect , here you do not have to use localization). You can read more about the header and footer placeholders <a href="#localization">here</a>.</li>
-</ul><p>Example:</p>
+</ul>
+
+<p>Example:</p>
 
 <pre><code>var structure = {
     id: "my-structure-id",
@@ -2789,14 +3377,18 @@ You can assign any number of templates to a structure.  </p>
 <li>all of your users (<a href="#add-templates-to-everyone">add to apiClientInstance</a>)</li>
 <li>a specified group (<a href="#add-templates-to-group">add to group</a>)</li>
 <li>a specified user or users (<a href="#add-templates-to-users">add to user</a>)</li>
-</ul><p>A template object should have the following properties:</p>
+</ul>
+
+<p>A template object should have the following properties:</p>
 
 <ul>
 <li>id {String} If you do not give any id then we will generate one.</li>
 <li>label {Object} It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it <a href="#localization">here</a>). Please note that the 'en' language code will be the default label! If you do not give any 'en' version, then we will generate one.</li>
 <li>doc {Object} Json document (<a href="#json-document-descriptors">see more</a>). It must be <a href="#box">"BOX"</a> or <a href="#multicolumn">"MULTICOLUMN"</a>! (of course, it can have any number of children). Please note that it cannot contain any or be a <a href="#full-width-container">"FULLWIDTH_CONTAINER"</a>!</li>
 <li>structureId {String} The id of the structure which the template belongs to.</li>
-</ul><p>Example: </p>
+</ul>
+
+<p>Example: </p>
 
 <pre><code>var template = {
     id: 'my-template-id',
@@ -2847,14 +3439,18 @@ You can assign any number of data to a structure.  </p>
 <ul>
 <li>a specified group (<a href="#add-data-to-group">add to group</a>)</li>
 <li>a specified user or users (<a href="#add-data-to-users">add to user</a>)</li>
-</ul><p>A Data object should have the following properties: </p>
+</ul>
+
+<p>A Data object should have the following properties: </p>
 
 <ul>
 <li>id {String} If you do not give any id then we will generate one.</li>
 <li>label {Object} /REQUIRED/ It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it <a href="#localization">here</a>). Please note that the 'en' language code will be the default label! If you do not give any 'en' version then we will generate one.</li>
 <li>palceHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). It works almost similar like the headers and footers placeholders (expect , here you do not have to use localization). You can read more about the header and footer placeholders <a href="#localization">here</a>.</li>
 <li>structureId {String} /REQUIRED/ The id of the structure which the data belongs to.</li>
-</ul><p>Example:</p>
+</ul>
+
+<p>Example:</p>
 
 <pre><code>var data = {
     id: 'my-data-id',
@@ -2871,7 +3467,9 @@ You can assign any number of data to a structure.  </p>
 };
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="create-structures" class="anchor" href="#create-structures"><span class="octicon octicon-link"></span></a>Create Structures</h3>
 
 <p>You can create one or more structure for your <a href="#dynamic-elements">dynamic elements</a> with this route. If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.</p>
@@ -2881,12 +3479,16 @@ You can assign any number of data to a structure.  </p>
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-36" class="anchor" href="#route-36"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/createDynamicElemStructures</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-27" class="anchor" href="#parameters-you-should-post-27"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -2898,7 +3500,9 @@ You can assign any number of data to a structure.  </p>
 <li>placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). (<a href="#dynamic-element-structure">see more</a>)</li>
 </ul>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-36" class="anchor" href="#response-36"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with three arrays:</p>
@@ -2913,7 +3517,11 @@ You can assign any number of data to a structure.  </p>
 </ul>
 </li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="list-structures" class="anchor" href="#list-structures"><span class="octicon octicon-link"></span></a>List Structures</h3>
 
 <p>List your structures.<br>
@@ -2924,12 +3532,16 @@ If you want to know what exactly a structure is good for, please read the <a hre
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-37" class="anchor" href="#route-37"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/listDynamicElemStructure</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-37" class="anchor" href="#response-37"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the followinf property: </p>
@@ -2937,7 +3549,11 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <ul>
 <li>result {Array} The list of your structures.</li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="delete-structure" class="anchor" href="#delete-structure"><span class="octicon octicon-link"></span></a>Delete Structure</h3>
 
 <p>Delete one specified structure. Please note that if you delete a structure then every template and data which belong to it <strong>will be deleted</strong> too. THis process can take a very long time!
@@ -2948,18 +3564,24 @@ If you want to know what exactly a structure is good for, please read the <a hre
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-38" class="anchor" href="#route-38"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/deleteDynamicElemStructure</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-28" class="anchor" href="#parameters-you-should-post-28"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>id {String} The id of the structure you want to delete. <strong>Please try to avoid using this id again!!</strong>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-38" class="anchor" href="#response-38"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the followinf property: </p>
@@ -2967,7 +3589,11 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <ul>
 <li>deleted {object} The structure you deleted</li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-structures-to-everyone" class="anchor" href="#add-structures-to-everyone"><span class="octicon octicon-link"></span></a>Add structures to everyone</h3>
 
 <p>You can assign structures to all of your users. If you do so, then each of your user will be able to use the given structures.<br>
@@ -2978,17 +3604,23 @@ If you want to know what exactly a structure is good for, please read the <a hre
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-39" class="anchor" href="#route-39"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addStructures</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-29" class="anchor" href="#parameters-you-should-post-29"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>structureIds {Array} It should contain the ids of the structures you want to assign to all of your users.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-39" class="anchor" href="#response-39"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
@@ -3004,7 +3636,11 @@ If you want to know what exactly a structure is good for, please read the <a hre
 <li>saved {Array} It contains the objects of the successfully saved structures<br>
 </li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-templates-to-everyone" class="anchor" href="#add-templates-to-everyone"><span class="octicon octicon-link"></span></a>Add templates to everyone</h3>
 
 <p>You can assign templates to all of your users. If you do so, then each of your user will be able to use the given templates.<br>
@@ -3015,12 +3651,16 @@ If you want to know what exactly a template is good for, please read the <a href
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-40" class="anchor" href="#route-40"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addTemplates</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-30" class="anchor" href="#parameters-you-should-post-30"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -3033,7 +3673,9 @@ If you want to know what exactly a template is good for, please read the <a href
 <li>structureId {String} /REQUIRED/ The id of the structure which the template belongs to.</li>
 </ul>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-40" class="anchor" href="#response-40"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
@@ -3049,7 +3691,11 @@ If you want to know what exactly a template is good for, please read the <a href
 <li>saved {Array} It contains the objects of the successfully saved templates<br>
 </li>
 <li>err {String} only in case of error, contains the error description</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="custom-data" class="anchor" href="#custom-data"><span class="octicon octicon-link"></span></a>Custom Data</h3>
 
 <p>If you want to save any kind of plus information for some of your data you can do it with using the customData field
@@ -3061,7 +3707,11 @@ You can save custom informations to:  </p>
 <li>groups (update group <a href="#update-one-group">server side</a> or <a href="#edmdesignerapiupdategroupgroupid-data-callback-onerrorcb">client side</a>)</li>
 <li>project (update project <a href="#update-information">server side</a> or <a href="#edmdesignerapiupdateprojectinfoprojectid-data-callback-onerrorcb">client side</a>)<br>
 </li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-custom-data-to-yourself" class="anchor" href="#add-custom-data-to-yourself"><span class="octicon octicon-link"></span></a>Add Custom Data to yourself</h3>
 
 <p>You can save any kind of custom information to your apiClientInstance database entry</p>
@@ -3071,18 +3721,24 @@ You can save custom informations to:  </p>
 
 <ul>
 <li>POST</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-41" class="anchor" href="#route-41"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/saveCustomData</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-31" class="anchor" href="#parameters-you-should-post-31"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>customData {Object} The custom informations you want to save</li>
 <li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-41" class="anchor" href="#response-41"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
@@ -3091,7 +3747,11 @@ You can save custom informations to:  </p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="get-my-custom-data" class="anchor" href="#get-my-custom-data"><span class="octicon octicon-link"></span></a>Get my custom data</h3>
 
 <p>You can get the custom informations you previously saved for yourself</p>
@@ -3101,23 +3761,33 @@ You can save custom informations to:  </p>
 
 <ul>
 <li>GET</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-42" class="anchor" href="#route-42"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/getMyCustomData</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-42" class="anchor" href="#response-42"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>An object containing your custom data</p>
 
 <ul>
 <li>customData {Object} The custom informations you saved for yourself</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="custom-strings" class="anchor" href="#custom-strings"><span class="octicon octicon-link"></span></a>Custom Strings</h3>
 
 <p>The custom strings are an option to provide predefined texts to your users what they can insert while editing text contents.
@@ -3127,7 +3797,9 @@ You can add custom strings to </p>
 <li>all of your users </li>
 <li>to specified users</li>
 <li>or to users of a specified group.</li>
-</ul><p>The custom strings can be added by bunch of custom string items. Each bunch contains a title what will be displayed as the label of the drop-down list in the text editor, and an id, what provides the identification. By this id it will be possible to remove the bunch.
+</ul>
+
+<p>The custom strings can be added by bunch of custom string items. Each bunch contains a title what will be displayed as the label of the drop-down list in the text editor, and an id, what provides the identification. By this id it will be possible to remove the bunch.
 The id can not contain any special characters, the title is a string or a localization object. In case of localization object it what must contain 'en' property.
 Within an item the label property has the same rules.</p>
 
@@ -3154,7 +3826,9 @@ Within an item the label property has the same rules.</p>
 };
 </code></pre>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="add-custom-strings-to-all-of-the-users-of-the-apiclientinstance" class="anchor" href="#add-custom-strings-to-all-of-the-users-of-the-apiclientinstance"><span class="octicon octicon-link"></span></a>Add Custom Strings to all of the users of the apiClientInstance</h3>
 
 <h4>
@@ -3162,12 +3836,16 @@ Within an item the label property has the same rules.</p>
 
 <ul>
 <li>POST</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-43" class="anchor" href="#route-43"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/add</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-32" class="anchor" href="#parameters-you-should-post-32"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -3175,7 +3853,9 @@ Within an item the label property has the same rules.</p>
 <li>title {String or  localization Object with 'en' property} the displayed name of the bunch</li>
 <li>items {Array} Array of customStrings Object <a href="#example-of-custom-string-object">see here</a>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-43" class="anchor" href="#response-43"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
@@ -3184,11 +3864,17 @@ Within an item the label property has the same rules.</p>
 <li>id {String} the saved custom strings id</li>
 <li>customStrings {Object} the saved custom stings object</li>
 <li>overwritten {Boolean} describes if the save updated an existing bunch or created a new one </li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="add-custom-strings-to-specified-users" class="anchor" href="#add-custom-strings-to-specified-users"><span class="octicon octicon-link"></span></a>Add Custom Strings to specified users</h3>
 
 <h4>
@@ -3196,12 +3882,16 @@ Within an item the label property has the same rules.</p>
 
 <ul>
 <li>POST</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-44" class="anchor" href="#route-44"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/addToUsers</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-33" class="anchor" href="#parameters-you-should-post-33"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -3210,7 +3900,9 @@ Within an item the label property has the same rules.</p>
 <li>title {String or  localization Object with 'en' property} the displayed name of the bunch</li>
 <li>items {Array} Array of customStrings Object, <a href="#example-of-custom-string-object">see here</a>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-44" class="anchor" href="#response-44"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
@@ -3225,11 +3917,15 @@ Within an item the label property has the same rules.</p>
 </li>
 <li>id {String} the saved custom strings id</li>
 <li>customStrings {Object} the saved custom stings object</li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><h3>
+</ul>
+
+<h3>
 <a name="add-custom-strings-to-specified-groups-of-the-apiclientinstance" class="anchor" href="#add-custom-strings-to-specified-groups-of-the-apiclientinstance"><span class="octicon octicon-link"></span></a>Add Custom Strings to specified groups of the apiClientInstance</h3>
 
 <h4>
@@ -3237,12 +3933,16 @@ Within an item the label property has the same rules.</p>
 
 <ul>
 <li>POST</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-45" class="anchor" href="#route-45"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/addToGroup</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-34" class="anchor" href="#parameters-you-should-post-34"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -3251,7 +3951,9 @@ Within an item the label property has the same rules.</p>
 <li>title {String or  localization Object with 'en' property} the displayed name of the bunch</li>
 <li>items {Array} Array of customStrings Object, <a href="#example-of-custom-string-object">see here</a>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-45" class="anchor" href="#response-45"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
@@ -3260,12 +3962,16 @@ Within an item the label property has the same rules.</p>
 <li>id {String} the saved custom strings id</li>
 <li>customStrings {Object} the saved custom stings object</li>
 <li>overwritten {Boolean} describes if the save updated an existing bunch or created a new one </li>
-</ul><p>Or it can be an error object:</p>
+</ul>
+
+<p>Or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.
 ___</li>
-</ul><h3>
+</ul>
+
+<h3>
 <a name="get-custom-strings-of-all-of-the-users-of-the-apiclientinstance" class="anchor" href="#get-custom-strings-of-all-of-the-users-of-the-apiclientinstance"><span class="octicon octicon-link"></span></a>Get Custom Strings of all of the users of the apiClientInstance</h3>
 
 <h4>
@@ -3273,12 +3979,16 @@ ___</li>
 
 <ul>
 <li>GET</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-46" class="anchor" href="#route-46"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfApiInstance</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-35" class="anchor" href="#parameters-you-should-post-35"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <p>no parameters needed</p>
@@ -3291,7 +4001,9 @@ ___</li>
 <ul>
 <li>err {null} null  value</li>
 <li>the custom string objects as the property names are the id of the custom strings bunch</li>
-</ul><p>example: 
+</ul>
+
+<p>example: 
 {
 err: null,
 customStringID1: {
@@ -3309,7 +4021,9 @@ customStringID1: {
 <ul>
 <li>err Description of the error {String} or an error code {Number}.
 ___</li>
-</ul><h3>
+</ul>
+
+<h3>
 <a name="get-custom-strings-of-a-specified-user" class="anchor" href="#get-custom-strings-of-a-specified-user"><span class="octicon octicon-link"></span></a>Get Custom Strings of a specified user</h3>
 
 <h4>
@@ -3317,17 +4031,23 @@ ___</li>
 
 <ul>
 <li>GET</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-47" class="anchor" href="#route-47"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfUser</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-36" class="anchor" href="#parameters-you-should-post-36"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>userId {String} the id of the user</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-47" class="anchor" href="#response-47"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
@@ -3335,7 +4055,9 @@ ___</li>
 <ul>
 <li>err {null} null  value</li>
 <li>the custom string objects as the property names are the id of the custom strings bunch</li>
-</ul><p>example: 
+</ul>
+
+<p>example: 
 {
 err: null,
 customStringID1: {
@@ -3353,7 +4075,9 @@ customStringID1: {
 <ul>
 <li>err Description of the error {String} or an error code {Number}.
 ___</li>
-</ul><h3>
+</ul>
+
+<h3>
 <a name="get-custom-strings-of-a-specified-group" class="anchor" href="#get-custom-strings-of-a-specified-group"><span class="octicon octicon-link"></span></a>Get Custom Strings of a specified group</h3>
 
 <h4>
@@ -3361,17 +4085,23 @@ ___</li>
 
 <ul>
 <li>GET</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-48" class="anchor" href="#route-48"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfGroup</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-37" class="anchor" href="#parameters-you-should-post-37"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>groupId {String} mongoDb ObjectID of the group</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-48" class="anchor" href="#response-48"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
@@ -3379,7 +4109,9 @@ ___</li>
 <ul>
 <li>err {null} null  value</li>
 <li>the custom string objects as the property names are the id of the custom strings bunch</li>
-</ul><p>example: 
+</ul>
+
+<p>example: 
 {
 err: null,
 customStringID1: {
@@ -3397,7 +4129,9 @@ customStringID1: {
 <ul>
 <li>err Description of the error {String} or an error code {Number}.
 ___</li>
-</ul><h3>
+</ul>
+
+<h3>
 <a name="remove-a-general-custom-strings-by-its-id" class="anchor" href="#remove-a-general-custom-strings-by-its-id"><span class="octicon octicon-link"></span></a>Remove a general Custom Strings by it's id</h3>
 
 <h4>
@@ -3405,17 +4139,23 @@ ___</li>
 
 <ul>
 <li>DELETE</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-49" class="anchor" href="#route-49"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-38" class="anchor" href="#parameters-you-should-post-38"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>:id {String} the id of the custom string bunch</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-49" class="anchor" href="#response-49"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
@@ -3429,7 +4169,9 @@ Or it can be an error object:
 ___</li>
 </ul>
 </li>
-</ul><h3>
+</ul>
+
+<h3>
 <a name="remove-a-users-custom-strings-by-its-id" class="anchor" href="#remove-a-users-custom-strings-by-its-id"><span class="octicon octicon-link"></span></a>Remove a user's Custom Strings by it's id</h3>
 
 <h4>
@@ -3437,18 +4179,24 @@ ___</li>
 
 <ul>
 <li>DELETE</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-50" class="anchor" href="#route-50"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/:id/removeFromUser/:user</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-39" class="anchor" href="#parameters-you-should-post-39"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>:id {String} the id of the custom string bunch</li>
 <li>:user {String} the id of the user what you want to remove from</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-50" class="anchor" href="#response-50"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
@@ -3463,7 +4211,9 @@ Or it can be an error object:
 ___</li>
 </ul>
 </li>
-</ul><h3>
+</ul>
+
+<h3>
 <a name="remove-a-groups-custom-strings-by-its-id" class="anchor" href="#remove-a-groups-custom-strings-by-its-id"><span class="octicon octicon-link"></span></a>Remove a group's Custom Strings by it's id</h3>
 
 <h4>
@@ -3471,18 +4221,24 @@ ___</li>
 
 <ul>
 <li>DELETE</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="route-51" class="anchor" href="#route-51"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/:id/removeFromUser/:group</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-40" class="anchor" href="#parameters-you-should-post-40"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
 <li>:id {String} the id of the custom string bunch</li>
 <li>:group {String} the MongoDb ObjectId of the group what you want to remove from</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-51" class="anchor" href="#response-51"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Http status code 200</p>
@@ -3497,7 +4253,9 @@ Or it can be an error object:
 ___</li>
 </ul>
 </li>
-</ul><h2>
+</ul>
+
+<h2>
 <a name="user-routes" class="anchor" href="#user-routes"><span class="octicon octicon-link"></span></a>User routes</h2>
 
 <h2>
@@ -3520,12 +4278,16 @@ ___</li>
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-52" class="anchor" href="#route-52"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/list</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="query-options" class="anchor" href="#query-options"><span class="octicon octicon-link"></span></a>Query options:</h4>
 
 <p>You can set the parameters of the db search. You need to place your settings object to the query of the get request. Please note that it is an optional feature. If you don't want to use it, call the route without any kind of settings (in the query) and it will send back all of the user projects!</p>
@@ -3540,7 +4302,9 @@ ___</li>
 <li>sort {Object} You can set the order how you want to get back the projects</li>
 </ul>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-52" class="anchor" href="#response-52"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>List of projects. Every project is an object with the following parameters (by default):</p>
@@ -3552,11 +4316,17 @@ ___</li>
 <li>lastModified {Date} The last time when the template was modified</li>
 <li>description {String} Description of the template</li>
 <li>customData {Object} The custom informations you saved for the project</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="list-and-count-projects" class="anchor" href="#list-and-count-projects"><span class="octicon octicon-link"></span></a>List and Count projects</h3>
 
 <p>Lists the projects of the actual user and return a counter too.</p>
@@ -3566,12 +4336,16 @@ ___</li>
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-53" class="anchor" href="#route-53"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/listAndCount</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="query-options-1" class="anchor" href="#query-options-1"><span class="octicon octicon-link"></span></a>Query options:</h4>
 
 <p>You can set the parameters of the db search. You need to place your settings object to the query of the get request. Please note that it is an optional feature. If you don't want to use it, call the route without any kind of settings (in the query) and it will send back all of the user projects!</p>
@@ -3586,7 +4360,9 @@ ___</li>
 <li>sort {Object} You can set the order how you want to get back the projects</li>
 </ul>
 </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-53" class="anchor" href="#response-53"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Compared to <a href="#list-projects">list projects</a>, list and count  projects' response is an object with two properties: count and response. The first is the number of entries which satisfies the query, the second is the actual array of items:</p>
@@ -3604,11 +4380,17 @@ ___</li>
 </ul>
 </li>
 <li>totalCount {Number} the number of entries which satisfies the query (Please note that <strong>the totalCount property will hold a value if and only if you set the limit and skip property.</strong>)</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="create" class="anchor" href="#create"><span class="octicon octicon-link"></span></a>Create</h3>
 
 <p>Creates a new project (a new e-mail template).</p>
@@ -3618,12 +4400,16 @@ ___</li>
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-54" class="anchor" href="#route-54"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/create</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-41" class="anchor" href="#parameters-you-should-post-41"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -3631,16 +4417,24 @@ ___</li>
 <li>description {String} The description of the new project.</li>
 <li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates.</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="answer" class="anchor" href="#answer"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <ul>
 <li>_id {String} MongoDB _id of the newly created project</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="duplicate" class="anchor" href="#duplicate"><span class="octicon octicon-link"></span></a>Duplicate</h3>
 
 <p>Creates the exact copy of the project with the ID specified in projectId.</p>
@@ -3650,17 +4444,23 @@ ___</li>
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-55" class="anchor" href="#route-55"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/duplicate/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-in-the-route-5" class="anchor" href="#parameters-in-the-route-5"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="answer-1" class="anchor" href="#answer-1"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Project object:</p>
@@ -3670,11 +4470,17 @@ ___</li>
 <li>title {String} The title of the new template</li>
 <li>description {String} The description of the new template</li>
 <li>document {Object} An object, which represents the new template</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="create-from-own" class="anchor" href="#create-from-own"><span class="octicon octicon-link"></span></a>Create from own</h3>
 
 <p>It is very similar to the duplicate route, the only difference is that here you can define the title and the description of the new (copy) project. Whit this route user can only create project from one of his/her own project.</p>
@@ -3684,12 +4490,16 @@ ___</li>
 
 <ul>
 <li>Post</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-56" class="anchor" href="#route-56"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromOwn</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-42" class="anchor" href="#parameters-you-should-post-42"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -3697,7 +4507,9 @@ ___</li>
 <li>title {String} The title of the new project</li>
 <li>description {String} The description of the new project</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="answer-2" class="anchor" href="#answer-2"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Project object:</p>
@@ -3707,11 +4519,17 @@ ___</li>
 <li>title {String} The title of the new template</li>
 <li>description {String} The description of the new template</li>
 <li>document {Object} An object, which represents the new template</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="create-from-defaults" class="anchor" href="#create-from-defaults"><span class="octicon octicon-link"></span></a>Create from defaults</h3>
 
 <p>The user can copy a project from the templater user's projects.</p>
@@ -3721,12 +4539,16 @@ ___</li>
 
 <ul>
 <li>Post</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-57" class="anchor" href="#route-57"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromDefaults</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-43" class="anchor" href="#parameters-you-should-post-43"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -3734,7 +4556,9 @@ ___</li>
 <li>title {String} The title of the new project</li>
 <li>description {String} The description of the new project</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="answer-3" class="anchor" href="#answer-3"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <p>Project object:</p>
@@ -3744,11 +4568,17 @@ ___</li>
 <li>title {String} The title of the new template</li>
 <li>description {String} The description of the new template</li>
 <li>document {Object} An object, which represents the new template</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="remove" class="anchor" href="#remove"><span class="octicon octicon-link"></span></a>Remove</h3>
 
 <p>Removes a project.</p>
@@ -3758,17 +4588,23 @@ ___</li>
 
 <ul>
 <li>DELETE</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-58" class="anchor" href="#route-58"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/remove/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-in-the-route-6" class="anchor" href="#parameters-in-the-route-6"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-54" class="anchor" href="#response-54"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>A number, it is 1 if the project was successfully deleted</p>
@@ -3777,7 +4613,11 @@ ___</li>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="generate" class="anchor" href="#generate"><span class="octicon octicon-link"></span></a>Generate</h3>
 
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
@@ -3787,17 +4627,23 @@ ___</li>
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-59" class="anchor" href="#route-59"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/generate/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-in-the-route-7" class="anchor" href="#parameters-in-the-route-7"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-55" class="anchor" href="#response-55"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>A bulletproof responsive HTML version of the given template</p>
@@ -3806,7 +4652,11 @@ ___</li>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="get-title" class="anchor" href="#get-title"><span class="octicon octicon-link"></span></a>Get title</h3>
 
 <p>Gets the title of the selected project.</p>
@@ -3816,28 +4666,40 @@ ___</li>
 
 <ul>
 <li>GET</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-60" class="anchor" href="#route-60"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/title/:id</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-in-the-route-8" class="anchor" href="#parameters-in-the-route-8"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
 <li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="response-56" class="anchor" href="#response-56"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Title object:</p>
 
 <ul>
 <li>title {String} The title of the selected project</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h3>
+</ul>
+
+<hr>
+
+<h3>
 <a name="update-information" class="anchor" href="#update-information"><span class="octicon octicon-link"></span></a>Update information</h3>
 
 <p>Updates the title or/and the description of the specified project. You can add custom informations to this project too.</p>
@@ -3847,12 +4709,16 @@ ___</li>
 
 <ul>
 <li>POST</li>
-</ul><h5>
+</ul>
+
+<h5>
 <a name="route-61" class="anchor" href="#route-61"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/updateInfo</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="parameters-you-should-post-44" class="anchor" href="#parameters-you-should-post-44"><span class="octicon octicon-link"></span></a>Parameters (you should post):</h4>
 
 <ul>
@@ -3861,16 +4727,24 @@ ___</li>
 <li>description {String} The description of the new project.</li>
 <li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
 <li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="answer-4" class="anchor" href="#answer-4"><span class="octicon octicon-link"></span></a>Answer:</h4>
 
 <ul>
 <li>success {Boolean} It should be true if the update was successful</li>
-</ul><p>or it can be an error object:</p>
+</ul>
+
+<p>or it can be an error object:</p>
 
 <ul>
 <li>err Description of the error {String} or an error code {Number}.</li>
-</ul><hr><h2>
+</ul>
+
+<hr>
+
+<h2>
 <a name="feature-switch" class="anchor" href="#feature-switch"><span class="octicon octicon-link"></span></a>Feature Switch</h2>
 
 <p>You can allow or forbid some features of our application to a group of your users.
@@ -3885,9 +4759,13 @@ The list of the features you can set at the moment:  </p>
 <li>limit {Number} The number of images the user can upload. If you do not want to set any limit then leave this parameter undefined. If a user reach the limit, then he won't be able to upload any more image and if you configured the gallery limitReached (see <a href="#configure-api-servers-gallery">gallery config</a>) text then it will be displayed otherwise a default text will be used.  Please note that the 0 limit and the noUpload are almost equivalent except a different message will appear on the upload tab if you use one or the other.</li>
 </ul>
 </li>
-</ul><p>This list is constantly expanding with time!</p>
+</ul>
 
-<hr><h2>
+<p>This list is constantly expanding with time!</p>
+
+<hr>
+
+<h2>
 <a name="json-document-descriptors" class="anchor" href="#json-document-descriptors"><span class="octicon octicon-link"></span></a>JSON document descriptors</h2>
 
 <p>In some cases you - as an integrator - migth want to use the raw document format instead of using the editor and fetch the document from the created project. Some example cases could be when you want to set custom headers and footers to some of your users or you want to create complex or dynamic element.</p>
@@ -4130,7 +5008,9 @@ The spacing specifies a padding values around the whole text div. The defaults v
 <li>originalHeight: the original height of the image</li>
 <li>width: the scaled width of the image (how width should it be in your newsletter)</li>
 <li>height: the scaled height of the image (how heigh should it be in your newsletter) - this is a must have property if you want your newsletters to render nice on outlooks</li>
-</ul><h3>
+</ul>
+
+<h3>
 <a name="button" class="anchor" href="#button"><span class="octicon octicon-link"></span></a>Button</h3>
 
 <p>Button is relatively complex as well. It can have the following box properties: paddings, margins, borders, backgrouns (color and background image as well). In addition it can have radius. Baically button is a fancy link, so it has the following properties as well:</p>
@@ -4140,12 +5020,18 @@ The spacing specifies a padding values around the whole text div. The defaults v
 <li>href: the link.</li>
 <li>sizeType: "FIXED" - exact amount of pixels, "FIT_TO_TEXT": the width will be based on the width of the text</li>
 <li>width: num of pixels if the sizeType is "FIXED"</li>
-</ul><hr><h2>
+</ul>
+
+<hr>
+
+<h2>
 <a name="communication-with-the-iframe" class="anchor" href="#communication-with-the-iframe"><span class="octicon octicon-link"></span></a>Communication with the iframe</h2>
 
 <p>The <a href="#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb">edmDesignerApi.openProject</a> function will return an iframe. It is possible to communicate with this iframe with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage">window.postMessage</a> native method.</p>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="possbile-messages-to-send" class="anchor" href="#possbile-messages-to-send"><span class="octicon octicon-link"></span></a>Possbile messages to send</h3>
 
 <p>List of the events you can send to the iframe (as a message).  </p>
@@ -4156,7 +5042,9 @@ The spacing specifies a padding values around the whole text div. The defaults v
 <p>It is possible to manualy ask the iframe to save the actual (opened) project. As an answer the iframe will post a <a href="#save-result">save result</a> message.<br>
 The message you need to send: <strong>saveProject</strong></p>
 
-<hr><h3>
+<hr>
+
+<h3>
 <a name="possible-answer-messages" class="anchor" href="#possible-answer-messages"><span class="octicon octicon-link"></span></a>Possible Answer messages</h3>
 
 <p>List of the events the iframe can send to your application (as a message).</p>
@@ -4190,7 +5078,9 @@ Available languages:</p>
 <ul>
 <li>English (code: 'en')</li>
 <li>Hungarian (code: 'hu')</li>
-</ul><p>If the language you want to use is not available yet then please contact us with the following email address: <a href="mailto:info@edmdesigner.com">info@edmdesigner.com</a>  </p>
+</ul>
+
+<p>If the language you want to use is not available yet then please contact us with the following email address: <a href="mailto:info@edmdesigner.com">info@edmdesigner.com</a>  </p>
 
 <h2>
 <a name="example-implementations" class="anchor" href="#example-implementations"><span class="octicon octicon-link"></span></a>Example implementations</h2>
@@ -4199,7 +5089,9 @@ Available languages:</p>
 <li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js">Node.js example</a></li>
 <li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP">PHP example</a></li>
 <li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin">PHP admin example</a></li>
-</ul><h2>
+</ul>
+
+<h2>
 <a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
 
 <p>jQuery</p>
