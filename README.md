@@ -3066,8 +3066,12 @@ ___
 List of the events you can send to the iframe (as a message).  
 
 ###Save Project
-It is possible to manualy ask the iframe to save the actual (opened) project. As an answer the iframe will post a [save result](#save-result) message.  
+It is possible to manualy ask the iframe to save the actual (opened) project. As a response the iframe will post a [save result](#save-result) message.  
 The message you need to send: __saveProject__
+
+###Force selected element to be deselected
+It is possible to force the editor to deselect the actual selected element. There won't be any kind of response (from the api iframe) to this message.
+The message you need to send: __loseSelelcted__
 
 ___
 
