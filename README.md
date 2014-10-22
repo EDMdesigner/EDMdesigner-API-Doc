@@ -34,11 +34,12 @@ We provide example implementations that include the handshaking as well. You can
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
 5. __[Feature switch](#feature-switch)__
-6. __[JSON document descriptors](#json-document-descriptors)__
-7. __[Iframe messaging](#iframe-messaging)__
-8. __[Available languages](#available-languages)__  
-9. __[Examples](#example-implementations)__
-10. __[Dependencies](#dependencies)__  
+6. __[Feature configuration](#feature-configuration)__
+7. __[JSON document descriptors](#json-document-descriptors)__
+8. __[Iframe messaging](#iframe-messaging)__
+9. __[Available languages](#available-languages)__  
+10. __[Examples](#example-implementations)__
+11. __[Dependencies](#dependencies)__  
 
 
 
