@@ -34,10 +34,12 @@ We provide example implementations that include the handshaking as well. You can
     *  _[Authentication](#authentication-1)_  
     *  _[Project routes](#project-routes)_  
 5. __[Feature switch](#feature-switch)__
-6. __[JSON document descriptors](#json-document-descriptors)__
-7. __[Available languages](#available-languages)__  
-8. __[Examples](#example-implementations)__
-9. __[Dependencies](#dependencies)__  
+6. __[Feature configuration](#feature-configuration)__
+7. __[JSON document descriptors](#json-document-descriptors)__
+8. __[Iframe messaging](#iframe-messaging)__
+9. __[Available languages](#available-languages)__  
+10. __[Examples](#example-implementations)__
+11. __[Dependencies](#dependencies)__  
 
 
 
@@ -2851,7 +2853,22 @@ The list of the features you can set at the moment:
 
 This list is constantly expanding with time!
 
----
+___
+
+Feature configuration
+---------------------
+This is a new development which will be used everywhere from the next api version. Right now it is only used in a few features ([code elements](#code-elements), [texteditor buttons](#wysiwyg-texteditor-buttons), [header buttons](#header-button)).
+It is quite similar to the [feater switch](#feature-switch), but it is a little bit "smarter". Here you can configure the features on four different level. Each level inherits the upper levels configuration but has greater priority.  Basicly the configurationions are merged into each other, but the lower levels always override the inherited configurations, if they have different configuration, but not everything, only the affected settings. The inheritance chain is the following:
+
+apiClient -> apiClientInstance(apiKey) -> group -> user.
+
+For example, we have a configuration named "feature" on apiClient level with value 5. We have to users with different groups, in one of this two groups we override this feature with value 8. So the user who belongs to this group will get a feature configuration with feature 8 (he inherited 5 from the apiClient, but his group overrided it to 8, so in the en he inherited feature 8) while the other user will get feature 5 (he inherited it from the apiClient's feature configuration).
+
+If you want to disable a feature on one of this four levels, you have to give the feature a false value. (it is do not give any value to a feature then that feauter will be inherited from the upper levels, so it is important to give the feature a false value).
+
+For example, we have a configuration named "feature" on apiClient level with value {"number": 5}. We have to users with different groups, in one of this two groups we override this feature with value false. So the user who belongs to this group won't get the feature configuration (he inherited {"number": 5} from the apiClient, but his group overrided it to false, so in the en he does not inherited this feature. this basicly means that this user cannot use the given feature) while the other user will get feature {"number": 5} (he inherited it from the apiClient's feature configuration, so he can use this feature).
+
+___
 
 JSON document descriptors
 -------------------------
@@ -3078,9 +3095,91 @@ Button is relatively complex as well. It can have the following box properties: 
 
 ___
 
-Communication with the iframe
+Iframe messaging
 -----------------------------
 The [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb) function will return an iframe. It is possible to communicate with this iframe with the [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method.
+
+###Special elements and features
+There are some speciel elements and functionalities what can be used with iframe messaging. You can configure most of this features in our [dashboard](dashboard.edmdesigner.com). The basic concept behind this feature is that this configurable elements and buttons will post a message (with [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method which was mentioned above) to the parent window (it should be your site). You should handle the message on your side, it does not matter how, and send back the content with the corresponding action name ([see below](#possbile-messages-to-send)). For example: a popup window where the user can take some action, set what kind of content he wants to use, and you should send back this content wiht the right action name.
+
+###Code elements
+This is a drag element in the editor which can be used to insert your own code snippet into the template (for example: a code in some kind of query language you will replace before sending out the email). You can have as many different kind of code elements as you want.  
+The basic usecase of this element is the following: the user drop one code element into his template. He will see the placeholder (you configured for this code element type). With double click he can activate the element. It means that we will post you the [message](#code-element-message-format) you configured for this kind of code elements. There should be an interface in your site where the user can write/set the query string he wants to use in his template (this interface should pop up right after we posted the message). When he finished the string, it has to be posted back to us ([response format](#set-code-element-content)).
+__Please note that if you want the content to be unchanged/untouched in the generated html code then you should generate that code with the "[generate without sanitizing](#generate-without-sanitizing)" route (instead of the normal [generate](#generate) route. That way the generated code won't be safe enough, so after you replaced your query and/or placeholders YOU SHOULD SANITIZE the code (with [google caja](https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer))__
+
+####Code element message format
+When a user use/activate a code element we post you (parent window) a message ([window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage)). This message is a stringified javascript object what has two properties:
+  - action {String} The action name you configured for this type of code elements
+  - content {String} Previous content (if exists)
+
+example: "{\"action\": \"your action goes here\", \"content\": \"previous content or null\"}"
+
+####Code element's structure
+A code element should have the following properties:
+  - id : The id/type of the code element. This is what distinguish one element from another.
+  - action : The message our iframe will send to you when a user activates a code element belonging to this configuration. (You can find how you have to respond to this message [here](#set-code-element-content)) 
+  - toolbox title : The title of the toolbox the users will see when they select a code elements. It is localizable and works quite similar like the [header/footer localization](#localization).  Please note that the "en" value is the default value, so it should always be set.
+  - label : The name of the code elements. That will appear on the drag icon. It is localizable and works quite similar like the [header/footer localization](#localization). Please note that the "en" value is the default value, so it should always be set.
+  - placeholder : A correct document json ([see more](#json-document-descriptors)) what will appear in the editor as a placeholder for the code element. It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
+ 
+You can configure your code elements for:
+  * [every instance](dashboard.edmdesigner.com/#codeElement/general)
+  * [every user belonging to one instance](dashboard.edmdesigner.com/#codeElement/instance)
+  * [a group of user](dashboard.edmdesigner.com/#codeElement/group)
+  * [some selected user](dashboard.edmdesigner.com/#codeElement/user)
+
+A user inherits a code element settings just like it is explained in the [feature configuration](#feature-configuration) part of the documentation
+
+___
+
+###Wysiwyg texteditor buttons
+You can insert custom strings to the cursor position in the wysiwyg editor. With this feature you can configure texteditor buttons, which will appear in the wysiwyg editor's toolbar. There can be as many different texteditor buttons as you want. Each button can have its own label. If a user clicks one of this buttons, it posts a message to the parent window with [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method. This messages can be configured too in our [dashboard](dashboard.edmdesigner.com).  
+The basic usecase of a texteditor button: The user edits one of his text or title, and wants to insert some custom string so he clicks to one of the texteditor buttons. It posts the configured [message](#texteditor-button-message-format) to the parent window (which should be your site) where you should provide an interface where he can choose which custom string he wants to use. The selected string should be posted back with the right [action name](#insert-to-cursor-in-wysiwyg-editor) to our iframe.  
+__Please note that if you want the content to be unchanged/untouched in the generated html code then you should generate that code with the "[generate without sanitizing](#generate-without-sanitizing)" route (instead of the normal [generate](#generate) route. That way the generated code won't be safe enough, so after you replaced your placeholders YOU SHOULD SANITIZE the code (with [google caja](https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer))__
+
+###Texteditor button message format
+When a user clicks a texteditor button, we post you (parent window) a message. This message is a stringified json: __"{\"action\": \"the action you configured for this texteditor button\"}"__
+
+###Texteditor button's structure
+A texteditor button configuration has the following parameters:
+  - id : The id/type of the texteditor button. This is what distinguish one button from another.
+  - action : The message our iframe will send to you when a user clicks the texteditor button belonging to this configuration. (You can find how you have to respond to this message [here](#insert-to-cursor-in-wysiwyg-editor)) 
+  - label : The name of the button. This will appear as the label of the button. It is localizable and works quite similar like the [header/footer localization](#localization). Please note that the "en" value is the default value, so it should always be set.
+
+You can configure your texteditor buttons for:
+  * [every instance](dashboard.edmdesigner.com/#textEditorButton/general)
+  * [every user belonging to one instance](dashboard.edmdesigner.com/#textEditorButton/instance)
+  * [a group of user](dashboard.edmdesigner.com/#textEditorButton/group)
+  * [some selected user](dashboard.edmdesigner.com/#textEditorButton/user)
+
+A user inherits a texteditor button settings just like it is explained in the [feature configuration](#feature-configuration) part of the documentation
+
+___
+
+###Header button
+With this feature it is possible to insert your own code snippet into the head part of the email template. If you choose to use this feature then a button will appear in the DEFAULTS settings part in the editor. It is a fully customizable button, it's label, it's toolbox's title and the message type it sends when clicked, can be configured through our [dashboard](dashboard.edmdesigner.com).  
+The basic usecase of a header button: The user wants to insert a query string to the head part of his template, so he clicks the header button. It posts the configured [message](#header-button-message-format) to the parent window (which should be your site) where you should provide an interface where he can create the query string he wants to use. The created string should be posted back with the right [action name](#insert-to-cursor-in-wysiwyg-editor) to our iframe.
+
+###Header button message format
+When a user clicks the header button, it posts you (parent window) a message. This message is a stringified json with two parameters:
+  - action {String} The action name you configured for this type of code elements
+  - content {String} Previous content (if exists)
+
+example: __"{\"action\": \"the action you configured for this heaer button\", \"content\": \"previous content or null\"}"__
+
+###Header button's structure
+A haeder button configuration has the following parameters:
+  - action : The message our iframe will send to you when a user clicks the header button. (You can find how you have to respond to this message [here](#insert-to-cursor-in-wysiwyg-editor)) 
+  - toolbox title : The title of the toolbox the users will see in the defaults settings. It is localizable and works quite similar like the [header/footer localization](#localization).  Please note that the "en" value is the default value, so it should always be set.
+  - button label : The name of the button. This will appear as the label of the button. It is localizable and works quite similar like the [header/footer localization](#localization). Please note that the "en" value is the default value, so it should always be set.
+
+You can configure your header buttons for:
+  * [every instance](dashboard.edmdesigner.com/#headerButton/general)
+  * [every user belonging to one instance](dashboard.edmdesigner.com/#headerButton/instance)
+  * [a group of user](dashboard.edmdesigner.com/#headerButton/group)
+  * [some selected user](dashboard.edmdesigner.com/#headerButton/user)
+
+A user inherits a texteditor button settings just like it is explained in the [feature configuration](#feature-configuration) part of the documentation
 
 ___
 
@@ -3095,9 +3194,30 @@ The message you need to send: __saveProject__
 It is possible to force the editor to deselect the actual selected element. There won't be any kind of response (from the api iframe) to this message.
 The message you need to send: __loseSelelcted__
 
+###Set code element content
+The response for the incoming messages from [code elements](#code-elements). You need to post a stringified json as the message string. It should have two properties:
+  - action {String} The name of the action: __SetCodeElementContent__
+  - content {String} The content (query string) you want to set to the element   
+
+The message you need to send: __{"action": "SetCodeElementContent", "content": "your content goes here"}__
+
+###Insert to cursor in wysiwyg editor
+The response for the incoming messages from [texteditor buttons](#wysiwyg-texteditor-button). You need to post a stringified json as the message string. It should have two properties:
+  - action {String} The name of the action: __InsertToCursor__
+  - content {String} The content (placeholders) the user wants to insert to the cursor 
+
+The message you need to send: __{"action": "InsertToCursor", "content": "your content goes here"}__
+
+###Set header button content
+The response for the incoming message from [header button](#header-button). You need to post a stringified json as the message string. It should have two properties:
+  - action {String} The name of the action: __SetHeaderButtonContent__
+  - content {String} The content (query string) the user wants to insert to the head part of the template 
+
+The message you need to send: __{"action": "SetHeaderButtonContent", "content": "your content goes here"}__
+
 ___
 
-###Possible Answer messages
+###Possible response messages
 List of the events the iframe can send to your application (as a message).
 
 ###Save result
