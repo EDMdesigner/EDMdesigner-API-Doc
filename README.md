@@ -3098,11 +3098,11 @@ A user inherits a code element settings just like it is explained in the [featur
 ___
 
 ###Wysiwyg texteditor buttons
-You can insert custom strings to the cursor position in the wysiwyg editor. With this feature you can configure texteditor buttons, which will appear in the wysiwyg editor's toolbar. There can be as many different texteditor buttons as you want. Each button can have its own label. If a user clicks one of this buttons, it posts a message to the parent window with [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method. This messages can be configured too in our [dashboard](dashboard.edmdesigner.com).
-The basic usecase of a texteditor button: The user edits one of his text or title, and wants to insert some custom string so he clicks to one of the texteditor buttons. It posts the configured message to the parent window (which should be your site) where you should provide an interface where he can choose which custom string he wants to use. The selected string should be posted back with the right [action name](#insert-to-cursor-in-wysiwyg-editor) to our iframe.  
+You can insert custom strings to the cursor position in the wysiwyg editor. With this feature you can configure texteditor buttons, which will appear in the wysiwyg editor's toolbar. There can be as many different texteditor buttons as you want. Each button can have its own label. If a user clicks one of this buttons, it posts a message to the parent window with [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method. This messages can be configured too in our [dashboard](dashboard.edmdesigner.com).  
+The basic usecase of a texteditor button: The user edits one of his text or title, and wants to insert some custom string so he clicks to one of the texteditor buttons. It posts the configured [message](#texteditor-button-message-format) to the parent window (which should be your site) where you should provide an interface where he can choose which custom string he wants to use. The selected string should be posted back with the right [action name](#insert-to-cursor-in-wysiwyg-editor) to our iframe.  
 __Please note that if you want the content to be unchanged/untouched in the generated html code then you should generate that code with the "[generate without sanitizing](#generate-without-sanitizing)" route (instead of the normal [generate](#generate) route. That way the generated code won't be safe enough, so after you replaced your placeholders YOU SHOULD SANITIZE the code (with [google caja](https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer))__
 
-###Custom button message format
+###Texteditor button message format
 When a user clicks a texteditor button, we post you (parent window) a message. This message is a stringified json: __"{\"action\": \"the action you configured for this texteditor button\"}"__
 
 ###Texteditor button's structure
@@ -3116,6 +3116,33 @@ You can configure your texteditor buttons for:
   * [every user belonging to one instance](dashboard.edmdesigner.com/#textEditorButton/instance)
   * [a group of user](dashboard.edmdesigner.com/#textEditorButton/group)
   * [some selected user](dashboard.edmdesigner.com/#textEditorButton/user)
+
+A user inherits a texteditor button settings just like it is explained in the [feature configuration](#feature-configuration) part of the documentation
+
+___
+
+###Header button
+With this feature it is possible to insert your own code snippet into the head part of the email template. If you choose to use this feature then a button will appear in the DEFAULTS settings part in the editor. It is a fully customizable button, it's label, it's toolbox's title and the message type it sends when clicked, can be configured through our [dashboard](dashboard.edmdesigner.com).  
+The basic usecase of a header button: The user wants to insert a query string to the head part of his template, so he clicks the header button. It posts the configured [message](#header-button-message-format) to the parent window (which should be your site) where you should provide an interface where he can create the wuery string he wants to use. The created string should be posted back with the right [action name](#insert-to-cursor-in-wysiwyg-editor) to our iframe.
+
+###Header button message format
+When a user clicks the header button, it posts you (parent window) a message. This message is a stringified json with two parameters:
+  - action {String} The action name you configured for this type of code elements
+  - content {String} Previous content (if exists)
+
+example: __"{\"action\": \"the action you configured for this heaer button\", \"content\": \"previous content or null\"}"__
+
+###Header button's structure
+A haeder button configuration has the following parameters:
+  - action : The message our iframe will send to you when a user clicks the header button. (You can find how you have to respond to this message [here](#insert-to-cursor-in-wysiwyg-editor)) 
+  - toolbox title : The title of the toolbox the users will see in the defaults settings. It is localizable and works quite similar like the [header/footer localization](#localization).  Please note that the "en" value is the default value, so it should always be set.
+  - button label : The name of the button. This will appear as the label of the button. It is localizable and works quite similar like the [header/footer localization](#localization). Please note that the "en" value is the default value, so it should always be set.
+
+You can configure your header buttons for:
+  * [every instance](dashboard.edmdesigner.com/#headerButton/general)
+  * [every user belonging to one instance](dashboard.edmdesigner.com/#headerButton/instance)
+  * [a group of user](dashboard.edmdesigner.com/#headerButton/group)
+  * [some selected user](dashboard.edmdesigner.com/#headerButton/user)
 
 A user inherits a texteditor button settings just like it is explained in the [feature configuration](#feature-configuration) part of the documentation
 
@@ -3141,6 +3168,13 @@ The response for the incoming messages from [texteditor buttons](#wysiwyg-texted
   - content {String} The content (placeholders) the user wants to insert to the cursor 
 
 The message you need to send: __{"action": "InsertToCursor", "content": "your content goes here"}__
+
+###Set header button content
+The response for the incoming message from [header button](#header-button). You need to post a stringified json as the message string. It should have two properties:
+  - action {String} The name of the action: __SetHeaderButtonContent__
+  - content {String} The content (query string) the user wants to insert to the head part of the template 
+
+The message you need to send: __{"action": "SetHeaderButtonContent", "content": "your content goes here"}__
 
 ___
 
