@@ -2773,6 +2773,28 @@ or it can be an error object:
 
 ___
 
+### Generate without sanitizing
+Generates the responsive HTML e-mail based on the projectId. The generated html won't be sanitized. (good for those, who wants to use complex placeholders the normal [generate route](#generate) would erase.
+
+#####Type
+  + GET
+
+#####Route
+  + //api.edmdesigner.com/json_v1.0.0/apiKey/:apiKey/user/:userid/project/:projectid/generateWithoutSanitizing
+
+#### Parameters (in the route):
+  * :apiKey {String} The key of the instance the target user belongs to
+  * :userId {String} The id of the project's owner. Plesase note that this id should be the same you used for the token generation.
+  * :projectid {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
+
+####Response
+A not sanitized responsive HTML version of the given template
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
 ### Get title
 Gets the title of the selected project.
 
