@@ -2834,6 +2834,18 @@ ___
 
 Feature configuration
 ---------------------
+This is a new development which will be used everywhere from the next api version. Right now it is only used in a few features ([code elements](#code-elements), [texteditor buttons](#wysiwyg-texteditor-buttons), [header buttons](#header-button)).
+It is quite similar to the [feater switch](#feature-switch), but it is a little bit "smarter". Here you can configure the features on four different level. Each level inherits the upper levels configuration but has greater priority.  Basicly the configurationions are merged into each other, but the lower levels always override the inherited configurations, if they have different configuration, but not everything, only the affected settings. The inheritance chain is the following:
+
+apiClient -> apiClientInstance(apiKey) -> group -> user.
+
+For example, we have a configuration named "feature" on apiClient level with value 5. We have to users with different groups, in one of this two groups we override this feature with value 8. So the user who belongs to this group will get a feature configuration with feature 8 (he inherited 5 from the apiClient, but his group overrided it to 8, so in the en he inherited feature 8) while the other user will get feature 5 (he inherited it from the apiClient's feature configuration).
+
+If you want to disable a feature on one of this four levels, you have to give the feature a false value. (it is do not give any value to a feature then that feauter will be inherited from the upper levels, so it is important to give the feature a false value).
+
+For example, we have a configuration named "feature" on apiClient level with value {"number": 5}. We have to users with different groups, in one of this two groups we override this feature with value false. So the user who belongs to this group won't get the feature configuration (he inherited {"number": 5} from the apiClient, but his group overrided it to false, so in the en he does not inherited this feature. this basicly means that this user cannot use the given feature) while the other user will get feature {"number": 5} (he inherited it from the apiClient's feature configuration, so he can use this feature).
+
+___
 
 JSON document descriptors
 -------------------------
@@ -3123,7 +3135,7 @@ ___
 
 ###Header button
 With this feature it is possible to insert your own code snippet into the head part of the email template. If you choose to use this feature then a button will appear in the DEFAULTS settings part in the editor. It is a fully customizable button, it's label, it's toolbox's title and the message type it sends when clicked, can be configured through our [dashboard](dashboard.edmdesigner.com).  
-The basic usecase of a header button: The user wants to insert a query string to the head part of his template, so he clicks the header button. It posts the configured [message](#header-button-message-format) to the parent window (which should be your site) where you should provide an interface where he can create the wuery string he wants to use. The created string should be posted back with the right [action name](#insert-to-cursor-in-wysiwyg-editor) to our iframe.
+The basic usecase of a header button: The user wants to insert a query string to the head part of his template, so he clicks the header button. It posts the configured [message](#header-button-message-format) to the parent window (which should be your site) where you should provide an interface where he can create the query string he wants to use. The created string should be posted back with the right [action name](#insert-to-cursor-in-wysiwyg-editor) to our iframe.
 
 ###Header button message format
 When a user clicks the header button, it posts you (parent window) a message. This message is a stringified json with two parameters:
