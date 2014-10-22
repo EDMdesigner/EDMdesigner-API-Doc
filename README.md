@@ -35,9 +35,10 @@ We provide example implementations that include the handshaking as well. You can
     *  _[Project routes](#project-routes)_  
 5. __[Feature switch](#feature-switch)__
 6. __[JSON document descriptors](#json-document-descriptors)__
-7. __[Available languages](#available-languages)__  
-8. __[Examples](#example-implementations)__
-9. __[Dependencies](#dependencies)__  
+7. __[Iframe messaging](#iframe-messaging)__
+8. __[Available languages](#available-languages)__  
+9. __[Examples](#example-implementations)__
+10. __[Dependencies](#dependencies)__  
 
 
 
@@ -2829,7 +2830,10 @@ The list of the features you can set at the moment:
 
 This list is constantly expanding with time!
 
----
+___
+
+Feature configuration
+---------------------
 
 JSON document descriptors
 -------------------------
@@ -3056,9 +3060,40 @@ Button is relatively complex as well. It can have the following box properties: 
 
 ___
 
-Communication with the iframe
+Iframe messaging
 -----------------------------
 The [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb) function will return an iframe. It is possible to communicate with this iframe with the [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method.
+
+###Special elements and features
+There are some speciel elements and functionalities what can be used with iframe messaging. You can configure most of this features in our [dashboard](dashboard.edmdesigner.com). The basic concept behind this feature is that this configurable elements and buttons will post a message (with [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method which was mentioned above) to the parent window (it should be your site). You should handle the message on your side, it does not matter how, and send back the content with the corresponding action name ([see below](#possbile-messages-to-send)). For example: a popup window where the user can take some action, set what kind of content he wants to use, and you should send back this content wiht the right action name.
+
+###Code elements
+This is a drag element in the editor which can be used to insert your own code snippet into the template (for example: a code in some kind of query language you will replace before sending out the email). You can have as many different kind of code elements as you want.  
+The basic usecase of this element is the following: the user drop one code element into his template. He will see the placeholder (you configured for this code element type). With double click he can activate the element. It means that we will post you the [message](#code-element-message-format) you configured for this kind of code elements. There should be an interface in your site where the user can write/set the query string he wants to use in his template (this interface should pop up right after we posted the message). When he finished the string, it has to be posted back to us ([response format](#set-code-element-content)).
+__Please note that if you want the content to be unchanged/untouched in the generated html code then you should generate that code with the "[generate without sanitizing](#generate-without-sanitizing)" route (instead of the normal [generate](#generate) route. That way the generated code won't be safe enough, so after you replaced your query and/or placeholders YOU SHOULD SANITIZE the code (with [google caja](https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer))__
+
+####Code element message format
+When a user use/activate a code element we post you a message ([window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage)). This message is a stringified javascript object what has two properties:
+  - action {String} The action name you configured for this type of code elements
+  - content {String} Previous content (if exists)
+
+example: "{\"action\": \"your action goes here\", \"content\": \"previous content or null\"}"
+
+####Code element's structure
+A code element should have the following properties:
+  - id : The id/type of the code element. This is what distinguish one element from another.
+  - action : The message our iframe will send to you when a user activates a code element belonging to this configuration. (You can find how you have to respond to this message [here](#set-code-element-content)) 
+  - toolbox title : The title of the toolbox the users will see when they select a code elements. It is localizable and works quite similar like the [header/footer localization](#localization).  Please note that the "en" value is the default value, so it should always be set.
+  - label : The name of the code elements. That will appear on the drag icon. It is localizable and works quite similar like the [header/footer localization](#localization). Please note that the "en" value is the default value, so it should always be set.
+  - placeholder : A correct document json ([see more](#json-document-descriptors)) what will appear in the editor as a placeholder for the code element. It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
+ 
+You can configure your code elements for:
+  * [every instance](dashboard.edmdesigner.com/#codeElement/general)
+  * [every user belonging to one instance](dashboard.edmdesigner.com/#codeElement/instance)
+  * [a group of user](dashboard.edmdesigner.com/#codeElement/group)
+  * [some selected user](dashboard.edmdesigner.com/#codeElement/user)
+
+A user inherits a code element settings just like it is explained in the [feature configuration](#feature-configuration) part of the documentation
 
 ___
 
@@ -3069,9 +3104,16 @@ List of the events you can send to the iframe (as a message).
 It is possible to manualy ask the iframe to save the actual (opened) project. As an answer the iframe will post a [save result](#save-result) message.  
 The message you need to send: __saveProject__
 
+###Set code element content
+The response for the incoming messages from [code elements](#code-elements). You need to post a stringified json as the message string. It should have two properties:
+  - action {String} The name of the action: __SetCodeElementContent__
+  - content {String} The content (query string) you want to set to the element  
+
+The message you need to send: __{"action": "SetCodeElementContent", "content": "your content goes here"}__
+
 ___
 
-###Possible Answer messages
+###Possible response messages
 List of the events the iframe can send to your application (as a message).
 
 ###Save result
