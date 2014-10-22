@@ -9,7 +9,7 @@ Basically, the only thing you have to do is to implement one side of the handsha
 
 The handshaking is built into the initialization process, so if you implemented the handshaking on your side, everything will work automatically.
 
-We provide example implementations that include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.
+We provide example implementations that include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section. 
 
 ##### Table of content
 
