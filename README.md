@@ -3138,7 +3138,11 @@ The basic usecase of a texteditor button: The user edits one of his text or titl
 __Please note that if you want the content to be unchanged/untouched in the generated html code then you should generate that code with the "[generate without sanitizing](#generate-without-sanitizing)" route (instead of the normal [generate](#generate) route. That way the generated code won't be safe enough, so after you replaced your placeholders YOU SHOULD SANITIZE the code (with [google caja](https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer))__
 
 ###Texteditor button message format
-When a user clicks a texteditor button, we post you (parent window) a message. This message is a stringified json: __"{\"action\": \"the action you configured for this texteditor button\"}"__
+When a user clicks a texteditor button, we post you (parent window) a message. This message is a stringified json with two parameters:
+  - action {String} The action name you configured for this type of code elements
+  - content {String} The selected text in the editor (if there is any. It will be null if there is no selected text). Plesae note that the selected text will always be overriden with the content you send in the [repsonse](#insert-to-cursor-in-wysiwyg-editor). If you want to keep the selected text then you should send it back in/with your content.
+
+example: __"{\"action\": \"the action you configured for this texteditor button\", \"content\": \"the selected text or null if there is no selected text\"}"__
 
 ###Texteditor button's structure
 A texteditor button configuration has the following parameters:
