@@ -42,7 +42,7 @@
 
 <p>The handshaking is built into the initialization process, so if you implemented the handshaking on your side, everything will work automatically.</p>
 
-<p>We provide example implementations that include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section.</p>
+<p>We provide example implementations that include the handshaking as well. You can find the continously broading list at the end of this page at the Example implementations section. </p>
 
 <h5>
 <a name="table-of-content" class="anchor" href="#table-of-content"><span class="octicon octicon-link"></span></a>Table of content</h5>
@@ -115,7 +115,9 @@
 </ol>
 </li>
 <li><strong><a href="#feature-switch">Feature switch</a></strong></li>
+<li><strong><a href="#feature-configuration">Feature configuration</a></strong></li>
 <li><strong><a href="#json-document-descriptors">JSON document descriptors</a></strong></li>
+<li><strong><a href="#iframe-messaging">Iframe messaging</a></strong></li>
 <li>
 <strong><a href="#available-languages">Available languages</a></strong><br>
 </li>
@@ -4657,9 +4659,9 @@ ___</li>
 <hr>
 
 <h3>
-<a name="get-title" class="anchor" href="#get-title"><span class="octicon octicon-link"></span></a>Get title</h3>
+<a name="generate-without-sanitizing" class="anchor" href="#generate-without-sanitizing"><span class="octicon octicon-link"></span></a>Generate without sanitizing</h3>
 
-<p>Gets the title of the selected project.</p>
+<p>Generates the responsive HTML e-mail based on the projectId. The generated html won't be sanitized. (good for those, who wants to use complex placeholders the normal <a href="#generate">generate route</a> would erase.</p>
 
 <h5>
 <a name="type-60" class="anchor" href="#type-60"><span class="octicon octicon-link"></span></a>Type</h5>
@@ -4672,18 +4674,59 @@ ___</li>
 <a name="route-60" class="anchor" href="#route-60"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
-<li>//api.edmdesigner.com/json/project/title/:id</li>
+<li>//api.edmdesigner.com/json_v1.0.0/apiKey/:apiKey/user/:userid/project/:projectid/generateWithoutSanitizing</li>
 </ul>
 
 <h4>
 <a name="parameters-in-the-route-8" class="anchor" href="#parameters-in-the-route-8"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
 
 <ul>
-<li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
+<li>:apiKey {String} The key of the instance the target user belongs to</li>
+<li>:userId {String} The id of the project's owner. Plesase note that this id should be the same you used for the token generation.</li>
+<li>:projectid {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
 </ul>
 
 <h4>
 <a name="response-56" class="anchor" href="#response-56"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<p>A not sanitized responsive HTML version of the given template</p>
+
+<p>or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul>
+
+<hr>
+
+<h3>
+<a name="get-title" class="anchor" href="#get-title"><span class="octicon octicon-link"></span></a>Get title</h3>
+
+<p>Gets the title of the selected project.</p>
+
+<h5>
+<a name="type-61" class="anchor" href="#type-61"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h5>
+<a name="route-61" class="anchor" href="#route-61"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/title/:id</li>
+</ul>
+
+<h4>
+<a name="parameters-in-the-route-9" class="anchor" href="#parameters-in-the-route-9"><span class="octicon octicon-link"></span></a>Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the <a href="#list-projects">/json/project/list</a> route.</li>
+</ul>
+
+<h4>
+<a name="response-57" class="anchor" href="#response-57"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>Title object:</p>
 
@@ -4705,14 +4748,14 @@ ___</li>
 <p>Updates the title or/and the description of the specified project. You can add custom informations to this project too.</p>
 
 <h5>
-<a name="type-61" class="anchor" href="#type-61"><span class="octicon octicon-link"></span></a>Type</h5>
+<a name="type-62" class="anchor" href="#type-62"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a name="route-61" class="anchor" href="#route-61"><span class="octicon octicon-link"></span></a>Route</h5>
+<a name="route-62" class="anchor" href="#route-62"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/updateInfo</li>
@@ -4762,6 +4805,22 @@ The list of the features you can set at the moment:  </p>
 </ul>
 
 <p>This list is constantly expanding with time!</p>
+
+<hr>
+
+<h2>
+<a name="feature-configuration" class="anchor" href="#feature-configuration"><span class="octicon octicon-link"></span></a>Feature configuration</h2>
+
+<p>This is a new development which will be used everywhere from the next api version. Right now it is only used in a few features (<a href="#code-elements">code elements</a>, <a href="#wysiwyg-texteditor-buttons">texteditor buttons</a>, <a href="#header-button">header buttons</a>).
+It is quite similar to the <a href="#feature-switch">feater switch</a>, but it is a little bit "smarter". Here you can configure the features on four different level. Each level inherits the upper levels configuration but has greater priority.  Basicly the configurationions are merged into each other, but the lower levels always override the inherited configurations, if they have different configuration, but not everything, only the affected settings. The inheritance chain is the following:</p>
+
+<p>apiClient -&gt; apiClientInstance(apiKey) -&gt; group -&gt; user.</p>
+
+<p>For example, we have a configuration named "feature" on apiClient level with value 5. We have to users with different groups, in one of this two groups we override this feature with value 8. So the user who belongs to this group will get a feature configuration with feature 8 (he inherited 5 from the apiClient, but his group overrided it to 8, so in the en he inherited feature 8) while the other user will get feature 5 (he inherited it from the apiClient's feature configuration).</p>
+
+<p>If you want to disable a feature on one of this four levels, you have to give the feature a false value. (it is do not give any value to a feature then that feauter will be inherited from the upper levels, so it is important to give the feature a false value).</p>
+
+<p>For example, we have a configuration named "feature" on apiClient level with value {"number": 5}. We have to users with different groups, in one of this two groups we override this feature with value false. So the user who belongs to this group won't get the feature configuration (he inherited {"number": 5} from the apiClient, but his group overrided it to false, so in the en he does not inherited this feature. this basicly means that this user cannot use the given feature) while the other user will get feature {"number": 5} (he inherited it from the apiClient's feature configuration, so he can use this feature).</p>
 
 <hr>
 
@@ -5025,9 +5084,142 @@ The spacing specifies a padding values around the whole text div. The defaults v
 <hr>
 
 <h2>
-<a name="communication-with-the-iframe" class="anchor" href="#communication-with-the-iframe"><span class="octicon octicon-link"></span></a>Communication with the iframe</h2>
+<a name="iframe-messaging" class="anchor" href="#iframe-messaging"><span class="octicon octicon-link"></span></a>Iframe messaging</h2>
 
 <p>The <a href="#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb">edmDesignerApi.openProject</a> function will return an iframe. It is possible to communicate with this iframe with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage">window.postMessage</a> native method.</p>
+
+<h3>
+<a name="special-elements-and-features" class="anchor" href="#special-elements-and-features"><span class="octicon octicon-link"></span></a>Special elements and features</h3>
+
+<p>There are some speciel elements and functionalities what can be used with iframe messaging. You can configure most of this features in our <a href="dashboard.edmdesigner.com">dashboard</a>. The basic concept behind this feature is that this configurable elements and buttons will post a message (with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage">window.postMessage</a> native method which was mentioned above) to the parent window (it should be your site). You should handle the message on your side, it does not matter how, and send back the content with the corresponding action name (<a href="#possbile-messages-to-send">see below</a>). For example: a popup window where the user can take some action, set what kind of content he wants to use, and you should send back this content wiht the right action name.</p>
+
+<h3>
+<a name="code-elements" class="anchor" href="#code-elements"><span class="octicon octicon-link"></span></a>Code elements</h3>
+
+<p>This is a drag element in the editor which can be used to insert your own code snippet into the template (for example: a code in some kind of query language you will replace before sending out the email). You can have as many different kind of code elements as you want.<br>
+The basic usecase of this element is the following: the user drop one code element into his template. He will see the placeholder (you configured for this code element type). With double click he can activate the element. It means that we will post you the <a href="#code-element-message-format">message</a> you configured for this kind of code elements. There should be an interface in your site where the user can write/set the query string he wants to use in his template (this interface should pop up right after we posted the message). When he finished the string, it has to be posted back to us (<a href="#set-code-element-content">response format</a>).
+<strong>Please note that if you want the content to be unchanged/untouched in the generated html code then you should generate that code with the "<a href="#generate-without-sanitizing">generate without sanitizing</a>" route (instead of the normal <a href="#generate">generate</a> route. That way the generated code won't be safe enough, so after you replaced your query and/or placeholders YOU SHOULD SANITIZE the code (with <a href="https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer">google caja</a>)</strong></p>
+
+<h4>
+<a name="code-element-message-format" class="anchor" href="#code-element-message-format"><span class="octicon octicon-link"></span></a>Code element message format</h4>
+
+<p>When a user use/activate a code element we post you (parent window) a message (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage">window.postMessage</a>). This message is a stringified javascript object what has two properties:</p>
+
+<ul>
+<li>action {String} The action name you configured for this type of code elements</li>
+<li>content {String} Previous content (if exists)</li>
+</ul>
+
+<p>example: "{\"action\": \"your action goes here\", \"content\": \"previous content or null\"}"</p>
+
+<h4>
+<a name="code-elements-structure" class="anchor" href="#code-elements-structure"><span class="octicon octicon-link"></span></a>Code element's structure</h4>
+
+<p>A code element should have the following properties:</p>
+
+<ul>
+<li>id : The id/type of the code element. This is what distinguish one element from another.</li>
+<li>action : The message our iframe will send to you when a user activates a code element belonging to this configuration. (You can find how you have to respond to this message <a href="#set-code-element-content">here</a>) </li>
+<li>toolbox title : The title of the toolbox the users will see when they select a code elements. It is localizable and works quite similar like the <a href="#localization">header/footer localization</a>.  Please note that the "en" value is the default value, so it should always be set.</li>
+<li>label : The name of the code elements. That will appear on the drag icon. It is localizable and works quite similar like the <a href="#localization">header/footer localization</a>. Please note that the "en" value is the default value, so it should always be set.</li>
+<li>placeholder : A correct document json (<a href="#json-document-descriptors">see more</a>) what will appear in the editor as a placeholder for the code element. It must be <a href="#box">"BOX"</a> or <a href="#multicolumn">"MULTICOLUMN"</a>! (of course, it can have any number of children). Please note that it cannot contain any or be a <a href="#full-width-container">"FULLWIDTH_CONTAINER"</a>!</li>
+</ul>
+
+<p>You can configure your code elements for:</p>
+
+<ul>
+<li><a href="dashboard.edmdesigner.com/#codeElement/general">every instance</a></li>
+<li><a href="dashboard.edmdesigner.com/#codeElement/instance">every user belonging to one instance</a></li>
+<li><a href="dashboard.edmdesigner.com/#codeElement/group">a group of user</a></li>
+<li><a href="dashboard.edmdesigner.com/#codeElement/user">some selected user</a></li>
+</ul>
+
+<p>A user inherits a code element settings just like it is explained in the <a href="#feature-configuration">feature configuration</a> part of the documentation</p>
+
+<hr>
+
+<h3>
+<a name="wysiwyg-texteditor-buttons" class="anchor" href="#wysiwyg-texteditor-buttons"><span class="octicon octicon-link"></span></a>Wysiwyg texteditor buttons</h3>
+
+<p>You can insert custom strings to the cursor position in the wysiwyg editor. With this feature you can configure texteditor buttons, which will appear in the wysiwyg editor's toolbar. There can be as many different texteditor buttons as you want. Each button can have its own label. If a user clicks one of this buttons, it posts a message to the parent window with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage">window.postMessage</a> native method. This messages can be configured too in our <a href="dashboard.edmdesigner.com">dashboard</a>.<br>
+The basic usecase of a texteditor button: The user edits one of his text or title, and wants to insert some custom string so he clicks to one of the texteditor buttons. It posts the configured <a href="#texteditor-button-message-format">message</a> to the parent window (which should be your site) where you should provide an interface where he can choose which custom string he wants to use. The selected string should be posted back with the right <a href="#insert-to-cursor-in-wysiwyg-editor">action name</a> to our iframe.<br>
+<strong>Please note that if you want the content to be unchanged/untouched in the generated html code then you should generate that code with the "<a href="#generate-without-sanitizing">generate without sanitizing</a>" route (instead of the normal <a href="#generate">generate</a> route. That way the generated code won't be safe enough, so after you replaced your placeholders YOU SHOULD SANITIZE the code (with <a href="https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer">google caja</a>)</strong></p>
+
+<h3>
+<a name="texteditor-button-message-format" class="anchor" href="#texteditor-button-message-format"><span class="octicon octicon-link"></span></a>Texteditor button message format</h3>
+
+<p>When a user clicks a texteditor button, we post you (parent window) a message. This message is a stringified json with two parameters:</p>
+
+<ul>
+<li>action {String} The action name you configured for this type of code elements</li>
+<li>content {String} The selected text in the editor (if there is any. It will be null if there is no selected text). Plesae note that the selected text will always be overriden with the content you send in the <a href="#insert-to-cursor-in-wysiwyg-editor">repsonse</a>. If you want to keep the selected text then you should send it back in/with your content.</li>
+</ul>
+
+<p>example: <strong>"{\"action\": \"the action you configured for this texteditor button\", \"content\": \"the selected text or null if there is no selected text\"}"</strong></p>
+
+<h3>
+<a name="texteditor-buttons-structure" class="anchor" href="#texteditor-buttons-structure"><span class="octicon octicon-link"></span></a>Texteditor button's structure</h3>
+
+<p>A texteditor button configuration has the following parameters:</p>
+
+<ul>
+<li>id : The id/type of the texteditor button. This is what distinguish one button from another.</li>
+<li>action : The message our iframe will send to you when a user clicks the texteditor button belonging to this configuration. (You can find how you have to respond to this message <a href="#insert-to-cursor-in-wysiwyg-editor">here</a>) </li>
+<li>label : The name of the button. This will appear as the label of the button. It is localizable and works quite similar like the <a href="#localization">header/footer localization</a>. Please note that the "en" value is the default value, so it should always be set.</li>
+</ul>
+
+<p>You can configure your texteditor buttons for:</p>
+
+<ul>
+<li><a href="dashboard.edmdesigner.com/#textEditorButton/general">every instance</a></li>
+<li><a href="dashboard.edmdesigner.com/#textEditorButton/instance">every user belonging to one instance</a></li>
+<li><a href="dashboard.edmdesigner.com/#textEditorButton/group">a group of user</a></li>
+<li><a href="dashboard.edmdesigner.com/#textEditorButton/user">some selected user</a></li>
+</ul>
+
+<p>A user inherits a texteditor button settings just like it is explained in the <a href="#feature-configuration">feature configuration</a> part of the documentation</p>
+
+<hr>
+
+<h3>
+<a name="header-button" class="anchor" href="#header-button"><span class="octicon octicon-link"></span></a>Header button</h3>
+
+<p>With this feature it is possible to insert your own code snippet into the head part of the email template. If you choose to use this feature then a button will appear in the DEFAULTS settings part in the editor. It is a fully customizable button, it's label, it's toolbox's title and the message type it sends when clicked, can be configured through our <a href="dashboard.edmdesigner.com">dashboard</a>.<br>
+The basic usecase of a header button: The user wants to insert a query string to the head part of his template, so he clicks the header button. It posts the configured <a href="#header-button-message-format">message</a> to the parent window (which should be your site) where you should provide an interface where he can create the query string he wants to use. The created string should be posted back with the right <a href="#insert-to-cursor-in-wysiwyg-editor">action name</a> to our iframe.</p>
+
+<h3>
+<a name="header-button-message-format" class="anchor" href="#header-button-message-format"><span class="octicon octicon-link"></span></a>Header button message format</h3>
+
+<p>When a user clicks the header button, it posts you (parent window) a message. This message is a stringified json with two parameters:</p>
+
+<ul>
+<li>action {String} The action name you configured for this type of code elements</li>
+<li>content {String} Previous content (if exists)</li>
+</ul>
+
+<p>example: <strong>"{\"action\": \"the action you configured for this heaer button\", \"content\": \"previous content or null\"}"</strong></p>
+
+<h3>
+<a name="header-buttons-structure" class="anchor" href="#header-buttons-structure"><span class="octicon octicon-link"></span></a>Header button's structure</h3>
+
+<p>A haeder button configuration has the following parameters:</p>
+
+<ul>
+<li>action : The message our iframe will send to you when a user clicks the header button. (You can find how you have to respond to this message <a href="#insert-to-cursor-in-wysiwyg-editor">here</a>) </li>
+<li>toolbox title : The title of the toolbox the users will see in the defaults settings. It is localizable and works quite similar like the <a href="#localization">header/footer localization</a>.  Please note that the "en" value is the default value, so it should always be set.</li>
+<li>button label : The name of the button. This will appear as the label of the button. It is localizable and works quite similar like the <a href="#localization">header/footer localization</a>. Please note that the "en" value is the default value, so it should always be set.</li>
+</ul>
+
+<p>You can configure your header buttons for:</p>
+
+<ul>
+<li><a href="dashboard.edmdesigner.com/#headerButton/general">every instance</a></li>
+<li><a href="dashboard.edmdesigner.com/#headerButton/instance">every user belonging to one instance</a></li>
+<li><a href="dashboard.edmdesigner.com/#headerButton/group">a group of user</a></li>
+<li><a href="dashboard.edmdesigner.com/#headerButton/user">some selected user</a></li>
+</ul>
+
+<p>A user inherits a texteditor button settings just like it is explained in the <a href="#feature-configuration">feature configuration</a> part of the documentation</p>
 
 <hr>
 
@@ -5039,13 +5231,59 @@ The spacing specifies a padding values around the whole text div. The defaults v
 <h3>
 <a name="save-project" class="anchor" href="#save-project"><span class="octicon octicon-link"></span></a>Save Project</h3>
 
-<p>It is possible to manualy ask the iframe to save the actual (opened) project. As an answer the iframe will post a <a href="#save-result">save result</a> message.<br>
+<p>It is possible to manualy ask the iframe to save the actual (opened) project. As a response the iframe will post a <a href="#save-result">save result</a> message.<br>
 The message you need to send: <strong>saveProject</strong></p>
+
+<h3>
+<a name="force-selected-element-to-be-deselected" class="anchor" href="#force-selected-element-to-be-deselected"><span class="octicon octicon-link"></span></a>Force selected element to be deselected</h3>
+
+<p>It is possible to force the editor to deselect the actual selected element. There won't be any kind of response (from the api iframe) to this message.
+The message you need to send: <strong>loseSelelcted</strong></p>
+
+<h3>
+<a name="set-code-element-content" class="anchor" href="#set-code-element-content"><span class="octicon octicon-link"></span></a>Set code element content</h3>
+
+<p>The response for the incoming messages from <a href="#code-elements">code elements</a>. You need to post a stringified json as the message string. It should have two properties:</p>
+
+<ul>
+<li>action {String} The name of the action: <strong>SetCodeElementContent</strong>
+</li>
+<li>content {String} The content (query string) you want to set to the element<br>
+</li>
+</ul>
+
+<p>The message you need to send: <strong>{"action": "SetCodeElementContent", "content": "your content goes here"}</strong></p>
+
+<h3>
+<a name="insert-to-cursor-in-wysiwyg-editor" class="anchor" href="#insert-to-cursor-in-wysiwyg-editor"><span class="octicon octicon-link"></span></a>Insert to cursor in wysiwyg editor</h3>
+
+<p>The response for the incoming messages from <a href="#wysiwyg-texteditor-button">texteditor buttons</a>. You need to post a stringified json as the message string. It should have two properties:</p>
+
+<ul>
+<li>action {String} The name of the action: <strong>InsertToCursor</strong>
+</li>
+<li>content {String} The content (placeholders) the user wants to insert to the cursor </li>
+</ul>
+
+<p>The message you need to send: <strong>{"action": "InsertToCursor", "content": "your content goes here"}</strong></p>
+
+<h3>
+<a name="set-header-button-content" class="anchor" href="#set-header-button-content"><span class="octicon octicon-link"></span></a>Set header button content</h3>
+
+<p>The response for the incoming message from <a href="#header-button">header button</a>. You need to post a stringified json as the message string. It should have two properties:</p>
+
+<ul>
+<li>action {String} The name of the action: <strong>SetHeaderButtonContent</strong>
+</li>
+<li>content {String} The content (query string) the user wants to insert to the head part of the template </li>
+</ul>
+
+<p>The message you need to send: <strong>{"action": "SetHeaderButtonContent", "content": "your content goes here"}</strong></p>
 
 <hr>
 
 <h3>
-<a name="possible-answer-messages" class="anchor" href="#possible-answer-messages"><span class="octicon octicon-link"></span></a>Possible Answer messages</h3>
+<a name="possible-response-messages" class="anchor" href="#possible-response-messages"><span class="octicon octicon-link"></span></a>Possible response messages</h3>
 
 <p>List of the events the iframe can send to your application (as a message).</p>
 
