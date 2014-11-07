@@ -1791,6 +1791,39 @@ or it can be an error object:
 
 ___
 
+###Download as Zip
+It is possible to export your template as a zip. 
+
+#####Type
+  + GET
+
+#####Route
+  + //api.edmdesigner.com//json_v1.0.0/apiKey/:apiKey/user/:user/project/:project/downloadAsZip
+
+####Parameters (in the route):
+  * apiKey {String} the key of the instance the selected user belongs to.
+  * user {Sring}  the id of the user
+  * project {String} the id of the project you want to download
+
+####Configuration
+You can set which files you want to have in your exported zip and how you want to export them. To set some configuration you need to put a config json to the data property in the query part of your request. Your config json should have the following properties:
+  - needHtml {Boolean} if it is false then there will be no template.html in your exported zip
+  - needJson {Boolean} if it is false then there will be no project.json in your exported zip
+  - withoutSanitizing {Boolean} if it is true then the template.html won't be sanitized.
+ 
+Example:
+  - the config json: {"config": {"needHtml": true, "needJson": false, "withoutSanitizing": false} }
+  - example request: //api.edmdesigner.com/json_v1.0.0/apiKey/yourapikey/user/youruserid/project/projectId/downloadAsZip?user=admin&token=adminToken&data={"config": {"needHtml": true, "needJson": false, "withoutSanitizing": false} }
+
+####Response:
+A zip which can contain the followings (it depends on the configuration, by default it will contain everything):
+  - template.html {file} The html code of the template. It can be a sanitized version or not, it depends of your configuration. By default it will be sanitized.
+  - project.json {file} The json version of the project.
+  - images folder with the images of the template.
+Please note that every images source (href, src, etc.) in the json and html file are replaced with the paths of the images in the images folder.
+
+___
+
 ###Default templates
 Every api partner get a templater user. (id = "templater"). This speciel user have a few project by default which can be used for anything you want. With this route you can list this projects.
 
