@@ -3196,7 +3196,7 @@ The message you need to send: __saveProject__
 
 ###Force selected element to be deselected
 It is possible to force the editor to deselect the actual selected element. There won't be any kind of response (from the api iframe) to this message.
-The message you need to send: __loseSelelcted__
+The message you need to send: __loseSelected__
 
 ###Set code element content
 The response for the incoming messages from [code elements](#code-elements). You need to post a stringified json as the message string. It should have two properties:
