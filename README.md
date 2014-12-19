@@ -783,13 +783,21 @@ Lists the groups you have
 
 #####Route
   + //api.edmdesigner.com/json/groups/list
-
+#### Parameters (optionals):
+  - skip {Number} index where from the listing should begin, without limit parameter it will be ingnored
+  - limit {Number} length of the items to be listed, without skip parameter it will be ingnored
+  - select [Array] list of the properties to be listed ["name", "created"]
+  - sort {Object} MongoDb sort object: {property : "asc/desc"}
 ####Response:
 An array of your groups. Every group is an object with this parameters:
   - _id {String} MongoDB id of the group
   - featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
   - name {String} The name of the group
   - customData {Object} Th custom informations you saved for the group
+
+Or in case of of limit and skip parameters sent an Object consists of:
+  - totalCount {Number} The length of the full list
+  - result {Array} The list of the groups, same as above
 
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -1033,13 +1041,23 @@ Lists the users you have
 
 #####Route
   + //api.edmdesigner.com/json/user/list
-
+  
+#### Parameters (optionals):
+  - skip {Number} index where from the listing should begin, without limit parameter it will be ingnored
+  - limit {Number} length of the items to be listed, without skip parameter it will be ingnored
+  - select [Array] list of the properties to be listed ["name", "created"]
+  - sort {Object} MongoDb sort object: {property : "asc/desc"}
+  - 
 ####Response:
 An array of your users. Every user is an object with this parameters:
   - id {String} The id of the user
   - group {String} The MongoDB _id of the group the user belongs to
   - createTime {String} The time when the user was created
   - customData {Object} The custom informations you saved for the user
+
+Or in case of of limit and skip parameters sent an Object consists of:
+  - totalCount {Number} The length of the unfiltered list
+  - result {Array} The list of the users, same as above
 
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -1577,11 +1595,21 @@ Lists all images of a specified user
 #####Route
   + //api.edmdesigner.com/json/gallery/list/:id
 
+#### Parameters (optionals):
+  - skip {Number} index where from the listing should begin, without limit parameter it will be ingnored
+  - limit {Number} length of the items to be listed, without skip parameter it will be ingnored
+  - select [Array] list of the properties to be listed ["name", "created"]
+  - sort {Object} MongoDb sort object: {property : "asc/desc"}
+
 ####Parameters (in the route):
   * :id {String} The id of the target user
 
 ####Response:
 Array of urls
+
+Or in case of of limit and skip parameters sent an Object consists of:
+  - totalCount {Number} The length of the full list
+  - result {Array} The list of the urls, same as above
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -1800,6 +1828,12 @@ Every api partner get a templater user. (id = "templater"). This speciel user ha
 #####Route
   + //api.edmdesigner.com/json/project/defaults
 
+#### Parameters (optionals):
+  - skip {Number} index where from the listing should begin, without limit parameter it will be ingnored
+  - limit {Number} length of the items to be listed, without skip parameter it will be ingnored
+  - select [Array] list of the properties to be listed ["name", "created"]
+  - sort {Object} MongoDb sort object: {property : "asc/desc"}
+
 ####Response:
 List of projects. Every project is an object with the following parameters:
   - _id {String} MongoDB _id of the project
@@ -1807,6 +1841,10 @@ List of projects. Every project is an object with the following parameters:
   - document {Object} An object, which represents a template
   - description {String} Description of the template
   - customData {Object} The custom informations you saved for the projects 
+
+Or in case of of limit and skip parameters sent an Object consists of:
+  - totalCount {Number} The length of the full list
+  - result {Array} The list of the projects, same as above
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
