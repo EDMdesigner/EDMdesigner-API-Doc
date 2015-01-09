@@ -831,11 +831,44 @@ Create new api keys
  - items {Array} Must have. An array of the new apiKey object what consists of the following:
  - id: {String} Must have. The id of the api key.
  - name: {String} Optional. The name of the api key.
+ - skinConfig: {Object} Optional, but if property exists, it must contains the following properties:
+ - skinConfig.colors: {Object},
+ - skinConfig.colors.titleColor: {String},
+ - skinConfig.colors.textColor: {String},
+ - skinConfig.colors.bodyBgColor: {String},
+ - skinConfig.colors.dominantColor: {String},
+ - skinConfig.colors.boxBgColor: {String},
+ - skinConfig.colors.boxHeaderBg: {String},
+ - skinConfig.colors.boxTextColor: {String}
 
 ####Response:
 - created {Array} the list of the created api keys
 - failed {Array} The list of the failed api keys
 - alreadyHave {Array} The list of the api keys what could not be created bacause the keys existed before
+
+
+### Update skin on api key
+Updating skins of existing api key
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/updateSkin/apiKey/:apiKeyId (Where apiKeyId is the id of the api key)
+  
+#### Parameters
+ - time {String/Number} Must have. The current timestamp.
+ - email {String} Must have. The email to registered to your account.
+ - hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile
+ - colors {Object} Must have.
+ - colors.titleColor: {String} Must have.
+ - colors.textColor: {String} Must have,
+ - colors.bodyBgColor: {String} Must have,
+ - colors.dominantColor: {String} Must have,
+ - colors.boxBgColor: {String} Must have,
+ - colors.boxHeaderBg: {String}  Must have,
+ - colors.boxTextColor: {String}  Must have
+
 
 ## Group handler routes
 ### List groups
