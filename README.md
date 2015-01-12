@@ -20,7 +20,8 @@ We provide example implementations that include the handshaking as well. You can
   2. [Admin functions](#admin-functions)  
 4. __[Server side routes](#server-side-routes)__  
   1. [Admin routes](#admin-routes)  
-    * _[Authentication](#authentication)_  
+    * _[Authentication](#authentication)_
+    * _[Api key handler routes](#api-key-handler-routes)_
     * _[Group handler routes](#group-handler-routes)_  
     * _[User handler routes](#user-handler-routes)_  
     * _[Gallery handling](#gallery-handling)_  
@@ -773,6 +774,101 @@ Create the handshaking between PHP and API needs to be done before any further c
 		$token = json_decode($result, TRUE);
 
 ___
+## Api key handler routes
+
+### List api keys
+Lists your api keys
+
+#####Type
+  + GET
+
+#####Route
+  + //api.edmdesigner.com/json/apiKey
+  
+#### Parameters
+ - time {String/Number} Must have. The current timestamp.
+ - email {String} Must have. The email to registered to your account.
+ - hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile
+ - findObject {Object} Optional. With this object the result can be filtered and modified.
+ - findObject.skip {Number} index where from the listing should begin, without limit parameter it will be ingnored
+ - findObject.limit {Number} length of the items to be listed, without skip parameter it will be ingnored
+ - findObject.select [Array] list of the properties to be listed ["name", "created"]
+ - findObject.sort {Object} MongoDb sort object: {property : "asc/desc"}
+ 
+####Response:
+An array of your api keys. Every item is an object with this parameters:
+  - _id {String} MongoDB id of the api key
+  - featureSwitch {Object} The features that are available for users belong to this apikey. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
+  - name {String} The name of the api key
+  - customData {Object} Th custom informations you saved for the api key
+  - magic {String} the magic word of the api key
+  - galleryUploadRoute {String} the upload route of the api key
+  - galleryDeleteRoute {String} the delete route of the api key
+  - galleryCopyRoute {String} the copy route of the api key
+  - apiKey {String} the id of the api key
+  - skinConfig {Object} the skin configuration of the api key
+
+Or in case of of limit and skip parameters sent an Object consists of:
+  - totalCount {Number} The length of the full list
+  - result {Array} The list of the api keys, same as above
+
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+### Create api Keys
+Create new api keys
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/apiKey/create
+  
+#### Parameters
+ - time {String/Number} Must have. The current timestamp.
+ - email {String} Must have. The email to registered to your account.
+ - hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile
+ - items {Array} Must have. An array of the new apiKey object what consists of the following:
+ - id: {String} Must have. The id of the api key.
+ - name: {String} Optional. The name of the api key.
+ - skinConfig: {Object} Optional, but if property exists, it must contains the following properties:
+ - skinConfig.colors: {Object},
+ - skinConfig.colors.titleColor: {String},
+ - skinConfig.colors.textColor: {String},
+ - skinConfig.colors.bodyBgColor: {String},
+ - skinConfig.colors.dominantColor: {String},
+ - skinConfig.colors.boxBgColor: {String},
+ - skinConfig.colors.boxHeaderBg: {String},
+ - skinConfig.colors.boxTextColor: {String}
+
+####Response:
+- created {Array} the list of the created api keys
+- failed {Array} The list of the failed api keys
+- alreadyHave {Array} The list of the api keys what could not be created bacause the keys existed before
+
+
+### Update skin on api key
+Updating skins of existing api key
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/updateSkin/apiKey/:apiKeyId (Where apiKeyId is the id of the api key)
+  
+#### Parameters
+ - time {String/Number} Must have. The current timestamp.
+ - email {String} Must have. The email to registered to your account.
+ - hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile
+ - colors {Object} Must have.
+ - colors.titleColor: {String} Must have.
+ - colors.textColor: {String} Must have,
+ - colors.bodyBgColor: {String} Must have,
+ - colors.dominantColor: {String} Must have,
+ - colors.boxBgColor: {String} Must have,
+ - colors.boxHeaderBg: {String}  Must have,
+ - colors.boxTextColor: {String}  Must have
+
 
 ## Group handler routes
 ### List groups
