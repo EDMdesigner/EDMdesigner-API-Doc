@@ -822,7 +822,7 @@ Create new api keys
   + POST
 
 #####Route
-  + //api.edmdesigner.com/json/apiKey/create
+  + //api.edmdesigner.com/json/apiKey
   
 #### Parameters
  - time {String/Number} Must have. The current timestamp.
@@ -854,7 +854,7 @@ Updating skins of existing api key
   + POST
 
 #####Route
-  + //api.edmdesigner.com/json/updateSkin/apiKey/:apiKeyId (Where apiKeyId is the id of the api key)
+  + //api.edmdesigner.com/json/apiKey/:apiKeyId/skin (Where apiKeyId is the id of the api key)
   
 #### Parameters
  - time {String/Number} Must have. The current timestamp.
