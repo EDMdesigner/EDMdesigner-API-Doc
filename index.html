@@ -74,9 +74,8 @@
 <a href="#admin-routes">Admin routes</a><br>
 
 <ul>
-<li>
-<em><a href="#authentication">Authentication</a></em><br>
-</li>
+<li><em><a href="#authentication">Authentication</a></em></li>
+<li><em><a href="#api-key-handler-routes">Api key handler routes</a></em></li>
 <li>
 <em><a href="#group-handler-routes">Group handler routes</a></em><br>
 </li>
@@ -1119,12 +1118,12 @@
 <hr>
 
 <h2>
-<a id="group-handler-routes" class="anchor" href="#group-handler-routes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Group handler routes</h2>
+<a id="api-key-handler-routes" class="anchor" href="#api-key-handler-routes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Api key handler routes</h2>
 
 <h3>
-<a id="list-groups" class="anchor" href="#list-groups" aria-hidden="true"><span class="octicon octicon-link"></span></a>List groups</h3>
+<a id="list-api-keys" class="anchor" href="#list-api-keys" aria-hidden="true"><span class="octicon octicon-link"></span></a>List api keys</h3>
 
-<p>Lists the groups you have</p>
+<p>Lists your api keys</p>
 
 <h5>
 <a id="type" class="anchor" href="#type" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
@@ -1137,19 +1136,180 @@
 <a id="route" class="anchor" href="#route" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
-<li>//api.edmdesigner.com/json/groups/list</li>
+<li>//api.edmdesigner.com/json/apiKey</li>
+</ul>
+
+<h4>
+<a id="parameters-22" class="anchor" href="#parameters-22" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters</h4>
+
+<ul>
+<li>time {String/Number} Must have. The current timestamp.</li>
+<li>email {String} Must have. The email to registered to your account.</li>
+<li>hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at <a href="https://dashboard.edmdesigner.com/#profile">https://dashboard.edmdesigner.com/#profile</a>
+</li>
+<li>findObject {Object} Optional. With this object the result can be filtered and modified.</li>
+<li>findObject.skip {Number} index where from the listing should begin, without limit parameter it will be ingnored</li>
+<li>findObject.limit {Number} length of the items to be listed, without skip parameter it will be ingnored</li>
+<li>findObject.select [Array] list of the properties to be listed ["name", "created"]</li>
+<li>findObject.sort {Object} MongoDb sort object: {property : "asc/desc"}</li>
 </ul>
 
 <h4>
 <a id="response" class="anchor" href="#response" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
-<p>An array of your groups. Every group is an object with this parameters:</p>
+<p>An array of your api keys. Every item is an object with this parameters:</p>
 
 <ul>
+<li>_id {String} MongoDB id of the api key</li>
+<li>featureSwitch {Object} The features that are available for users belong to this apikey. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
+<li>name {String} The name of the api key</li>
+<li>customData {Object} Th custom informations you saved for the api key</li>
+<li>magic {String} the magic word of the api key</li>
+<li>galleryUploadRoute {String} the upload route of the api key</li>
+<li>galleryDeleteRoute {String} the delete route of the api key</li>
+<li>galleryCopyRoute {String} the copy route of the api key</li>
+<li>apiKey {String} the id of the api key</li>
+<li>skinConfig {Object} the skin configuration of the api key</li>
+</ul>
+
+<p>Or in case of of limit and skip parameters sent an Object consists of:</p>
+
+<ul>
+<li>totalCount {Number} The length of the full list</li>
+<li>result {Array} The list of the api keys, same as above</li>
+</ul>
+
+<p>Or it can be an error object:</p>
+
+<ul>
+<li>err Description of the error {String} or an error code {Number}.</li>
+</ul>
+
+<h3>
+<a id="create-api-keys" class="anchor" href="#create-api-keys" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create api Keys</h3>
+
+<p>Create new api keys</p>
+
+<h5>
+<a id="type-1" class="anchor" href="#type-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5>
+<a id="route-1" class="anchor" href="#route-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/apiKey</li>
+</ul>
+
+<h4>
+<a id="parameters-23" class="anchor" href="#parameters-23" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters</h4>
+
+<ul>
+<li>time {String/Number} Must have. The current timestamp.</li>
+<li>email {String} Must have. The email to registered to your account.</li>
+<li>hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at <a href="https://dashboard.edmdesigner.com/#profile">https://dashboard.edmdesigner.com/#profile</a>
+</li>
+<li>items {Array} Must have. An array of the new apiKey object what consists of the following:</li>
+<li>id: {String} Must have. The id of the api key.</li>
+<li>name: {String} Optional. The name of the api key.</li>
+<li>skinConfig: {Object} Optional, but if property exists, it must contains the following properties:</li>
+<li>skinConfig.colors: {Object},</li>
+<li>skinConfig.colors.titleColor: {String},</li>
+<li>skinConfig.colors.textColor: {String},</li>
+<li>skinConfig.colors.bodyBgColor: {String},</li>
+<li>skinConfig.colors.dominantColor: {String},</li>
+<li>skinConfig.colors.boxBgColor: {String},</li>
+<li>skinConfig.colors.boxHeaderBg: {String},</li>
+<li>skinConfig.colors.boxTextColor: {String}</li>
+</ul>
+
+<h4>
+<a id="response-1" class="anchor" href="#response-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
+
+<ul>
+<li>created {Array} the list of the created api keys</li>
+<li>failed {Array} The list of the failed api keys</li>
+<li>alreadyHave {Array} The list of the api keys what could not be created bacause the keys existed before</li>
+</ul>
+
+<h3>
+<a id="update-skin-on-api-key" class="anchor" href="#update-skin-on-api-key" aria-hidden="true"><span class="octicon octicon-link"></span></a>Update skin on api key</h3>
+
+<p>Updating skins of existing api key</p>
+
+<h5>
+<a id="type-2" class="anchor" href="#type-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5>
+<a id="route-2" class="anchor" href="#route-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/apiKey/:apiKeyId/skin (Where apiKeyId is the id of the api key)</li>
+</ul>
+
+<h4>
+<a id="parameters-24" class="anchor" href="#parameters-24" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters</h4>
+
+<ul>
+<li>time {String/Number} Must have. The current timestamp.</li>
+<li>email {String} Must have. The email to registered to your account.</li>
+<li>hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at <a href="https://dashboard.edmdesigner.com/#profile">https://dashboard.edmdesigner.com/#profile</a>
+</li>
+<li>colors {Object} Must have.</li>
+<li>colors.titleColor: {String} Must have.</li>
+<li>colors.textColor: {String} Must have,</li>
+<li>colors.bodyBgColor: {String} Must have,</li>
+<li>colors.dominantColor: {String} Must have,</li>
+<li>colors.boxBgColor: {String} Must have,</li>
+<li>colors.boxHeaderBg: {String}  Must have,</li>
+<li>colors.boxTextColor: {String}  Must have</li>
+</ul>
+
+<h2>
+<a id="group-handler-routes" class="anchor" href="#group-handler-routes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Group handler routes</h2>
+
+<h3>
+<a id="list-groups" class="anchor" href="#list-groups" aria-hidden="true"><span class="octicon octicon-link"></span></a>List groups</h3>
+
+<p>Lists the groups you have</p>
+
+<h5>
+<a id="type-3" class="anchor" href="#type-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h5>
+<a id="route-3" class="anchor" href="#route-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/groups/list
+#### Parameters (optionals):</li>
+<li>skip {Number} index where from the listing should begin, without limit parameter it will be ingnored</li>
+<li>limit {Number} length of the items to be listed, without skip parameter it will be ingnored</li>
+<li>select [Array] list of the properties to be listed ["name", "created"]</li>
+<li>sort {Object} MongoDb sort object: {property : "asc/desc"}
+####Response:
+An array of your groups. Every group is an object with this parameters:</li>
 <li>_id {String} MongoDB id of the group</li>
 <li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
 <li>name {String} The name of the group</li>
 <li>customData {Object} Th custom informations you saved for the group</li>
+</ul>
+
+<p>Or in case of of limit and skip parameters sent an Object consists of:</p>
+
+<ul>
+<li>totalCount {Number} The length of the full list</li>
+<li>result {Array} The list of the groups, same as above</li>
 </ul>
 
 <p>Or it can be an error object:</p>
@@ -1166,14 +1326,14 @@
 <p>Creates a new group</p>
 
 <h5>
-<a id="type-1" class="anchor" href="#type-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-4" class="anchor" href="#type-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-1" class="anchor" href="#route-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-4" class="anchor" href="#route-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/create</li>
@@ -1189,7 +1349,7 @@
 </ul>
 
 <h4>
-<a id="response-1" class="anchor" href="#response-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response</h4>
+<a id="response-2" class="anchor" href="#response-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response</h4>
 
 <p>An object containing the MongoDB _id of the newly created group:</p>
 
@@ -1211,14 +1371,14 @@
 <p>Gets a specified group</p>
 
 <h5>
-<a id="type-2" class="anchor" href="#type-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-5" class="anchor" href="#type-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-2" class="anchor" href="#route-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-5" class="anchor" href="#route-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/read/:id</li>
@@ -1232,7 +1392,7 @@
 </ul>
 
 <h4>
-<a id="response-2" class="anchor" href="#response-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a id="response-3" class="anchor" href="#response-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>A group object:</p>
 
@@ -1257,14 +1417,14 @@
 <p>Updates a specified group's name or the features it provides or both of these two at the same time. You can even add custom informations to the group.</p>
 
 <h5>
-<a id="type-3" class="anchor" href="#type-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-6" class="anchor" href="#type-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-3" class="anchor" href="#route-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-6" class="anchor" href="#route-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/update</li>
@@ -1282,7 +1442,7 @@
 </ul>
 
 <h4>
-<a id="response-3" class="anchor" href="#response-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a id="response-4" class="anchor" href="#response-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object:</p>
 
@@ -1305,14 +1465,14 @@
 If you want to know what a header is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a id="type-4" class="anchor" href="#type-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-7" class="anchor" href="#type-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-4" class="anchor" href="#route-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-7" class="anchor" href="#route-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/uploadHeaders</li>
@@ -1327,7 +1487,7 @@ If you want to know what a header is good for, please read the <a href="#headers
 </ul>
 
 <h4>
-<a id="response-4" class="anchor" href="#response-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a id="response-5" class="anchor" href="#response-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1357,14 +1517,14 @@ If you want to know what a header is good for, please read the <a href="#headers
 If you want to know what a footer is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a id="type-5" class="anchor" href="#type-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-8" class="anchor" href="#type-8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-5" class="anchor" href="#route-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-8" class="anchor" href="#route-8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/groups/uploadFooters</li>
@@ -1379,7 +1539,7 @@ If you want to know what a footer is good for, please read the <a href="#headers
 </ul>
 
 <h4>
-<a id="response-5" class="anchor" href="#response-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a id="response-6" class="anchor" href="#response-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with two arrays:</p>
 
@@ -1409,14 +1569,14 @@ If you want to know what a footer is good for, please read the <a href="#headers
 If you want to know what is a Complex elem, please read the <a href="#complexelements">complexElements</a> part of the documentation!</p>
 
 <h5>
-<a id="type-6" class="anchor" href="#type-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-9" class="anchor" href="#type-9" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-6" class="anchor" href="#route-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-9" class="anchor" href="#route-9" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/complexElem/addComplexElemToGroup</li>
@@ -1431,7 +1591,7 @@ If you want to know what is a Complex elem, please read the <a href="#complexele
 </ul>
 
 <h4>
-<a id="response-6" class="anchor" href="#response-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a id="response-7" class="anchor" href="#response-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with 3 child objects:</p>
 
@@ -1450,14 +1610,14 @@ If you want to know what is a Complex elem, please read the <a href="#complexele
 If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.</p>
 
 <h5>
-<a id="type-7" class="anchor" href="#type-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-10" class="anchor" href="#type-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-7" class="anchor" href="#route-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-10" class="anchor" href="#route-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addStructuresToGroup</li>
@@ -1472,7 +1632,7 @@ If you want to know what exactly a structure is good for, please read the <a hre
 </ul>
 
 <h4>
-<a id="response-7" class="anchor" href="#response-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a id="response-8" class="anchor" href="#response-8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object with the following two arrays: </p>
 
@@ -1498,14 +1658,14 @@ If you want to know what exactly a structure is good for, please read the <a hre
 If you want to know what exactly a template is good for, please read the <a href="#dynamic-element-template">dynamic element template</a> part of the documentation.</p>
 
 <h5>
-<a id="type-8" class="anchor" href="#type-8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-11" class="anchor" href="#type-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-8" class="anchor" href="#route-8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-11" class="anchor" href="#route-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addTemplatesToGroup</li>
@@ -1528,7 +1688,7 @@ If you want to know what exactly a template is good for, please read the <a href
 </ul>
 
 <h4>
-<a id="response-8" class="anchor" href="#response-8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a id="response-9" class="anchor" href="#response-9" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
 
@@ -1554,14 +1714,14 @@ If you want to know what exactly a template is good for, please read the <a href
 If you want to know what exactly a data is good for, please read the <a href="#dynamic-element-data">dynamic element data</a> part of the documentation.</p>
 
 <h5>
-<a id="type-9" class="anchor" href="#type-9" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-12" class="anchor" href="#type-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-9" class="anchor" href="#route-9" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-12" class="anchor" href="#route-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addDataToGroup</li>
@@ -1584,7 +1744,7 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 </ul>
 
 <h4>
-<a id="response-9" class="anchor" href="#response-9" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
+<a id="response-10" class="anchor" href="#response-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>An object containing two arrays: </p>
 
@@ -1612,29 +1772,41 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <p>Lists the users you have</p>
 
 <h5>
-<a id="type-10" class="anchor" href="#type-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-13" class="anchor" href="#type-13" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-10" class="anchor" href="#route-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-13" class="anchor" href="#route-13" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/list</li>
 </ul>
 
 <h4>
-<a id="response-10" class="anchor" href="#response-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
-
-<p>An array of your users. Every user is an object with this parameters:</p>
+<a id="parameters-optionals" class="anchor" href="#parameters-optionals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters (optionals):</h4>
 
 <ul>
+<li>skip {Number} index where from the listing should begin, without limit parameter it will be ingnored</li>
+<li>limit {Number} length of the items to be listed, without skip parameter it will be ingnored</li>
+<li>select [Array] list of the properties to be listed ["name", "created"]</li>
+<li>sort {Object} MongoDb sort object: {property : "asc/desc"}</li>
+<li>
+####Response:
+An array of your users. Every user is an object with this parameters:</li>
 <li>id {String} The id of the user</li>
 <li>group {String} The MongoDB _id of the group the user belongs to</li>
 <li>createTime {String} The time when the user was created</li>
 <li>customData {Object} The custom informations you saved for the user</li>
+</ul>
+
+<p>Or in case of of limit and skip parameters sent an Object consists of:</p>
+
+<ul>
+<li>totalCount {Number} The length of the unfiltered list</li>
+<li>result {Array} The list of the users, same as above</li>
 </ul>
 
 <p>Or it can be an error object:</p>
@@ -1651,14 +1823,14 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <p>Creates a new user</p>
 
 <h5>
-<a id="type-11" class="anchor" href="#type-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-14" class="anchor" href="#type-14" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-11" class="anchor" href="#route-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-14" class="anchor" href="#route-14" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/create</li>
@@ -1696,14 +1868,14 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <p>Creates multiple user</p>
 
 <h5>
-<a id="type-12" class="anchor" href="#type-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-15" class="anchor" href="#type-15" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-12" class="anchor" href="#route-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-15" class="anchor" href="#route-15" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/multipleCreate</li>
@@ -1765,14 +1937,14 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <p>Gets a specified user</p>
 
 <h5>
-<a id="type-13" class="anchor" href="#type-13" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-16" class="anchor" href="#type-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-13" class="anchor" href="#route-13" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-16" class="anchor" href="#route-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/getOne/:id</li>
@@ -1811,14 +1983,14 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <p>Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to the user too.</p>
 
 <h5>
-<a id="type-14" class="anchor" href="#type-14" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-17" class="anchor" href="#type-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-14" class="anchor" href="#route-14" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-17" class="anchor" href="#route-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/update</li>
@@ -1857,14 +2029,14 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 <p>Deletes a specified user</p>
 
 <h5>
-<a id="type-15" class="anchor" href="#type-15" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-18" class="anchor" href="#type-18" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>DELETE</li>
 </ul>
 
 <h5>
-<a id="route-15" class="anchor" href="#route-15" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-18" class="anchor" href="#route-18" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/delete/:id</li>
@@ -1901,14 +2073,14 @@ If you want to know what exactly a data is good for, please read the <a href="#d
 If you want to know what a header is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a id="type-16" class="anchor" href="#type-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-19" class="anchor" href="#type-19" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-16" class="anchor" href="#route-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-19" class="anchor" href="#route-19" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/uploadHeaders</li>
@@ -1960,14 +2132,14 @@ If you want to know what a header is good for, please read the <a href="#headers
 If you want to know what a footer is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a id="type-17" class="anchor" href="#type-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-20" class="anchor" href="#type-20" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-17" class="anchor" href="#route-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-20" class="anchor" href="#route-20" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/user/uploadFooters</li>
@@ -2019,14 +2191,14 @@ If you want to know what a footer is good for, please read the <a href="#headers
 If you want to know what a Complex elem is good for, please read the <a href="#complexelements">complexElements</a> part of the documentation!</p>
 
 <h5>
-<a id="type-18" class="anchor" href="#type-18" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-21" class="anchor" href="#type-21" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-18" class="anchor" href="#route-18" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-21" class="anchor" href="#route-21" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/complexElem/addComplexElemToUsers</li>
@@ -2059,14 +2231,14 @@ If you want to know what a Complex elem is good for, please read the <a href="#c
 If you want to know what a Complex elem is good for, please read the <a href="#complexelements">complexElements</a> part of the documentation!</p>
 
 <h5>
-<a id="type-19" class="anchor" href="#type-19" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-22" class="anchor" href="#type-22" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-19" class="anchor" href="#route-19" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-22" class="anchor" href="#route-22" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/complexElem/addComplexElems</li>
@@ -2100,14 +2272,14 @@ If you want to know what a Complex elem is good for, please read the <a href="#c
 If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.</p>
 
 <h5>
-<a id="type-20" class="anchor" href="#type-20" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-23" class="anchor" href="#type-23" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-20" class="anchor" href="#route-20" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-23" class="anchor" href="#route-23" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addStructuresToUsers</li>
@@ -2156,14 +2328,14 @@ If you want to know what exactly a structure is good for, please read the <a hre
 If you want to know what exactly a template is good for, please read the <a href="#dynamic-element-template">dynamic element template</a> part of the documentation.</p>
 
 <h5>
-<a id="type-21" class="anchor" href="#type-21" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-24" class="anchor" href="#type-24" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-21" class="anchor" href="#route-21" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-24" class="anchor" href="#route-24" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addTemplatesToUsers</li>
@@ -2219,14 +2391,14 @@ If you want to know what exactly a template is good for, please read the <a href
 If you want to know what exactly a data is good for, please read the <a href="#dynamic-element-data">dynamic element data</a> part of the documentation.</p>
 
 <h5>
-<a id="type-22" class="anchor" href="#type-22" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-25" class="anchor" href="#type-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-22" class="anchor" href="#route-22" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-25" class="anchor" href="#route-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addDataToUsers</li>
@@ -2468,14 +2640,14 @@ If we uploaded the following array: ["www.foo.bar", "<a href="http://test.com/im
 <p>Configure the api's gallery.</p>
 
 <h5>
-<a id="type-23" class="anchor" href="#type-23" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-26" class="anchor" href="#type-26" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-23" class="anchor" href="#route-23" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-26" class="anchor" href="#route-26" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/config</li>
@@ -2517,14 +2689,14 @@ or it can be an error object:</li>
 <p>Gets the configuration of the api gallery.</p>
 
 <h5>
-<a id="type-24" class="anchor" href="#type-24" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-27" class="anchor" href="#type-27" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-24" class="anchor" href="#route-24" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-27" class="anchor" href="#route-27" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/config</li>
@@ -2558,17 +2730,27 @@ or it can be an error object:</li>
 <p>Lists all images of a specified user</p>
 
 <h5>
-<a id="type-25" class="anchor" href="#type-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-28" class="anchor" href="#type-28" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-25" class="anchor" href="#route-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-28" class="anchor" href="#route-28" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/list/:id</li>
+</ul>
+
+<h4>
+<a id="parameters-optionals-1" class="anchor" href="#parameters-optionals-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters (optionals):</h4>
+
+<ul>
+<li>skip {Number} index where from the listing should begin, without limit parameter it will be ingnored</li>
+<li>limit {Number} length of the items to be listed, without skip parameter it will be ingnored</li>
+<li>select [Array] list of the properties to be listed ["name", "created"]</li>
+<li>sort {Object} MongoDb sort object: {property : "asc/desc"}</li>
 </ul>
 
 <h4>
@@ -2582,6 +2764,13 @@ or it can be an error object:</li>
 <a id="response-25" class="anchor" href="#response-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>Response:</h4>
 
 <p>Array of urls</p>
+
+<p>Or in case of of limit and skip parameters sent an Object consists of:</p>
+
+<ul>
+<li>totalCount {Number} The length of the full list</li>
+<li>result {Array} The list of the urls, same as above</li>
+</ul>
 
 <p>or it can be an error object:</p>
 
@@ -2597,14 +2786,14 @@ or it can be an error object:</li>
 <p>Add one or more images to one or more specified users</p>
 
 <h5>
-<a id="type-26" class="anchor" href="#type-26" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-29" class="anchor" href="#type-29" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-26" class="anchor" href="#route-26" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-29" class="anchor" href="#route-29" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/add</li>
@@ -2673,14 +2862,14 @@ or it can be an error object:</li>
 <p>Delete one or more images from one or more specified users</p>
 
 <h5>
-<a id="type-27" class="anchor" href="#type-27" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-30" class="anchor" href="#type-30" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>DELETE</li>
 </ul>
 
 <h5>
-<a id="route-27" class="anchor" href="#route-27" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-30" class="anchor" href="#route-30" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/gallery/delete</li>
@@ -2751,14 +2940,14 @@ or it can be an error object:</li>
 <p>Creates a project/template to a specified user</p>
 
 <h5>
-<a id="type-28" class="anchor" href="#type-28" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-31" class="anchor" href="#type-31" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-28" class="anchor" href="#route-28" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-31" class="anchor" href="#route-31" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createTo</li>
@@ -2798,14 +2987,14 @@ or it can be an error object:</li>
 <p>Creates a project/template to a specified user using an another template</p>
 
 <h5>
-<a id="type-29" class="anchor" href="#type-29" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-32" class="anchor" href="#type-32" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-29" class="anchor" href="#route-29" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-32" class="anchor" href="#route-32" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromTo</li>
@@ -2846,14 +3035,14 @@ or it can be an error object:</li>
 <p>It is quiet similar to the <a href="#create-from-to">create from to route</a>, basic with this route you can do the same thing except, here not only the project will be copied, but the images (which are used in the template) too. If you want to use this route, first you need to implement a <a href="#copy-route">copy route</a> on your server side and <a href="#configure-api-servers-gallery">config</a> it's address to the gallery.</p>
 
 <h5>
-<a id="type-30" class="anchor" href="#type-30" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-33" class="anchor" href="#type-33" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-30" class="anchor" href="#route-30" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-33" class="anchor" href="#route-33" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromToWithImages</li>
@@ -2893,14 +3082,14 @@ or it can be an error object:</li>
 <p>Get a specified project as json. The result will contain almost every information about the selected project.</p>
 
 <h5>
-<a id="type-31" class="anchor" href="#type-31" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-34" class="anchor" href="#type-34" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-31" class="anchor" href="#route-31" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-34" class="anchor" href="#route-34" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/getProject/:id</li>
@@ -2951,14 +3140,14 @@ or it can be an error object:</li>
 <p>Sets the root of a selected user's selected project's document. </p>
 
 <h5>
-<a id="type-32" class="anchor" href="#type-32" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-35" class="anchor" href="#type-35" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-32" class="anchor" href="#route-32" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-35" class="anchor" href="#route-35" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/setProject</li>
@@ -2996,17 +3185,27 @@ or it can be an error object:</li>
 <p>Every api partner get a templater user. (id = "templater"). This speciel user have a few project by default which can be used for anything you want. With this route you can list this projects.</p>
 
 <h5>
-<a id="type-33" class="anchor" href="#type-33" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-36" class="anchor" href="#type-36" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-33" class="anchor" href="#route-33" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-36" class="anchor" href="#route-36" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/defaults</li>
+</ul>
+
+<h4>
+<a id="parameters-optionals-2" class="anchor" href="#parameters-optionals-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters (optionals):</h4>
+
+<ul>
+<li>skip {Number} index where from the listing should begin, without limit parameter it will be ingnored</li>
+<li>limit {Number} length of the items to be listed, without skip parameter it will be ingnored</li>
+<li>select [Array] list of the properties to be listed ["name", "created"]</li>
+<li>sort {Object} MongoDb sort object: {property : "asc/desc"}</li>
 </ul>
 
 <h4>
@@ -3020,6 +3219,13 @@ or it can be an error object:</li>
 <li>document {Object} An object, which represents a template</li>
 <li>description {String} Description of the template</li>
 <li>customData {Object} The custom informations you saved for the projects </li>
+</ul>
+
+<p>Or in case of of limit and skip parameters sent an Object consists of:</p>
+
+<ul>
+<li>totalCount {Number} The length of the full list</li>
+<li>result {Array} The list of the projects, same as above</li>
 </ul>
 
 <p>or it can be an error object:</p>
@@ -3166,14 +3372,14 @@ An example title object: </p>
 If you want to know what a header is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a id="type-34" class="anchor" href="#type-34" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-37" class="anchor" href="#type-37" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-34" class="anchor" href="#route-34" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-37" class="anchor" href="#route-37" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/uploadHeaders</li>
@@ -3218,14 +3424,14 @@ If you want to know what a header is good for, please read the <a href="#headers
 If you want to know what a footer is good for, please read the <a href="#headers--footers">headers &amp; footers</a> part of the documentation!</p>
 
 <h5>
-<a id="type-35" class="anchor" href="#type-35" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-38" class="anchor" href="#type-38" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-35" class="anchor" href="#route-35" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-38" class="anchor" href="#route-38" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/uploadFooters</li>
@@ -3477,14 +3683,14 @@ You can assign any number of data to a structure.  </p>
 <p>You can create one or more structure for your <a href="#dynamic-elements">dynamic elements</a> with this route. If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.</p>
 
 <h5>
-<a id="type-36" class="anchor" href="#type-36" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-39" class="anchor" href="#type-39" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-36" class="anchor" href="#route-36" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-39" class="anchor" href="#route-39" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/createDynamicElemStructures</li>
@@ -3530,14 +3736,14 @@ You can assign any number of data to a structure.  </p>
 If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.</p>
 
 <h5>
-<a id="type-37" class="anchor" href="#type-37" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-40" class="anchor" href="#type-40" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-37" class="anchor" href="#route-37" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-40" class="anchor" href="#route-40" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/listDynamicElemStructure</li>
@@ -3562,14 +3768,14 @@ If you want to know what exactly a structure is good for, please read the <a hre
 If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.  </p>
 
 <h5>
-<a id="type-38" class="anchor" href="#type-38" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-41" class="anchor" href="#type-41" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-38" class="anchor" href="#route-38" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-41" class="anchor" href="#route-41" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/deleteDynamicElemStructure</li>
@@ -3602,14 +3808,14 @@ If you want to know what exactly a structure is good for, please read the <a hre
 If you want to know what exactly a structure is good for, please read the <a href="#dynamic-element-structure">dynamic element structure</a> part of the documentation.</p>
 
 <h5>
-<a id="type-39" class="anchor" href="#type-39" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-42" class="anchor" href="#type-42" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-39" class="anchor" href="#route-39" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-42" class="anchor" href="#route-42" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addStructures</li>
@@ -3649,14 +3855,14 @@ If you want to know what exactly a structure is good for, please read the <a hre
 If you want to know what exactly a template is good for, please read the <a href="#dynamic-element-template">dynamic element template</a> part of the documentation.</p>
 
 <h5>
-<a id="type-40" class="anchor" href="#type-40" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-43" class="anchor" href="#type-43" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-40" class="anchor" href="#route-40" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-43" class="anchor" href="#route-43" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/dynamicElems/addTemplates</li>
@@ -3719,14 +3925,14 @@ You can save custom informations to:  </p>
 <p>You can save any kind of custom information to your apiClientInstance database entry</p>
 
 <h4>
-<a id="type-41" class="anchor" href="#type-41" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-44" class="anchor" href="#type-44" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h4>
-<a id="route-41" class="anchor" href="#route-41" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-44" class="anchor" href="#route-44" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/saveCustomData</li>
@@ -3759,14 +3965,14 @@ You can save custom informations to:  </p>
 <p>You can get the custom informations you previously saved for yourself</p>
 
 <h4>
-<a id="type-42" class="anchor" href="#type-42" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-45" class="anchor" href="#type-45" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h4>
-<a id="route-42" class="anchor" href="#route-42" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-45" class="anchor" href="#route-45" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/general/getMyCustomData</li>
@@ -3834,14 +4040,14 @@ Within an item the label property has the same rules.</p>
 <a id="add-custom-strings-to-all-of-the-users-of-the-apiclientinstance" class="anchor" href="#add-custom-strings-to-all-of-the-users-of-the-apiclientinstance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add Custom Strings to all of the users of the apiClientInstance</h3>
 
 <h4>
-<a id="type-43" class="anchor" href="#type-43" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-46" class="anchor" href="#type-46" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h4>
-<a id="route-43" class="anchor" href="#route-43" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-46" class="anchor" href="#route-46" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/add</li>
@@ -3880,14 +4086,14 @@ Within an item the label property has the same rules.</p>
 <a id="add-custom-strings-to-specified-users" class="anchor" href="#add-custom-strings-to-specified-users" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add Custom Strings to specified users</h3>
 
 <h4>
-<a id="type-44" class="anchor" href="#type-44" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-47" class="anchor" href="#type-47" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h4>
-<a id="route-44" class="anchor" href="#route-44" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-47" class="anchor" href="#route-47" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/addToUsers</li>
@@ -3931,14 +4137,14 @@ Within an item the label property has the same rules.</p>
 <a id="add-custom-strings-to-specified-groups-of-the-apiclientinstance" class="anchor" href="#add-custom-strings-to-specified-groups-of-the-apiclientinstance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add Custom Strings to specified groups of the apiClientInstance</h3>
 
 <h4>
-<a id="type-45" class="anchor" href="#type-45" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-48" class="anchor" href="#type-48" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h4>
-<a id="route-45" class="anchor" href="#route-45" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-48" class="anchor" href="#route-48" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/addToGroup</li>
@@ -3977,14 +4183,14 @@ ___</li>
 <a id="get-custom-strings-of-all-of-the-users-of-the-apiclientinstance" class="anchor" href="#get-custom-strings-of-all-of-the-users-of-the-apiclientinstance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get Custom Strings of all of the users of the apiClientInstance</h3>
 
 <h4>
-<a id="type-46" class="anchor" href="#type-46" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-49" class="anchor" href="#type-49" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h4>
-<a id="route-46" class="anchor" href="#route-46" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-49" class="anchor" href="#route-49" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfApiInstance</li>
@@ -4029,14 +4235,14 @@ ___</li>
 <a id="get-custom-strings-of-a-specified-user" class="anchor" href="#get-custom-strings-of-a-specified-user" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get Custom Strings of a specified user</h3>
 
 <h4>
-<a id="type-47" class="anchor" href="#type-47" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-50" class="anchor" href="#type-50" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h4>
-<a id="route-47" class="anchor" href="#route-47" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-50" class="anchor" href="#route-50" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfUser</li>
@@ -4083,14 +4289,14 @@ ___</li>
 <a id="get-custom-strings-of-a-specified-group" class="anchor" href="#get-custom-strings-of-a-specified-group" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get Custom Strings of a specified group</h3>
 
 <h4>
-<a id="type-48" class="anchor" href="#type-48" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-51" class="anchor" href="#type-51" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h4>
-<a id="route-48" class="anchor" href="#route-48" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-51" class="anchor" href="#route-51" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfGroup</li>
@@ -4137,14 +4343,14 @@ ___</li>
 <a id="remove-a-general-custom-strings-by-its-id" class="anchor" href="#remove-a-general-custom-strings-by-its-id" aria-hidden="true"><span class="octicon octicon-link"></span></a>Remove a general Custom Strings by it's id</h3>
 
 <h4>
-<a id="type-49" class="anchor" href="#type-49" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-52" class="anchor" href="#type-52" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>DELETE</li>
 </ul>
 
 <h4>
-<a id="route-49" class="anchor" href="#route-49" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-52" class="anchor" href="#route-52" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/:id</li>
@@ -4177,14 +4383,14 @@ ___</li>
 <a id="remove-a-users-custom-strings-by-its-id" class="anchor" href="#remove-a-users-custom-strings-by-its-id" aria-hidden="true"><span class="octicon octicon-link"></span></a>Remove a user's Custom Strings by it's id</h3>
 
 <h4>
-<a id="type-50" class="anchor" href="#type-50" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-53" class="anchor" href="#type-53" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>DELETE</li>
 </ul>
 
 <h4>
-<a id="route-50" class="anchor" href="#route-50" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-53" class="anchor" href="#route-53" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/:id/removeFromUser/:user</li>
@@ -4219,14 +4425,14 @@ ___</li>
 <a id="remove-a-groups-custom-strings-by-its-id" class="anchor" href="#remove-a-groups-custom-strings-by-its-id" aria-hidden="true"><span class="octicon octicon-link"></span></a>Remove a group's Custom Strings by it's id</h3>
 
 <h4>
-<a id="type-51" class="anchor" href="#type-51" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
+<a id="type-54" class="anchor" href="#type-54" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h4>
 
 <ul>
 <li>DELETE</li>
 </ul>
 
 <h4>
-<a id="route-51" class="anchor" href="#route-51" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
+<a id="route-54" class="anchor" href="#route-54" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h4>
 
 <ul>
 <li>//api.edmdesigner.com/json/customStrings/:id/removeFromUser/:group</li>
@@ -4276,14 +4482,14 @@ ___</li>
 <p>Lists the projects of the actual user.</p>
 
 <h5>
-<a id="type-52" class="anchor" href="#type-52" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-55" class="anchor" href="#type-55" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-52" class="anchor" href="#route-52" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-55" class="anchor" href="#route-55" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/list</li>
@@ -4334,14 +4540,14 @@ ___</li>
 <p>Lists the projects of the actual user and return a counter too.</p>
 
 <h5>
-<a id="type-53" class="anchor" href="#type-53" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-56" class="anchor" href="#type-56" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-53" class="anchor" href="#route-53" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-56" class="anchor" href="#route-56" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/listAndCount</li>
@@ -4398,14 +4604,14 @@ ___</li>
 <p>Creates a new project (a new e-mail template).</p>
 
 <h5>
-<a id="type-54" class="anchor" href="#type-54" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-57" class="anchor" href="#type-57" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-54" class="anchor" href="#route-54" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-57" class="anchor" href="#route-57" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/create</li>
@@ -4442,14 +4648,14 @@ ___</li>
 <p>Creates the exact copy of the project with the ID specified in projectId.</p>
 
 <h5>
-<a id="type-55" class="anchor" href="#type-55" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-58" class="anchor" href="#type-58" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-55" class="anchor" href="#route-55" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-58" class="anchor" href="#route-58" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/duplicate/:id</li>
@@ -4488,14 +4694,14 @@ ___</li>
 <p>It is very similar to the duplicate route, the only difference is that here you can define the title and the description of the new (copy) project. Whit this route user can only create project from one of his/her own project.</p>
 
 <h5>
-<a id="type-56" class="anchor" href="#type-56" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-59" class="anchor" href="#type-59" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>Post</li>
 </ul>
 
 <h5>
-<a id="route-56" class="anchor" href="#route-56" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-59" class="anchor" href="#route-59" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromOwn</li>
@@ -4537,14 +4743,14 @@ ___</li>
 <p>The user can copy a project from the templater user's projects.</p>
 
 <h5>
-<a id="type-57" class="anchor" href="#type-57" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-60" class="anchor" href="#type-60" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>Post</li>
 </ul>
 
 <h5>
-<a id="route-57" class="anchor" href="#route-57" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-60" class="anchor" href="#route-60" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/createFromDefaults</li>
@@ -4586,14 +4792,14 @@ ___</li>
 <p>Removes a project.</p>
 
 <h5>
-<a id="type-58" class="anchor" href="#type-58" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-61" class="anchor" href="#type-61" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>DELETE</li>
 </ul>
 
 <h5>
-<a id="route-58" class="anchor" href="#route-58" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-61" class="anchor" href="#route-61" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/remove/:id</li>
@@ -4625,14 +4831,14 @@ ___</li>
 <p>Generates the bulletproof responsive HTML e-mail based on the projectId.</p>
 
 <h5>
-<a id="type-59" class="anchor" href="#type-59" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-62" class="anchor" href="#type-62" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-59" class="anchor" href="#route-59" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-62" class="anchor" href="#route-62" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/generate/:id</li>
@@ -4664,14 +4870,14 @@ ___</li>
 <p>Generates the responsive HTML e-mail based on the projectId. The generated html won't be sanitized. (good for those, who wants to use complex placeholders the normal <a href="#generate">generate route</a> would erase.</p>
 
 <h5>
-<a id="type-60" class="anchor" href="#type-60" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-63" class="anchor" href="#type-63" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-60" class="anchor" href="#route-60" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-63" class="anchor" href="#route-63" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json_v1.0.0/apiKey/:apiKey/user/:userid/project/:projectid/generateWithoutSanitizing</li>
@@ -4705,14 +4911,14 @@ ___</li>
 <p>Gets the title of the selected project.</p>
 
 <h5>
-<a id="type-61" class="anchor" href="#type-61" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-64" class="anchor" href="#type-64" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>GET</li>
 </ul>
 
 <h5>
-<a id="route-61" class="anchor" href="#route-61" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-64" class="anchor" href="#route-64" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/title/:id</li>
@@ -4748,14 +4954,14 @@ ___</li>
 <p>Updates the title or/and the description of the specified project. You can add custom informations to this project too.</p>
 
 <h5>
-<a id="type-62" class="anchor" href="#type-62" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
+<a id="type-65" class="anchor" href="#type-65" aria-hidden="true"><span class="octicon octicon-link"></span></a>Type</h5>
 
 <ul>
 <li>POST</li>
 </ul>
 
 <h5>
-<a id="route-62" class="anchor" href="#route-62" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
+<a id="route-65" class="anchor" href="#route-65" aria-hidden="true"><span class="octicon octicon-link"></span></a>Route</h5>
 
 <ul>
 <li>//api.edmdesigner.com/json/project/updateInfo</li>
