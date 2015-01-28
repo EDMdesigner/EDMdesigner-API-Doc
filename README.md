@@ -139,7 +139,7 @@ Creates a new project (a new e-mail template).
 	
 	<script>
 		initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
-			edmDesignerApi.createProject(function({title: "test-title", description: "test-desc", document: {}}, result) {
+			edmDesignerApi.createProject({title: "test-title", description: "test-desc", document: {}}, function(result) {
 				console.log(result._id);
 			});
 		}, onErrorCB);
