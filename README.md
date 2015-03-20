@@ -1682,6 +1682,45 @@ or it can be an error object:
 
 ___
 
+###Set the galleryStamper's url
+Sets the url of the galleryStamper. If this mode is enabled, the API call this route for image stamping, e.g. in case of video play icon.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/gallery/galleryStamperUrl
+
+#### Parameters (you should post):
+  - url {String} The url to set.
+
+####Response:
+Config object: 
+  - url {String} The set url
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+###Get the galleryStamper's url
+Gets the url of the galleryStamper. If this mode is enabled, the API call this route for image stamping, e.g. in case of video play icon.
+
+#####Type
+  + GET
+
+#####Route
+  + //api.edmdesigner.com/json/gallery/galleryStamperUrl
+
+####Response:
+Config object: 
+  - url {String} The set url
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
 ###List images
 Lists all images of a specified user
 
