@@ -221,7 +221,7 @@ The user can create a new project from one of the templater user's projects.
 	<script>
 		var templaterProjectId = null;
 		
-		initEDMdesignerPlugin("Templater", function(edmDesignerApi) {
+		initEDMdesignerPlugin("templater", function(edmDesignerApi) {
 			edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
 				templaterProjectId = result._id;
 			});
