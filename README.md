@@ -26,9 +26,7 @@ We provide example implementations that include the handshaking as well. You can
     * _[User handler routes](#user-handler-routes)_  
     * _[Gallery handling](#gallery-handling)_  
     * _[Project handler routes](#project-handler-admin-routes)_  
-    * _[Headers & Footers](#headers--footers)_  
     * _[ComplexElements](#complexelements)_  
-    * _[Dynamic Elements](#dynamic-elements)_  
     * _[Custom Data](#custom-data)_
     * _[Custom Strings](#custom-strings)_
   2. [User routes](#user-routes)  
@@ -806,7 +804,6 @@ An array of your api keys. Every item is an object with this parameters:
   - galleryDeleteRoute {String} the delete route of the api key
   - galleryCopyRoute {String} the copy route of the api key
   - apiKey {String} the id of the api key
-  - skinConfig {Object} the skin configuration of the api key
 
 Or in case of of limit and skip parameters sent an Object consists of:
   - totalCount {Number} The length of the full list
@@ -831,15 +828,6 @@ Create new api keys
  - items {Array} Must have. An array of the new apiKey object what consists of the following:
  - id: {String} Must have. The id of the api key.
  - name: {String} Optional. The name of the api key.
- - skinConfig: {Object} Optional, but if property exists, it must contains the following properties:
- - skinConfig.colors: {Object},
- - skinConfig.colors.titleColor: {String},
- - skinConfig.colors.textColor: {String},
- - skinConfig.colors.bodyBgColor: {String},
- - skinConfig.colors.dominantColor: {String},
- - skinConfig.colors.boxBgColor: {String},
- - skinConfig.colors.boxHeaderBg: {String},
- - skinConfig.colors.boxTextColor: {String}
 
 ####Response:
 - created {Array} the list of the created api keys
@@ -847,7 +835,7 @@ Create new api keys
 - alreadyHave {Array} The list of the api keys what could not be created bacause the keys existed before
 
 
-### Update skin on api key
+### Update api key
 Updating skins of existing api key
 
 #####Type
@@ -860,14 +848,6 @@ Updating skins of existing api key
  - time {String/Number} Must have. The current timestamp.
  - email {String} Must have. The email to registered to your account.
  - hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile
- - colors {Object} Must have.
- - colors.titleColor: {String} Must have.
- - colors.textColor: {String} Must have,
- - colors.bodyBgColor: {String} Must have,
- - colors.dominantColor: {String} Must have,
- - colors.boxBgColor: {String} Must have,
- - colors.boxHeaderBg: {String}  Must have,
- - colors.boxTextColor: {String}  Must have
 
 
 ## Group handler routes
@@ -972,58 +952,6 @@ Or it can be an error object:
 
 ___
 
-### Upload Headers 
-Upload a list of headers to the specified group. Every user who belongs to this group will be able to use these headers. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a header is good for, please read the [headers & footers](#headers--footers) part of the documentation!
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/groups/uploadHeaders
-
-#### Parameters (you should post):
-   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
-   * headers {Array} /REQUIRED/ The list of headers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, please read [this](#structure) part of the documentation.
-
-####Response:
-An object with two arrays:
-  - success {Array} The list of the headers which were successfully added to the group
-  - failed {Array} The list of the object: 
-    - header {Object} The header which is not valid therefore it was not added to the group
-    - error {String} The reason why the header is not valid
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-### Upload Footers 
-Upload a list of footers to the specified group. Every user who belongs to this group will be able to use these footers. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a footer is good for, please read the [headers & footers](#headers--footers) part of the documentation!
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/groups/uploadFooters
-
-#### Parameters (you should post):
-   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
-   * footers {Array} /REQUIRED/ The list of footers which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, please read [this](#structure) part of the documentation.
-
-####Response:
-An object with two arrays:
-  - success {Array} list of the footers which were successfully added to the group
-  - failed {Array} list of the object: 
-    - footer {Object} The footer which is not valid therefore it was not added to the group
-    - error {String} The reason why the footer is not valid
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
 ### Upload Complex Elems 
 Upload a list of Complex elems to the specified group. Every user who belongs to this group will be able to use these Complex elems. Please note that every upload will overwrite the previous uploads!  
 If you want to know what is a Complex elem, please read the [complexElements](#complexelements) part of the documentation!
@@ -1046,87 +974,6 @@ An object with 3 child objects:
 
 ___
 
-### Add structures to group
-You can assign structures to a specified group. If you do so, then each of your users, who belong to the group, will be able to use the given structures.  
-If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/addStructuresToGroup
-
-#### Parameters (you should post):
-   * structureIds {Array} /REQUIRED/ It should contain the ids of the structures you want to assign to all of your users.
-   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
-
-####Response:
-An object with the following two arrays: 
-  - fails {Array} It contains objects with the following properties:
-    - item {Object} The structure which cannot be assigned
-    - text {String} The reason why it cannot be assigned
-  - saved {Array} It contains the objects of the successfully saved structures  
-  - err {String} only in case of error, contains the error description
-
-___
-
-
-### Add templates to group
-You can assign templates to a specified group. If you do so, then each users , who belong to the selected group, will be able to use the given templates.  
-If you want to know what exactly a template is good for, please read the [dynamic element template](#dynamic-element-template) part of the documentation.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/addTemplatesToGroup
-
-#### Parameters (you should post):
-  * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
-  * templates {Array} /REQUIRED/ It should contain template objects. A template object should look like the following:
-    * id {String} If you do not give any id then we will generate one.
-    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
-    * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
-
-####Response:
-An object containing two arrays: 
-  - fails {Array} It contains objects with the following properties:
-    - item {Object} The template which cannot be created
-    - text {String} The reason why it cannot be created
-  - saved {Array} It contains the objects of the successfully saved templates  
-  - err {String} only in case of error, contains the error description
-
-___
-
-### Add data to group
-You can add data to a specified group.  If you do so, then each users , who belong to the selected group, will be able to use the given data.    
-If you want to know what exactly a data is good for, please read the [dynamic element data](#dynamic-element-data) part of the documentation.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/addDataToGroup
-
-#### Parameters (you should post):
-  * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
-  * items {Array} /REQUIRED/ It should contain data objects. A data object should look like the following:
-    * id {String} If you do not give any id then we will generate one.
-    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-    * palceHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](dynamic-element-data))
-    * structureId {String} /REQUIRED/ The id of the structure which the data belongs to.
-
-####Response:
-An object containing two arrays: 
-  - fails {Array} It contains objects with the following properties:
-    - item {Object} The data which cannot be added
-    - text {String} The reason why it cannot be added
-  - saved {Array} It contains the objects of the successfully saved data  
-  - err {String} only in case of error, contains the error description
-
-___
-
 ## User handler routes
 
 ### List
@@ -1143,7 +990,7 @@ Lists the users you have
   - limit {Number} length of the items to be listed, without skip parameter it will be ingnored
   - select [Array] list of the properties to be listed ["name", "created"]
   - sort {Object} MongoDb sort object: {property : "asc/desc"}
-  - 
+
 ####Response:
 An array of your users. Every user is an object with this parameters:
   - id {String} The id of the user
@@ -1283,64 +1130,6 @@ Or it can be an error object:
 
 ___
 
-### Upload Headers 
-Upload a list of headers to a specified user or users. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a header is good for, please read the [headers & footers](#headers--footers) part of the documentation!
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/user/uploadHeaders
-
-#### Parameters (you should post):
-   * users {Array} /REQUIRED/ List of the ids of the users you want to upload the headers.
-   * headers {Array} /REQUIRED/ The list of headers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, please read [this](#structure) part of the documentation.
-
-####Response:
-An object with two arrays:
-  - success {Array} list of the users whose successfully got the headers
-  - failed {Array} list of the object: 
-    - user {String} The id of the user who did not get the headers
-    - error {String} The reason why the user did not get the headers
-  - badHeaders {Array} list of the object: 
-    - header {Object} The header which is not valid therefore it was not added to the users
-    - error {String} The reason why the header is not valid
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-### Upload Footers 
-Upload a list of footers to a specified user or users. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a footer is good for, please read the [headers & footers](#headers--footers) part of the documentation!
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/user/uploadFooters
-
-#### Parameters (you should post):
-   * users {Array} /REQUIRED/ List of the ids of the users you want to upload the footers.
-   * footers {Array} /REQUIRED/ The list of footers which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, please read [this](#structure) part of the documentation.
-
-####Response:
-An object with two arrays:
-  - success {Array} The list of the users whose successfully got the footers
-  - failed {Array} The list of the object: 
-    - user {String} The id of the user who did not get the footers
-    - error {String} The reason why the user did not get the footers
-  - badFooters {Array} list of the object: 
-    - footer {Object} The footer which is not valid therefore it was not added to the users
-    - error {String} The reason why the footer is not valid
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
 
 ### Upload Complex elems to specified users 
 Upload a list of Complex elems to a specified user or users. Please note that every upload will overwrite the previous uploads!  
@@ -1383,98 +1172,6 @@ An object:
   - error {String} If the whole process is failed, otherwise null.
   - fails {Array} If a part of the items failed to insert, if all items inserted, it is null.
   - result {Array} List of all inserted Complex elems
-
-___
-
-### Add structures to users
-You can assign structures to one or more users. If you do so, then the selected users will be able to use the given structures.  
-If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/addStructuresToUsers
-
-#### Parameters (you should post):
-   * users {Array} It should contain the ids of the users
-   * structureIds {Array} It should contain the ids of the structures you want to assign to the specified users  
-
-####Response:
-An object with the following four arrays: 
-  - failedItems {Array} It contains objects with the following two properties:
-    - text {String} The reason why the structure cannot be assigned to the users
-    - item {Object} The structure in question
-  - failedUsers {Array} It contains objects with the following two properties:
-    - text {String} The reason why we cannot assign anything to the given user
-    - item {String} The user's id
-  - savedItems {Array} It contains the structure which were assigned to the user/users.
-  - savedToUsers {Array) It contains the ids of the users who successfully get the structures
-  - err {String} only in case of error, contains the error description
-
-___
-
-### Add templates to users
-You can create templates to a specified user or users. If you do so then the selected users will be able to use the given templates.  
-If you want to know what exactly a template is good for, please read the [dynamic element template](#dynamic-element-template) part of the documentation.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/addTemplatesToUsers
-
-#### Parameters (you should post):
-  * users {Array} It should contain the ids of the users
-  * templates {Array} /REQUIRED/ It should contain template objects. A template object should look like the following:
-    * id {String} If you do not give any id then we will generate one.
-    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
-    * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
-
-####Response:
-An object with the following four arrays: 
-  - failedItems {Array} It contains objects with the following two properties:
-    - text {String} The reason why the template cannot be created to the users
-    - item {Object} The template in question
-  - failedUsers {Array} It contains objects with the following two properties:
-    - text {String} The reason why we cannot create any templates to the given user
-    - item {String} The user's id
-  - savedItems {Array} It contains the templates which were assigned to the user/users.
-  - savedToUsers {Array) It contains the ids of the users who successfully get the templates 
-  - err {String} only in case of error, contains the error description
-
-___
-
-### Add data to user
-You can add data to a specified user. If you do so then the selected user will be able to use the given data.  
-If you want to know what exactly a data is good for, please read the [dynamic element data](#dynamic-element-data) part of the documentation.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/addDataToUsers
-
-#### Parameters (you should post):
-  * users {Array} It should contain the ids of the users
-  * items {Array} /REQUIRED/ It should contain data objects. A data object should look like the following:
-    * id {String} If you do not give any id then we will generate one.
-    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-    * palceHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](dynamic-element-data))
-    * structureId {String} /REQUIRED/ The id of the structure which the data belongs to.
-
-####Response:
-An object with the following four arrays: 
-  - failedItems {Array} It contains objects with the following two properties:
-    - text {String} The reason why the data cannot be added to the users
-    - item {Object} The data in question
-  - failedUsers {Array} It contains objects with the following two properties:
-    - text {String} The reason why we cannot add any data to the given user
-    - item {String} The user's id
-  - savedItems {Array} It contains the data which were assigned to the user/users.
-  - savedToUsers {Array) It contains the ids of the users who successfully get the data 
-  - err {String} only in case of error, contains the error description
 
 ___
 
@@ -1947,7 +1644,7 @@ Sets the root of a selected user's selected project's document.
 
 ####Response:
 Success object:
-  - success {boolean} 
+  - success {boolean}
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
@@ -1986,75 +1683,6 @@ or it can be an error object:
 
 ___
 
-##Headers & footers
-You can upload headers and footers which your users will be able to use. A header will appear on the top of their templates and the footer will appear on the bottom.
-The users won’t be able to edit these two elements or remove them.  
-If you upload any header and/or footer, then the affected users have to use one. If you want to have a group of users who don’t have to use any kind of header and/or footer, then do not upload header and/or footer to all of your users ([general upload](#upload-header-2)) or upload the group an empty header and/or footer. This way they can choose the empty one and then there will be no header and/or footer on their templates.  
-You can upload different kind of headers and/or footers. If you do so, then the affected users will be able to choose which header they want to use, but they still have to use one of them.   
-The newly created document will get a header and/or footer if the user (who created the project) has any header and/or footer. A user can have header and/or footer if it was uploaded directly to him or to his group or if there are headers and/or footers which were uploaded to every users. (The header and/or footer priority is the following: user’s personal headers and/or footers <  user’s group’s headers and/or footers < general headers and/or footers)
-
-There is three different ways to upload headers. You can upload it:
-  - to all your user ([general header upload](#upload-headers-2)) 
-  - to a specified group ([upload headers to group](#upload-headers)) 
-  - to specified user or users ([upload headers to user](#upload-headers-1))
-
-Footers can be uploaded in the same ways:
-  - to everyone ([general footer upload](#upload-footers-2))
-  - to a specified group ([upload footers to a group](#upload-footers))
-  - to specified user or users ([upload footers to users](#upload-footers-1))
-
-
-### Structure
-The representing object fore header or footer should have the following properties:
-  - document {Object} /REQUIRED/ it should be a json object ([which represent our templates](#json-document-descriptors))
-    - root /REQUIRED/ There should be the structure of the header or footer. __It must be a ["FULLWIDTH_CONTAINER"](#full-width-container) type!__
-    - generalSettings
-  - id {String} /REQUIRED/ this id is what we use for distinguish the headers from each other so __it should be unique!__ Please note that the id you want to use for the users headers should be different from the ids of the general headers or the ids of the user's group's headers. The same is true for the footers.
-  - title {Object} it should contains language code - title string pairs. For example: 'en': 'Green-white header'. The title will appear on the dropdown list. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
-  - placeholders {Object} it is needed when you want to have more than one supported language on your headers or footers. If you want to know how do the placeholders work please read the [localization](#localization) part of the [headers & footers](#headers--footers) chapter.
-
-Example:
-	
-	var headerOrFooter = {
-		"document":  {
-			"root": {
-				"leftChildren" : [
-					{
-						"text" : "<h1 style=\"text-align: center;\">##title##</h1>",
-						"type" : "TITLE"
-					}
-					{
-						"text" : "<p style=\"text-align: right;\">##example-palceholder##</p>",
-						"defaultText" : "Double click to edit",
-						"type" : "TEXT"
-					}
-				],
-				"rightChildren": [],
-				"rightBackgroundColor" : "",
-				"leftBackgroundColor" : "",
-				"twoCell" : "false",
-				"order" : "LTR",
-				"type" : "FULLWIDTH_CONTAINER"
-			}
-		},
-		"id": "My-example-header-or-footer-unique-id",
-		"title": {
-			"en": "example title",
-		 	"hu": "példa cím"
-		},
-		"placeholders": { 
-				'##title##': {
-					'en': 'The header is a good thing',
-					'hu': 'A fejléc egy jó dolog',
-				},
-	 			'##example-palceholder##: {
-	 				'en': 'It is an example',
-	 				'hu': 'Ez egy példa',
-	 			}
-		}
-	};
-___
-
 ### Localization
 It is possible to use different localization with the same headers and/or footers but __not required__.  
 If you want to support only one language then you should "hardcode" the content of the header or footer to the representing json and it should work perfectly. In that case you do not have to use the placeholders object (see [stucture](#structure)).  
@@ -2088,56 +1716,6 @@ Example:
 _We support the english and the hungarian languages. We upload two headers with the following two title objects: title: {'en': 'first 	header'} and title: {'en': 'second header', 'hu': 'Második fejléc'}. If someone select the hungarian language, then in his dropdown 		list there will be two selectable header: 'first header' and 'Második fejléc', but if someone choose the english version, then 		the dropdown list will look like the following: 'first header' and 'second header'._  
 
 If you do not give an 'en' (english) title to a header, then it will be generated automatically in our application, so it is suggested to always upload an 'en' version of the title too.
-
-___
-
-### Upload Headers 
-Upload a list of headers which __all of your users__ will be able to use. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a header is good for, please read the [headers & footers](#headers--footers) part of the documentation!
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/general/uploadHeaders
-
-#### Parameters (you should post):
-   * headers {Array} The list of headers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a header object should look like, please read [this](#structure)
-
-####Response:
-An object with two arrays:
-  - success {Array} The list of the headers which were successfully saved
-  - failed {Array} The list of the object: 
-    - header {Object} The header which is not valid therefore it was not saved
-    - error {String} The reason why the header is not valid
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-### Upload Footers 
-Upload a list of footers which __all of your users__ will be able to use. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a footer is good for, please read the [headers & footers](#headers--footers) part of the documentation!
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/general/uploadFooters
-
-#### Parameters (you should post):
-   * footers {Array} The list of footers which all of your users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a footer object should look like, please read [this](#structure) part of the documentation.
-
-####Response:
-An object with two arrays:
-  - success {Array} The list of the footers which were successfully saved
-  - failed {Array} The list of the object: 
-    - footer {Object} The footer which is not valid therefore it was not saved
-    - error {String} The reason why the footer is not valid
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
 
 ___
 
@@ -2180,244 +1758,6 @@ An example title object:
 		 'hu': 'példa cím'
 		 /...
 		}
-
-___
-
-
-## Dynamic Elements
-This element is good for those who want their users to be able to change their emails/templates content easily. Users can add a dynamic element to their templates and choose which type of content will it display ([structure](#dynamic-element-structure), how will it look like ([template](#dynamic-element-template) and what the actual content will be ([data](#dynamic-element-data)).  
-You can upload any number of different dynamic element type ([structure](#dynamic-element-structure), and create any number of different looks ([template](#dynamic-element-template) for your structures and assign any number of content ([data](#dynamic-element-data)) to those too.
-You can even choose which type of dynamic elements can your user use, or users belonging to a specified group. You even can set which templates can someone use or not. There is even an option for making a dynamic element type/template to be available for all of your users.
-Please note that the data can only be added to groups or specified users.
-
-### Dynamic element structure
-The structure is the main part of the dynamic element. It specifies the type of the dynamic element. For example, it can be a "Product" (which means that the dynamic element will be able to display products), or a "company" or whatever you want. It is the connection between [data](#dynamic-element-data) and [templates](#dynamic-element-template). It describe how the data's structure should look like (which kind of placeholders should it use, etc) and which placeholders should a template contains. It also contains a default content for the dynamic elements. When a user choose a structure , then the default content will appear and the user can change it with selecting one of his data.  
-The structure is very important , because every templates and data have to be assign to one of your structures!
-
-You can assign structures to:  
-  - all of your users ([add to apiClientInstance](#add-structures-to-everyone))
-  - a specified group ([add to group](#add-structures-to-group))
-  - a specified user or users ([add to user](#add-structures-to-users))
-
-A structure object should have the following properties:
-  - id {String} This id is very __important__. You have to use it everywhere, so choose carefully! It should be unique!
-  - label {Object} It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it [here](#localization)). Please note that the 'en' language code will be the default label! If you do not give any 'en' version, then we will generate one.
-  - placeHolders {Object} It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). It works almost similar like the headers and footers placeholders (expect , here you do not have to use localization). You can read more about the header and footer placeholders [here](#localization).
-
-Example:
-	
-	var structure = {
-		id: "my-structure-id",
-		label: {
-			'en': 'Product',
-			'hu': 'Termék'
-		},
-		placeHolders: {
-			'##title##': 'default title',
-			'##image-src##': 'http://default.image.src',
-			'##description##': 'default foo bar description',
-			'##price##': '0'
-		},
-	};
-
-
-### Dynamic element template
-The template is responsible for the visual appearance of a dynamic element. A template always has to be assigned to a [structure](#dynamic-element-structure) and it has to contain the placeholders which the structure define. It is important because when the user choose a [data](#dynamic-element-data) for the dynamic element, then the placeholders will be replaced with actual content.
-You can assign any number of templates to a structure.  
-
-You can create templates to:
-  - all of your users ([add to apiClientInstance](#add-templates-to-everyone))
-  - a specified group ([add to group](#add-templates-to-group))
-  - a specified user or users ([add to user](#add-templates-to-users))
-
-A template object should have the following properties:
-  - id {String} If you do not give any id then we will generate one.
-  - label {Object} It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it [here](#localization)). Please note that the 'en' language code will be the default label! If you do not give any 'en' version, then we will generate one.
-  - doc {Object} Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
-  - structureId {String} The id of the structure which the template belongs to.
-
-Example: 
-
-	var template = {
-		id: 'my-template-id',
-		label: {
-			'en': 'Simple Template',
-			'hu': 'Sima Sablon'
-		},
-		doc: {
-	            "children" : [ 
-	                {
-	                    "text" : "<h1 style=\"text-align: center;\">##title##</h1>",
-	                    "type" : "TITLE"
-	                }, 
-	                {
-	                    "originalHeight" : "0",
-	                    "originalWidth" : "0",
-	                    "sizeType" : "FIXED",
-	                    "link" : "",
-	                    "altText" : "",
-	                    "src" : "##image-src##",
-	                    "id" : "",
-	                    "align" : "center",
-	                    "type" : "IMAGE"
-	                }, 
-	                {
-	                    "text" : "<p style=\"text-align: center;\">##description##</p>",
-	                    "type" : "TEXT"
-	                }, 
-	                {
-	                    "text" : "<p style=\"text-align: right;\">price: ##price##</p>",
-	                    "type" : "TEXT"
-	                }
-	            ],
-	            "type" : "BOX"
-    		},
-    		structureId: "my-structure-id"
-	};
-
-### Dynamic element data
-The data contains the actual content of the dynamic element. A template always has to be assigned to a [structure](#dynamic-element-structure) and it has to contain "placholder - value " (example: "##placeholder##": "value") for every placeholders the structure contains.  
-You can assign any number of data to a structure.  
-
-You can add data to:
-  - a specified group ([add to group](#add-data-to-group))
-  - a specified user or users ([add to user](#add-data-to-users))
-
-A Data object should have the following properties: 
-  - id {String} If you do not give any id then we will generate one.
-  - label {Object} /REQUIRED/ It should contain "language code - title" pairs. It works like the headers and footers title property (you can read about it [here](#localization)). Please note that the 'en' language code will be the default label! If you do not give any 'en' version then we will generate one.
-  - palceHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). It works almost similar like the headers and footers placeholders (expect , here you do not have to use localization). You can read more about the header and footer placeholders [here](#localization).
-  - structureId {String} /REQUIRED/ The id of the structure which the data belongs to.
-
-Example:
-
-	var data = {
-		id: 'my-data-id',
-		label: {
-			'en': 'EDM beer'
-		},
-		placeHolders: {
-			'##title##': 'EDM beer',
-			'##image-src##': 'http://www.beer100.com/images/beermug.jpg',
-			'##description##': 'Best beer ever! You should try it!',
-			'##price##': '10$'
-		},
-		structureId: 'my-structure-id'
-	};
-
-___
-
-### Create Structures
-You can create one or more structure for your [dynamic elements](#dynamic-elements) with this route. If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/createDynamicElemStructures
-
-#### Parameters (you should post):
-   * structures {Array} list of structure ([see more](#dynamic-element-structure)) objects. One object should have the following properties:
-     * id {String} /REQUIRED/ This id is very __important__. You have to use it everywhere, so choose carefully! It must be unique, so if already used, the insertion is ignored and listed in the fails array.
-     * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-     * placeHolders {Object} /REQUIRED/ It should contain "placeholder - default value" pairs. A placeholderder can be any kind of string with two '#' character at the beginning and the end of it. (example: "##correctPlaceHolder##"). ([see more](#dynamic-element-structure))
-
-####Response:
-An object with three arrays:
-  - inserted {Array} The list of the structures which were successfully saved
-  - fails {Array} list of the folllowing objects: 
-    - item {Object} the structure
-    - text {String} The reason why the creation of the structure failed
-  - err {String} only in case of error, contains the error description
-
-___
-
-### List Structures
-List your structures.  
-If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
-
-
-#####Type
-  + GET
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/listDynamicElemStructure
-
-
-####Response:
-An object with the followinf property: 
-  - result {Array} The list of your structures.
-  - err {String} only in case of error, contains the error description
-
-___
-
-### Delete Structure
-Delete one specified structure. Please note that if you delete a structure then every template and data which belong to it __will be deleted__ too. THis process can take a very long time!
-If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.  
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/deleteDynamicElemStructure
-
-#### Parameters (you should post):
-   * id {String} The id of the structure you want to delete. __Please try to avoid using this id again!!__
-
-####Response:
-An object with the followinf property: 
-  - deleted {object} The structure you deleted
-  - err {String} only in case of error, contains the error description
-
-___
-
-### Add structures to everyone
-You can assign structures to all of your users. If you do so, then each of your user will be able to use the given structures.  
-If you want to know what exactly a structure is good for, please read the [dynamic element structure](#dynamic-element-structure) part of the documentation.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/addStructures
-
-#### Parameters (you should post):
-   * structureIds {Array} It should contain the ids of the structures you want to assign to all of your users.
-
-####Response:
-An object containing two arrays: 
-  - fails {Array} It contains objects with the following properties:
-    - item {Object} The structure which cannot be assigned
-    - text {String} The reason why it cannot be assigned
-  - saved {Array} It contains the objects of the successfully saved structures  
-  - err {String} only in case of error, contains the error description
-
-___
-
-### Add templates to everyone
-You can assign templates to all of your users. If you do so, then each of your user will be able to use the given templates.  
-If you want to know what exactly a template is good for, please read the [dynamic element template](#dynamic-element-template) part of the documentation.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/dynamicElems/addTemplates
-
-#### Parameters (you should post):
-  * templates {Array} It should contain template objects. A template object should look like the following:
-    * id {String} If you do not give any id then we will generate one.
-    * label {Object} /REQUIRED/ It should contain "language code - title" pairs. Please note that the 'en' language code will be the default label! If you do not give any en version then we will generate one.
-    * doc {Object} /REQUIRED/ Json document ([see more](#json-document-descriptors)). It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
-    * structureId {String} /REQUIRED/ The id of the structure which the template belongs to.
-
-####Response:
-An object containing two arrays: 
-  - fails {Array} It contains objects with the following properties:
-    - item {Object} The template which cannot be created
-    - text {String} The reason why it cannot be created
-  - saved {Array} It contains the objects of the successfully saved templates  
-  - err {String} only in case of error, contains the error description
 
 ___
 
@@ -3030,7 +2370,7 @@ ___
 
 Feature configuration
 ---------------------
-This is a new development which will be used everywhere from the next api version. Right now it is only used in a few features ([code elements](#code-elements), [texteditor buttons](#wysiwyg-texteditor-buttons), [header buttons](#header-button)).
+This is a new development which will be used everywhere from the next api version. Right now it is only used in a few features [texteditor buttons](#wysiwyg-texteditor-buttons).
 It is quite similar to the [feater switch](#feature-switch), but it is a little bit "smarter". Here you can configure the features on four different level. Each level inherits the upper levels configuration but has greater priority.  Basicly the configurationions are merged into each other, but the lower levels always override the inherited configurations, if they have different configuration, but not everything, only the affected settings. The inheritance chain is the following:
 
 apiClient -> apiClientInstance(apiKey) -> group -> user.
@@ -3275,34 +2615,6 @@ The [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-languagecod
 ###Special elements and features
 There are some speciel elements and functionalities what can be used with iframe messaging. You can configure most of this features in our [dashboard](dashboard.edmdesigner.com). The basic concept behind this feature is that this configurable elements and buttons will post a message (with [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method which was mentioned above) to the parent window (it should be your site). You should handle the message on your side, it does not matter how, and send back the content with the corresponding action name ([see below](#possbile-messages-to-send)). For example: a popup window where the user can take some action, set what kind of content he wants to use, and you should send back this content wiht the right action name.
 
-###Code elements
-This is a drag element in the editor which can be used to insert your own code snippet into the template (for example: a code in some kind of query language you will replace before sending out the email). You can have as many different kind of code elements as you want.  
-The basic usecase of this element is the following: the user drop one code element into his template. He will see the placeholder (you configured for this code element type). With double click he can activate the element. It means that we will post you the [message](#code-element-message-format) you configured for this kind of code elements. There should be an interface in your site where the user can write/set the query string he wants to use in his template (this interface should pop up right after we posted the message). When he finished the string, it has to be posted back to us ([response format](#set-code-element-content)).
-__Please note that if you want the content to be unchanged/untouched in the generated html code then you should generate that code with the "[generate without sanitizing](#generate-without-sanitizing)" route (instead of the normal [generate](#generate) route. That way the generated code won't be safe enough, so after you replaced your query and/or placeholders YOU SHOULD SANITIZE the code (with [google caja](https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer))__
-
-####Code element message format
-When a user use/activate a code element we post you (parent window) a message ([window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage)). This message is a stringified javascript object what has two properties:
-  - action {String} The action name you configured for this type of code elements
-  - content {String} Previous content (if exists)
-
-example: "{\"action\": \"your action goes here\", \"content\": \"previous content or null\"}"
-
-####Code element's structure
-A code element should have the following properties:
-  - id : The id/type of the code element. This is what distinguish one element from another.
-  - action : The message our iframe will send to you when a user activates a code element belonging to this configuration. (You can find how you have to respond to this message [here](#set-code-element-content)) 
-  - toolbox title : The title of the toolbox the users will see when they select a code elements. It is localizable and works quite similar like the [header/footer localization](#localization).  Please note that the "en" value is the default value, so it should always be set.
-  - label : The name of the code elements. That will appear on the drag icon. It is localizable and works quite similar like the [header/footer localization](#localization). Please note that the "en" value is the default value, so it should always be set.
-  - placeholder : A correct document json ([see more](#json-document-descriptors)) what will appear in the editor as a placeholder for the code element. It must be ["BOX"](#box) or ["MULTICOLUMN"](#multicolumn)! (of course, it can have any number of children). Please note that it cannot contain any or be a ["FULLWIDTH_CONTAINER"](#full-width-container)!
- 
-You can configure your code elements for:
-  * [every instance](dashboard.edmdesigner.com/#codeElement/general)
-  * [every user belonging to one instance](dashboard.edmdesigner.com/#codeElement/instance)
-  * [a group of user](dashboard.edmdesigner.com/#codeElement/group)
-  * [some selected user](dashboard.edmdesigner.com/#codeElement/user)
-
-A user inherits a code element settings just like it is explained in the [feature configuration](#feature-configuration) part of the documentation
-
 ___
 
 ###Wysiwyg texteditor buttons
@@ -3333,33 +2645,6 @@ A user inherits a texteditor button settings just like it is explained in the [f
 
 ___
 
-###Header button
-With this feature it is possible to insert your own code snippet into the head part of the email template. If you choose to use this feature then a button will appear in the DEFAULTS settings part in the editor. It is a fully customizable button, it's label, it's toolbox's title and the message type it sends when clicked, can be configured through our [dashboard](dashboard.edmdesigner.com).  
-The basic usecase of a header button: The user wants to insert a query string to the head part of his template, so he clicks the header button. It posts the configured [message](#header-button-message-format) to the parent window (which should be your site) where you should provide an interface where he can create the query string he wants to use. The created string should be posted back with the right [action name](#insert-to-cursor-in-wysiwyg-editor) to our iframe.
-
-###Header button message format
-When a user clicks the header button, it posts you (parent window) a message. This message is a stringified json with two parameters:
-  - action {String} The action name you configured for this type of code elements
-  - content {String} Previous content (if exists)
-
-example: __"{\"action\": \"the action you configured for this heaer button\", \"content\": \"previous content or null\"}"__
-
-###Header button's structure
-A haeder button configuration has the following parameters:
-  - action : The message our iframe will send to you when a user clicks the header button. (You can find how you have to respond to this message [here](#insert-to-cursor-in-wysiwyg-editor)) 
-  - toolbox title : The title of the toolbox the users will see in the defaults settings. It is localizable and works quite similar like the [header/footer localization](#localization).  Please note that the "en" value is the default value, so it should always be set.
-  - button label : The name of the button. This will appear as the label of the button. It is localizable and works quite similar like the [header/footer localization](#localization). Please note that the "en" value is the default value, so it should always be set.
-
-You can configure your header buttons for:
-  * [every instance](dashboard.edmdesigner.com/#headerButton/general)
-  * [every user belonging to one instance](dashboard.edmdesigner.com/#headerButton/instance)
-  * [a group of user](dashboard.edmdesigner.com/#headerButton/group)
-  * [some selected user](dashboard.edmdesigner.com/#headerButton/user)
-
-A user inherits a texteditor button settings just like it is explained in the [feature configuration](#feature-configuration) part of the documentation
-
-___
-
 ###Possbile messages to send
 List of the events you can send to the iframe (as a message).  
 
@@ -3371,27 +2656,12 @@ The message you need to send: __saveProject__
 It is possible to force the editor to deselect the actual selected element. There won't be any kind of response (from the api iframe) to this message.
 The message you need to send: __loseSelected__
 
-###Set code element content
-The response for the incoming messages from [code elements](#code-elements). You need to post a stringified json as the message string. It should have two properties:
-  - action {String} The name of the action: __SetCodeElementContent__
-  - content {String} The content (query string) you want to set to the element   
-
-The message you need to send: __{"action": "SetCodeElementContent", "content": "your content goes here"}__
-
 ###Insert to cursor in wysiwyg editor
 The response for the incoming messages from [texteditor buttons](#wysiwyg-texteditor-button). You need to post a stringified json as the message string. It should have two properties:
   - action {String} The name of the action: __InsertToCursor__
   - content {String} The content (placeholders) the user wants to insert to the cursor 
 
 The message you need to send: __{"action": "InsertToCursor", "content": "your content goes here"}__
-
-###Set header button content
-The response for the incoming message from [header button](#header-button). You need to post a stringified json as the message string. It should have two properties:
-  - action {String} The name of the action: __SetHeaderButtonContent__
-  - content {String} The content (query string) the user wants to insert to the head part of the template 
-
-The message you need to send: __{"action": "SetHeaderButtonContent", "content": "your content goes here"}__
-
 ___
 
 ###Possible response messages
