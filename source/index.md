@@ -1,72 +1,81 @@
 ---
-title: API Reference
+title: API Reference - Basics
 
 language_tabs:
   - javascript
   - php
 
+
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
   - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
-  - errors
+  - apiDocs
 
 search: true
 ---
 
-#Overview
+#Overview - the basics
 
-[EDMdesigner](http://www.edmdesigner.com) is a drag and drop tool for creating responsive HTML e-mail templates very quickly and painlessly, radically increasing your click-through rate. This documentation is to give you a detailed description about the EDMdesigner-API with which you can integrate our editor into any web-based system (e.g. a CRM, CMS, WebShop or anything else you can imagine).
+[EDMdesigner](http://www.edmdesigner.com) is a drag and drop tool for creating responsive HTML e-mail templates very quickly and painlessly, radically increasing your click-through rate. This document gives you the basic information what you will need to integrate it to your system (e.g. a CRM, CMS, WebShop or anything else you can imagine). Also, you can find other documentations at the [other resources](#other-resources) section.
 
 
 To start developing with our API, please request access to our dashboard, where you can manage your API keys. (Please contact us at info@edmdesigner.com.)
 
 With an API key and the corresponding "magic word" you can generate an access token with which you can make request to our API. You will need to send the access token with each API requests to our servers.
 
-At a certain point your users will open our editor. When the editor is opened, you will be able to send to its iframe postMessages. That's the client side of our API. The whole code (js, css and html as well) of the editor is [served with Amazon's CDN (Cloudfront)](http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront) so it should load super fast from all over the world. You can find the client side api in a different documentation. (TODO LINK)
+At a certain point your users will open our editor. When the editor's iframe is opened, you will be able to modify its behaviour through our [postMessage API](./postMessageApi.html). That's the client side of our API. The whole code (js, css and html as well) of the editor is [served with Amazon's CDN (Cloudfront)](http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront) so it should load super fast from all over the world.
 
-Also, you can find a documentation about our document format in which we store our templates.
-
-This documentation is only about the requests sent to our servers.
-
-
-****************************************
-Client side API - todo
-****************************************
-
-****************************************
-Documentation of our document format - todo
-****************************************
 
 
 #Making requests
 
-General stuff. Most of our api routes are reachable with a http and a jsonp request. Some of them are not, because we consider them as dangerous operations so they are only reachable via simple http requests and they should be called only from your servers.
+There are two main ways to make requests to our server. The first is when you send a simple HTTP request to one of our API endpoints, the second is when you send a [JSONP](https://en.wikipedia.org/wiki/JSONP) request.
 
-With failover mechanism...
- - a, b, c
+In the latter case you will be able to create most of the integration on the client side. For this purpose we have created a Javascript wrapper with built-in failover between our endpoints. You can find that [here](http://api-static.edmdesigner.com/EDMdesignerAPI.js).
 
-403
+Our API endpoints are the followings:
 
-JS API - failover is built in.
-Node.js lib.
-PHP lib.
+ - api-a.edmdesigner.com
+ - api-b.edmdesigner.com
+ - api-c.edmdesigner.com
 
-HTTP
-JSONP
-JS API
-Dependency: jQuery
+Every time when you make an API request, you should do it with failover to the other endpoints. (Again, in our JS API, this failover mechanism is built-in.)
 
-We suggest you to use our JS API as much as it's possible.
+Whenever you send a request to one of our API endpoints, you should send a userId and a token with it. These are access tokens, about which you can learn more about in the [authentication](#authentication) chapter. The lifetime of a token is one day and if you try to make an API call without it, then the response will have [403](https://en.wikipedia.org/wiki/HTTP_403) status code.
+
+There are some API requests, which are not reachable via a JSONP call. This is because those API calls considered to be dangerous, so you should call them from your server-side and do the appropriate authentication and authorization on your users.
+
+It might happen that you try to make extremely lot of API calls, especially when something is messed up with your integration. If it happens, then after a while we will send back a response with [429](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429) status code and won't serve your requests for a while. So integrate carefully, and don't try to send too many requests. (Our API is [rate limited](https://en.wikipedia.org/wiki/Rate_limiting).)
+
+At the moment, our [JS API](http://api-static.edmdesigner.com/EDMdesignerAPI.js)'s dependence is jQuery. It's only because of the convenient ajax requests, but probably we will change it to native ajax in the near future.
+
+We suggest you to use the [JS API](http://api-static.edmdesigner.com/EDMdesignerAPI.js) as much as it's possible.
 
 
-Our server side examples are in PHP because most of the people can at least read it.
-
+We chose PHP as the language for the server side examples, because most of the people can at least read it.
 
 
 
 #Authentication
+
+In this chapter you will learn about the authentication and authorization process in our API and also about the different 
+
+## Generating an access token
+
+Should store the token in session info. TTL of a token is one day.
+
+403
+
+TODO: FAILOVER HERE AS WELL!!!
+
+## Using the access token
+
+query string: userId, token
+
+403
+
+## User level access token
 
 ```javascript
   //<script src="path_to_your_jquery.js"></script>
@@ -113,6 +122,22 @@ if ($_POST["userId"]) {
 ?>
 ```
 
+TODO: refactor the old example!!
+
+## Admin level access token
+
+TODO: example
+
+
+
+
+TODO: subitems for ADMIN and USER tokens!
+
+TODO: the only route where you don't have to send token...
+
+
+
+
 The Handshaking Process...
 
 To implement the handshaking on your server, you need an API_KEY, a magic word (wich is delivered with your API_KEY), your user's IPv4 address and a timestamp. The logic that handles handshaking has to receive the userId too, because it has to be sent to our server as well. Our API implementation automatically sends the userId in a POST HTTP request. You can set this user id by the first parameter of the initEDMdesignerPlugin.
@@ -137,6 +162,45 @@ First of all, jQuery has to be loaded before you load our API. In the second lin
 
 
 In the resulting object (edmDesignerApi) you will find some functions through which you can interact with our system.
+
+
+##Authentication
+To authenticate these routes, you need to generate a token to a "fake" user called admin.You should send this token and the admin string on every request's query. (like this: ?user=admint&token=token ).Please note that every route need to be authenticated expect the one which generate the token. (//api.edmdesigner.com/api/token)
+
+Example: //api.edmdesigner.com/json/groups/list?user=admin&token=adminToken
+
+### Create handshaking
+Create the handshaking between PHP and API needs to be done before any further call
+    
+    $url = "http://api.edmdesigner.com/api/token";
+    $data = array(
+      "id"  => $publicId,
+      "uid" => $user,
+      "ip"  => $ip,
+      "ts"  => $timestamp,
+      "hash"  => $hash
+    );
+    
+    $options = array(
+        'http' => array(
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => http_build_query($data),
+        )
+    );
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    
+    $token = json_decode($result, TRUE);
+
+##Authentication
+To authenticate these routes, userId and a token (generated to the userId) are needed. Those to should be sent on the request's query.(somehow like this: ?user=userID&token=token ). Please note that every route need to be authenticated expect the one which generate the token. (//api.edmdesigner.com/api/token)
+
+For example: //api.edmdesginer.com/json/project/list?user=userId&token=123456789
+
+
+
 
 
 # Models
@@ -213,7 +277,7 @@ sort | Object | false |
 You can set the parameters of the db search (you have to use the moongose.js query syntax, please check their [documentation](http://mongoosejs.com/docs/guide.html) for more information)
 
 
-# User functions
+# Project handling
 ```javascript
 initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
   //In the follwing examples we assume that you put the code snippets here,
@@ -678,6 +742,10 @@ function onErrorCB(error) {
 
 Generates the bulletproof responsive HTML e-mail based on the projectId.
 
+TODO: preview!!!
++ insert export menu item
++ insert preview menu item !!!
+
 HTTP | JSONP | JS API
 -----|-------|-------
  | | edmDesignerApi.generateProject(projectId, callback, onErrorCB)
@@ -733,10 +801,20 @@ A not sanitized responsive HTML version of the given template
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
-___
 
-### Get title
+## Project - export HTML
+
+See [generate HTML](#project-generate-html).
+
+## Project - preview
+
+See [generate HTML](#project-generate-html).
+
+
+## Project - get title
 Gets the title of the selected project.
+
+//TODO this is a stupid route
 
 #####Type
   + GET
@@ -754,34 +832,7 @@ Title object:
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
----
-
-# Load project in editor
+## Project - Open
 
 ```javascript
 initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
@@ -799,7 +850,7 @@ function onErrorCB(error) {
 
 Opens a project.
 
-//TODO - talk about the iframe.
+//TODO - reference to the next chapter
 
 HTTP | JSONP | JS API
 -----|-------|-------
@@ -819,283 +870,31 @@ Field | Type | Required | Description
 
 
 
+# Editor iframe
+
+//TODO - talk about the iframe and its query string
+//TODO - talk about the CDN based thing
+//TODO - reference to the previous point
+
+
 ---
 
-#Admin functions
+# User handling
+
+```javascript
+initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+  edmDesignerApi.listGroups(function(result) {
+    //the result is an array, containing your groups
+  }, onErrorCB);
+});
+
+function onErrorCB(error) {
+  console.log(error);
+}
+```
 
 You have to generate an admin token!
 
-## Group - list
-### edmDesignerApi.listGroups(callback, onErrorCB)
-Lists the groups you have
-#### Parameters:
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
- 
-
-#### Example:
-  
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.listGroups(function(result) {
-        //the result is an array, containing your groups
-      }, onErrorCB);
-    });
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
-
-### List groups
-Lists the groups you have
-
-#####Type
-  + GET
-
-#####Route
-  + //api.edmdesigner.com/json/groups/list
-#### Parameters (optionals):
-  - skip {Number} index where from the listing should begin, without limit parameter it will be ingnored
-  - limit {Number} length of the items to be listed, without skip parameter it will be ingnored
-  - select [Array] list of the properties to be listed ["name", "created"]
-  - sort {Object} MongoDb sort object: {property : "asc/desc"}
-####Response:
-An array of your groups. Every group is an object with this parameters:
-  - _id {String} MongoDB id of the group
-  - featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
-  - name {String} The name of the group
-  - customData {Object} Th custom informations you saved for the group
-
-Or in case of of limit and skip parameters sent an Object consists of:
-  - totalCount {Number} The length of the full list
-  - result {Array} The list of the groups, same as above
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-
-
-
-
-
-
-
-
-
-## Group - create
-### edmDesignerApi.createGroup(data, callback, onErrorCB)
-Creates a new group
-#### Parameters:
-  * data {Object}
-    * data.name {String} /REQUIRED/ The name you want to give to the new group
-    * data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
-    * data.customData {Object} You can add custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
- 
-
-#### Example:
-  
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {exampleFeature1: true, exampleFeature3: true}}, function(result) {
-        //the resultGroup is an object with
-        //name {String} (the new group's name)
-        //_id  {String} (the new group's id) and
-        //featureSwitch {Object} (the group's features) properties
-        console.log(result);
-      }, onErrorCB);
-    });
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
-
-
-### Create group
-Creates a new group
-
-#####Type
-  + POST
-
-#####Route 
-  + //api.edmdesigner.com/json/groups/create
-
-#### Parameters (you should post):
-  * name {String} /REQUIRED/ The name you want to give to the new group
-  * featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
-  * customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
-
-####Response
-An object containing the MongoDB _id of the newly created group:
-  - _id {String}
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Group - get one
-### edmDesignerApi.getGroup(groupId, callback, onErrorCB)
-Gets a specified group
-#### Parameters:
-   * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
-   * callback {Function} A function to be called if the request succeeds
-   * onErrorCB {Function} A function to be called if the request fails
-
-#### Example:
-  
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(result) {
-      
-        edmDesignerApi.getGroup(result._id, function(resultGroup) { 
-          //the resultGroup is an object with
-          //name {String} (the new group's name)
-          //_id  {String} (the new group's id) and
-          //featureSwitch {Object} (the group's features) properties
-          //customData {Object} The custom infromations you saved for this group
-          console.log(resultGroup);
-        }, onErrorCB);
-      
-      }, onErrorCB);
-    });
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
-
-### Get one group
-Gets a specified group
-
-#####Type
-  + GET
-
-#####Route
-  + //api.edmdesigner.com/json/groups/read/:id
-
-#### Parameters (in the route):
-   * id {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
-
-####Response:
-A group object:
-  - _id {String} MongoDB id of the group
-  - featureSwitch {Object} The features that are available for users belong to this group.There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
-  - name {String} The name of the group
-  - customData {Object} The custom informations you saved for this group
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Group - update
-### edmDesignerApi.updateGroup(groupId, data, callback, onErrorCB)
-Updates a specified group's name or the features it provides or both of these two at the same time. You can even add custom informations to the group.
-#### Parameters:
-  * groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
-  * data {Object}
-     * data.name {String} The name you want to give to the group
-     * data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
-     * data.customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
-     * data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
-
-#### Example:
-  
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {feature1: true}}, function(result) {
-      
-        edmDesignerApi.updateGroup(result._id, {name: "newName"}, function(resultGroup) { 
-          //the resultGroup is an object with
-          //success {Boolean} or err {String} property
-          console.log(resultGroup);
-        }, onErrorCB);
-      
-      }, onErrorCB);
-      
-      edmDesignerApi.createGroup({name: "exampleGroup2", featureSwitch: {feature1: true}}, function(result) {
-      
-        edmDesignerApi.updateGroup(result._id, {featureSwitch: {feature1: true, newFeature: true}}, function(resultGroup) { 
-          //the resultGroup is an object with
-          //success {Boolean} or err {String} property
-          console.log(resultGroup);
-        }, onErrorCB);
-        
-      }, onErrorCB);
-      
-      edmDesignerApi.createGroup({name: "exampleGroup3", featureSwitch: {feature1: true}}, function(result) {
-      
-        edmDesignerApi.updateGroup(result._id, {name: "newExampleName", featureSwitch: {feature1: true, newFeature: true, customData: {foo: "BAR"}}}, function(resultGroup) { 
-          //the resultGroup is an object with
-          //success {Boolean} or err {String} property
-          console.log(resultGroup);
-        }, onErrorCB);
-      
-      }, onErrorCB);
-    
-      function onErrorCB(error) {
-        console.log(error);
-      }
-    });
-  </script>
-
-### Update one group
-Updates a specified group's name or the features it provides or both of these two at the same time. You can even add custom informations to the group.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/groups/update
-
-#### Parameters (you should post):
-   * _id {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
-   * name {String} The name you want to give to the group
-   * featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
-   * customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!
-   * override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
-
-####Response:
-An object:
-  - success {Boolean} It should be true if the update was successful
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-
-
-
-
----
 
 
 
@@ -1103,31 +902,30 @@ Or it can be an error object:
 
 
 ## User - list
+
+```javascript
+initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+  edmDesignerApi.listUsers(function(result) {
+    //the result is an array, containing your users
+    //A user is an object with
+    //id (the user's id)
+    //group (The group which the user belongs) and
+    //createTime (Time of creation) properties
+    //customData (The custom informations you saved for the user)
+    console.log(result);
+  }, onErrorCB);
+});
+
+function onErrorCB(error) {
+  console.log(error);
+}
+```
+
 ### edmDesignerApi.listUsers(callback, onErrorCB)
 Lists the users you have
 #### Parameters:
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
-
-#### Example:
-  
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.listUsers(function(result) {
-        //the result is an array, containing your users
-        //A user is an object with
-        //id (the user's id)
-        //group (The group which the user belongs) and
-        //createTime (Time of creation) properties
-        //customData (The custom informations you saved for the user)
-        console.log(result);
-      }, onErrorCB);
-    });
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
 
 ### List
 Lists the users you have
@@ -1170,6 +968,24 @@ Or it can be an error object:
 
 
 ## User - create
+
+```javascript
+initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+  edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(result) {
+  
+    edmDesignerApi.createUser({id: "exampleuserId", group: result._id}, function(resultUser) {
+      // the resultUser is an object with an id property
+      console.log(resultUser);
+    }, onErrorCB);
+  
+  }, onErrorCB);
+});
+
+function onErrorCB(error) {
+  console.log(error);
+}
+```
+
 ### edmDesignerApi.createUser(data, callback, onErrorCB)
 Creates a new user
 #### Parameters:
@@ -1179,25 +995,6 @@ Creates a new user
     * data.customData {Object} You can aupload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
-
-#### Example:
-  
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(result) {
-      
-        edmDesignerApi.createUser({id: "exampleuserId", group: result._id}, function(resultUser) {
-          // the resultUser is an object with an id property
-          console.log(resultUser);
-        }, onErrorCB);
-      
-      }, onErrorCB);
-    });
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
 
 
 ### Create user
@@ -1229,6 +1026,27 @@ Or it can be an error object:
 
 
 ## User - create multiple
+
+```javascript
+initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+  edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(result) {
+  
+    edmDesignerApi.createMultipleUser([{id: "exampleUserId", group: result._id}, {id: "exampleUser2Id}, {id: "exampleUser3"}], function(resultObj) {
+      // the resultObj is an object with the following properties:
+      // created {Array} It contains the users whose have been created
+      // failed {Array} It contains the users whose creation has failed
+      // alreadyHave {Array} It contains the users whose you already created
+      console.log(resultObj);
+    }, onErrorCB);
+  
+  }, onErrorCB);
+});
+
+function onErrorCB(error) {
+  console.log(error);
+}
+```
+
 ### edmDesignerApi.createMultipleUser(data, callback, onErrorCB)
 Creates multiple user
 #### Parameters:
@@ -1238,29 +1056,6 @@ Creates multiple user
     * customData {Object} You can aupload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
-
-#### Example:
-  
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(result) {
-      
-        edmDesignerApi.createMultipleUser([{id: "exampleUserId", group: result._id}, {id: "exampleUser2Id}, {id: "exampleUser3"}], function(resultObj) {
-          // the resultObj is an object with the following properties:
-          // created {Array} It contains the users whose have been created
-          // failed {Array} It contains the users whose creation has failed
-          // alreadyHave {Array} It contains the users whose you already created
-          console.log(resultObj);
-        }, onErrorCB);
-      
-      }, onErrorCB);
-    });
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
-
 
 ### Create multiple user
 Creates multiple user
@@ -1301,6 +1096,28 @@ Or it can be an error object:
 
 
 ## User - get one
+
+```javascript
+initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+  edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
+  
+    edmDesignerApi.getUser(result.id, function(resultUser) {
+      /**the resultUser is an object with
+      id (the user's id)
+      group (The group which the user belongs) and
+      createTime (Time of creation) properties
+      customData (the custom data you saved for this user) */
+      console.log(resultUser);
+    }, onErrorCB);
+  
+  }, onErrorCB);
+});
+
+function onErrorCB(error) {
+  console.log(error);
+}
+```
+
 ### edmDesignerApi.getUser(userId, callback, onErrorCB)
 Gets a specified user
 #### Parameters:
@@ -1308,28 +1125,6 @@ Gets a specified user
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
-#### Example:
-
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
-      
-        edmDesignerApi.getUser(result.id, function(resultUser) {
-          /**the resultUser is an object with
-          id (the user's id)
-          group (The group which the user belongs) and
-          createTime (Time of creation) properties
-          customData (the custom data you saved for this user) */
-          console.log(resultUser);
-        }, onErrorCB);
-      
-      }, onErrorCB);
-    });
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
 
 ### Get one user
 Gets a specified user
@@ -1353,7 +1148,54 @@ User object:
 Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
-___
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## User - update
+
+```javascript
+initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+  edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
+    edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(resultGroup) {
+    
+      edmDesignerApi.updateUser(result.id, {group: resultGroup._id}, function(resultUser) { 
+        //the resultUser is an object with an id property
+        console.log(resultUser);
+      }, onErrorCB);
+    
+    }, onErrorCB);
+  }, onErrorCB);
+});
+
+function onErrorCB(error) {
+  console.log(error);
+}
+```
+
+### edmDesignerApi.updateUser(userId, data, callback, onErrorCB)
+Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to this user too.
+#### Parameters:
+  * userId {String} The id of the user. 
+  * data {Object}
+    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
+    * data.customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
+    * data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
+  * callback {Function} A function to be called if the request succeeds
+  * onErrorCB {Function} A function to be called if the request fails
+
 
 ### Update user
 Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to the user too.
@@ -1382,66 +1224,37 @@ Or it can be an error object:
 
 
 
-## User - update
-### edmDesignerApi.updateUser(userId, data, callback, onErrorCB)
-Updates a specified user. Only the group (which the user belongs) can be changed. You can add custom informations to this user too.
-#### Parameters:
-  * userId {String} The id of the user. 
-  * data {Object}
-    * data.group {String} The id of the group you want this user to belong. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [edmDesignerAPI.listGroups](#edmdesignerapilistgroupscallback-onerrorcb) function.
-    * data.customData {Object} You can upload custom informations to this user. You can save any kind of information. It is up to you, how you want to use it!
-    * data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
 
-#### Example:
-  
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
-        edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(resultGroup) {
-        
-          edmDesignerApi.updateUser(result.id, {group: resultGroup._id}, function(resultUser) { 
-            //the resultUser is an object with an id property
-            console.log(resultUser);
-          }, onErrorCB);
-        
-        }, onErrorCB);
-      }, onErrorCB);
-    });
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
+
+
+
 
 
 ## User - remove
+
+```javascript
+initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+  edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
+  
+    edmDesignerApi.deleteUser(result.id, function(resultUser) {
+      //the resultUser is an object with an id propert
+      console.log(resultUser);
+    }, onErrorCB);
+  
+  }, onErrorCB);
+});
+
+function onErrorCB(error) {
+  console.log(error);
+}
+```
+
 ### edmDesignerApi.deleteUser(userId, callback, onErrorCB)
 Deletes a specified user
 #### Parameters:
   * userId {String} The id of the user.
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
-
-#### Example:
-  
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
-      
-        edmDesignerApi.deleteUser(result.id, function(resultUser) {
-          //the resultUser is an object with an id propert
-          console.log(resultUser);
-        }, onErrorCB);
-      
-      }, onErrorCB);
-    });
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
 
 ### Delete user
 Deletes a specified user
@@ -1463,9 +1276,40 @@ Or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
 
+
+
+
 ___
 
 ## Project - getOne
+
+```javascript
+initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+  edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+    edmDesignerApi.getProject(result._id, function(result) {
+      console.log(result);
+      //the result is the whole project
+      // _id {String} The id of the project
+      // title {String} The title of the project.
+      // description {String} Description about the project
+      // createdOn {String} Creation time
+      // lastModified {String} Time of the last modification
+      // document {Object} The json format of the template
+          // usedColors {Array} List of the colors which are used in the template
+         // generalSettings {Object} The default settings of the template
+         // root {Object} The actual structure of the template
+         // header {Object} The header of the template
+         // footer {Object} The footer of the template 
+      // customData {Object} Your custom data
+    });
+  });
+}, onErrorCB);
+
+function onErrorCB(error) {
+  console.log(error);
+}
+```
+
 ###edmDesignerApi.getProject(projectId, callback, onErrorCB)
 Get a specified project as json. The result will contain almost every information about the selected project.
 #### Parameters:
@@ -1473,145 +1317,19 @@ Get a specified project as json. The result will contain almost every informatio
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
 
-#### Example:
-
-  <script>
-    initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-      edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
-        edmDesignerApi.getProject(result._id, function(result) {
-          console.log(result);
-          //the result is the whole project
-          // _id {String} The id of the project
-          // title {String} The title of the project.
-          // description {String} Description about the project
-          // createdOn {String} Creation time
-          // lastModified {String} Time of the last modification
-          // document {Object} The json format of the template
-              // usedColors {Array} List of the colors which are used in the template
-             // generalSettings {Object} The default settings of the template
-             // root {Object} The actual structure of the template
-             // header {Object} The header of the template
-             // footer {Object} The footer of the template 
-          // customData {Object} Your custom data
-        });
-      });
-    }, onErrorCB);
-    
-    function onErrorCB(error) {
-      console.log(error);
-    }
-  </script>
-___
 
 
-# Server side routes
-Almost every client side functions have a corresponding route on server side.
 
 
-## Admin routes
-
-##Authentication
-To authenticate these routes, you need to generate a token to a "fake" user called admin.You should send this token and the admin string on every request's query. (like this: ?user=admint&token=token ).Please note that every route need to be authenticated expect the one which generate the token. (//api.edmdesigner.com/api/token)
-
-Example: //api.edmdesigner.com/json/groups/list?user=admin&token=adminToken
-
-### Create handshaking
-Create the handshaking between PHP and API needs to be done before any further call
-    
-    $url = "http://api.edmdesigner.com/api/token";
-    $data = array(
-      "id"  => $publicId,
-      "uid" => $user,
-      "ip"  => $ip,
-      "ts"  => $timestamp,
-      "hash"  => $hash
-    );
-    
-    $options = array(
-        'http' => array(
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  => 'POST',
-            'content' => http_build_query($data),
-        )
-    );
-
-    $context  = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    
-    $token = json_decode($result, TRUE);
-
-___
 
 
-## Group handler routes
-
-### Upload Complex Elems 
-Upload a list of Complex elems to the specified group. Every user who belongs to this group will be able to use these Complex elems. Please note that every upload will overwrite the previous uploads!  
-If you want to know what is a Complex elem, please read the [complexElements](#complexelements) part of the documentation!
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/complexElem/addComplexElemToGroup
-
-#### Parameters (you should post):
-   * groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list your groups with the [/json/groups/list](#list-groups) route.
-   * items {Array} /REQUIRED/ The list of Complex elems which the users of the specified group will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a Complex elem object should look like, please read [this](#structure) part of the documentation.
-
-####Response:
-An object with 3 child objects:
-  - result {Array} list of the complex elems which were successfully added to the group
-  - fails {Array} if some of the items failed it contains the reason, if none of them failed it is null 
-  - err {String} If there is any reason why the whole process failed otherwise null
-
-___
-
-## User handler routes
-
-### Upload Complex elems to specified users 
-Upload a list of Complex elems to a specified user or users. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a Complex elem is good for, please read the [complexElements](#complexelements) part of the documentation!
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/complexElem/addComplexElemToUsers
-
-#### Parameters (you should post):
-   * userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.
-   * items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a Complex elem object should look like, please read [this](#structure) part of the documentation.
-
-####Response:
-An object:
-  - error {String} If the whole process is failed, otherwise null.
-  - fails {Array} If a part of the items failed to insert, if all items inserted, it is null.
-
-___
 
 
-### Upload Complex elems to all users 
-Upload a list of Complex elems to all users. Please note that every upload will overwrite the previous uploads!  
-If you want to know what a Complex elem is good for, please read the [complexElements](#complexelements) part of the documentation!
 
-#####Type
-  + POST
 
-#####Route
-  + //api.edmdesigner.com/json/complexElem/addComplexElems
 
-#### Parameters (you should post):
-   * userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.
-   * items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. __Please note that if you upload a new list, the old list will be overwrited!__ If you want to know how a Complex elem object should look like, please read [this](#structure) part of the documentation.
 
-####Response:
-An object:
-  - error {String} If the whole process is failed, otherwise null.
-  - fails {Array} If a part of the items failed to insert, if all items inserted, it is null.
-  - result {Array} List of all inserted Complex elems
 
-___
 
 
 
@@ -1621,6 +1339,9 @@ ___
 
 
 #Gallery handling
+
+TODO talk about disabling the built-in gallery
+
 If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.
 
 Basic operations: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and [configure](#configure-api-servers-gallery) our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the [gallery configuration](#configure-api-servers-gallery)) .
@@ -1956,944 +1677,6 @@ Three different array:
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
-___
-
-#Project handler admin routes
-
-###Create to
-Creates a project/template to a specified user
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/project/createTo
-
-####Parameters (you should post):
-  * userId {String} /REQUIRED/ The target user's id
-  * title {String} The title of the new template, if it is not given, then the project's name will be 'Untitled'
-  * description {String} Description of the template, by defaullt it is an empty string
-  * document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates
-  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
-
-####Response:
-Project object:
-  - _id {String} MongoDB _id of the newly created project
-
-or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-###Create from to
-Creates a project/template to a specified user using an another template
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/project/createFromTo
-
-####Parameters (you should post):
-  * userId {String} /REQUIRED/ The target user's id
-  * _id {String} /REQUIRED/ The MongoDB _id of the template we want to copy to the target user
-  * title {String} The title of the new template, if it is not given, then the project's name will be 'Untitled'
-  * description {String} Description of the template, by defaullt it is an empty string
-  * document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates
-  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
-
-####Response:
-Project object:
-  - _id {String} MongoDB _id of the newly created project
-
-or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-###Create from to with images
-It is quiet similar to the [create from to route](#create-from-to), basic with this route you can do the same thing except, here not only the project will be copied, but the images (which are used in the template) too. If you want to use this route, first you need to implement a [copy route](#copy-route) on your server side and [config](#configure-api-servers-gallery) it's address to the gallery.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/project/createFromToWithImages
-
-####Parameters (you should post):
-  * userId {String} /REQUIRED/ The target user's id
-  * _id {String} /REQUIRED/ The MongoDB _id of the template we want to copy to the target user
-  * title {String} The title of the new template, if it is not given, then the project's name will be 'Untitled'
-  * description {String} Description of the template, by defaullt it is an empty string
-  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
-
-####Response:
-Project object:
-  - _id {String} MongoDB _id of the newly created project
-
-or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-###Get Project
-Get a specified project as json. The result will contain almost every information about the selected project.
-
-#####Type
-  + GET
-
-#####Route
-  + //api.edmdesigner.com/json/project/getProject/:id
-
-####Parameters (in the route):
-  * :id {String} The id of the target project
-
-####Response:
-Project object:
-  - _id {String} MongoDB _id of the newly created project
-  - title {String} The title of the project.
-  - description {String} Description about the project
-  - createdOn {String} Creation time
-  - lastModified {String} Time of the last modification
-  - document {Object} The json format of the template
-    - usedColors {Array} List of the colors which are used in the template
-    - generalSettings {Object} The default settings of the template
-    - root {Object} The actual structure of the template
-    - header {Object} The header of the template
-    - footer {Object} The footer of the template 
-  - customData {Object} Your custom data
-
-or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-###Set Project
-Sets the root of a selected user's selected project's document. 
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/project/setProject
-
-####Parameters (you should post):
-  * userId {String} /REQUIRED/ the id of the user whose project you want to update
-  * projectId {Sring} /REQUIRED/ the id of the project you want to update
-  * documentRoot {Object} /REQUIRED/ The EDM template json you want to set to the selected project. It should start with [Root](#root) elem
-
-####Response:
-Success object:
-  - success {boolean}
-
-or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-###Download as Zip
-It is possible to export your template as a zip. 
-
-#####Type
-  + GET
-
-#####Route
-  + //api.edmdesigner.com//json_v1.0.0/apiKey/:apiKey/user/:user/project/:project/downloadAsZip
-
-####Parameters (in the route):
-  * apiKey {String} the key of the instance the selected user belongs to.
-  * user {Sring}  the id of the user
-  * project {String} the id of the project you want to download
-
-####Configuration
-You can set which files you want to have in your exported zip and how you want to export them. To set some configuration you need to put a config json to the data property in the query part of your request. Your config json should have the following properties:
-  - needHtml {Boolean} if it is false then there will be no template.html in your exported zip
-  - needJson {Boolean} if it is false then there will be no project.json in your exported zip
-  - withoutSanitizing {Boolean} if it is true then the template.html won't be sanitized.
- 
-Example:
-  - the config json: {"config": {"needHtml": true, "needJson": false, "withoutSanitizing": false} }
-  - example request: //api.edmdesigner.com/json_v1.0.0/apiKey/yourapikey/user/youruserid/project/projectId/downloadAsZip?user=admin&token=adminToken&data={"config": {"needHtml": true, "needJson": false, "withoutSanitizing": false} }
-
-####Response:
-A zip which can contain the followings (it depends on the configuration, by default it will contain everything):
-  - template.html {file} The html code of the template. It can be a sanitized version or not, it depends of your configuration. By default it will be sanitized.
-  - project.json {file} The json version of the project.
-  - images folder with the images of the template.
-Please note that every images source (href, src, etc.) in the json and html file are replaced with the paths of the images in the images folder.
-
-
-
-##complexElements
-The complex elem is a possible tool to save a BOX or MULITCOLL element with all of it contents to be able to reuse it. This feature is created for make the template editing more fast so more effective.
-A complex elem can binded to a user, to a group of users or to all of the users.
-When a user uses the editor these binding displays all together and can be used all of them.
-
-The administrator of the application can upload complex elems to all of the above possibilities.
-The user of the editor can save complex elems only for him/herself, those will be added to the admin defined items.
-The editor users can also delete those complex elems what are binded to him/herself as a user.
-
-These are the 3 ways to upload complex elems as an admin:
-  - to all your user ([general complexElems upload](#upload-complex-elems-to-all-users)) 
-  - to a specified group ([upload complexElems to group](#upload-complex-elems)) 
-  - to specified user or users ([upload complexElems to user](#upload-complex-elems-to-specified-users))
-
-___
-
-### Structure
-The representing object for a Complex elem should have the following properties:  
-  - doc {Object} /REQUIRED/ it should be a json object (which represent our templates)
-    - type /REQUIRED/ It must be ["BOX"](#box), ["MULTICOLUMN"](#multicolumn) or ["FULLWIDTH_CONTAINER"](#full-width-container)
-    - generalSettings
-  - id {String} /optional/ this id is what will identify the item for you if you would like to manage it via admin
-  - title {Object} /optional/ it should contains language code - title string pairs. For example: 'en': 'Green-white complexElem'. If you miss to give it, we it will receive a default name. The title will appear on the list of the complex element. If you don't want to use any other localization then please use the 'en' language code, the default will always be the 'en' regardless of the actual language!  
-
-
-___
-
-
-### Localization
-It is possible to use different localization with the same complex elem but __not required__.
-You can localize the title of the complex elem. The title of a complex elem will appear on the list, where the user will be able to choose from.  
-If you want to support more than one language you just have to put the language code - text pair to the title object (see [structure](#structure)).
-An example title object: 
-
-  title: { 'en': 'example title',
-     'hu': 'példa cím'
-     /...
-    }
-
-___
-
-### Custom Data
-If you want to save any kind of plus information for some of your data you can do it with using the customData field
-You can save custom informations to:  
-  - yourself /apiClientInstance/ ([addCustomData](#add-custom-data-to-yourself))
-  - users (update user [server side](#update-user) or [client side](#edmdesignerapiupdateuseruserid-data-callback-onerrorcb))
-  - groups (update group [server side](#update-one-group) or [client side](#edmdesignerapiupdategroupgroupid-data-callback-onerrorcb))
-  - project (update project [server side](#update-information) or [client side](#edmdesignerapiupdateprojectinfoprojectid-data-callback-onerrorcb))  
-
-___
-
-### Add Custom Data to yourself
-You can save any kind of custom information to your apiClientInstance database entry
-
-####Type
-  + POST
-
-####Route
-  + //api.edmdesigner.com/json/general/saveCustomData
-
-#### Parameters (you should post):
-  * customData {Object} The custom informations you want to save
-  * override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
-
-####Response
-Http status code 200
-  
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-### Get my custom data
-You can get the custom informations you previously saved for yourself
-
-####Type
-  + GET
-
-####Route
-  + //api.edmdesigner.com/json/general/getMyCustomData
-
-####Response
-An object containing your custom data
-  - customData {Object} The custom informations you saved for yourself
-  
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-### Custom Strings
-The custom strings are an option to provide predefined texts to your users what they can insert while editing text contents.
-You can add custom strings to 
-- all of your users 
-- to specified users
-- or to users of a specified group.
-
-The custom strings can be added by bunch of custom string items. Each bunch contains a title what will be displayed as the label of the drop-down list in the text editor, and an id, what provides the identification. By this id it will be possible to remove the bunch.
-The id can not contain any special characters, the title is a string or a localization object. In case of localization object it what must contain 'en' property.
-Within an item the label property has the same rules.
-
-###Example of Custom String object:
-
-  var customStringsObject = {
-    id: 'validId',
-    title: {
-      'en': 'EDM beer'
-    },
-    items: [
-                              {
-                                 replacer: '##Svijany##',
-                                 label: 'good beer 1'            
-                              },
-                              {
-                                 replacer: '##Poutník##',
-                                 label: {
-                                    en: 'good beer 2'
-                                 }
-                             }
-    ]
-  };
-___
-
-### Add Custom Strings to all of the users of the apiClientInstance
-
-####Type
-  + POST
-
-####Route
-  + //api.edmdesigner.com/json/customStrings/add
-
-#### Parameters (you should post):
-  * id {String} The identification of the custom strings bunch
-  * title {String or  localization Object with 'en' property} the displayed name of the bunch
-  * items {Array} Array of customStrings Object [see here](#example-of-custom-string-object)
-
-####Response
-Http status code 200
-- id {String} the saved custom strings id
-- customStrings {Object} the saved custom stings object
-- overwritten {Boolean} describes if the save updated an existing bunch or created a new one 
-  
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-___
-
-### Add Custom Strings to specified users
-
-####Type
-  + POST
-
-####Route
-  + //api.edmdesigner.com/json/customStrings/addToUsers
-
-#### Parameters (you should post):
-  * users {Array} Array of the userIds
-  * id {String} The identification of the custom strings bunch
-  * title {String or  localization Object with 'en' property} the displayed name of the bunch
-  * items {Array} Array of customStrings Object, [see here](#example-of-custom-string-object)
-
-####Response
-Http status code 200
-- updatedUsers {Array} list of objects with the property of:
-       - id {String} the user id
-       - updated {Boolean} describes if the save updated an existing bunch or created a new one 
-- id {String} the saved custom strings id
-- customStrings {Object} the saved custom stings object
-  
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-
-### Add Custom Strings to specified groups of the apiClientInstance
-
-####Type
-  + POST
-
-####Route
-  + //api.edmdesigner.com/json/customStrings/addToGroup
-
-#### Parameters (you should post):
-  * group {String} MongoDb ObjectId (24 chars length id of the group)
-  * id {String} The identification of the custom strings bunch
-  * title {String or  localization Object with 'en' property} the displayed name of the bunch
-  * items {Array} Array of customStrings Object, [see here](#example-of-custom-string-object)
-
-####Response
-Http status code 200
-- id {String} the saved custom strings id
-- customStrings {Object} the saved custom stings object
-- overwritten {Boolean} describes if the save updated an existing bunch or created a new one 
-  
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-___
-
-### Get Custom Strings of all of the users of the apiClientInstance
-
-####Type
-  + GET
-
-####Route
-  + //api.edmdesigner.com/json/customStrings/getCustomStringsOfApiInstance
-
-#### Parameters (you should post):
-  no parameters needed
-
-####Response
-Http status code 200
-- err {null} null  value
-- the custom string objects as the property names are the id of the custom strings bunch
-
-example: 
-{
-err: null,
-customStringID1: {
-       title: {
-                    en: 'csTitle'
-         },
-        items: [
-            ...items of custom string Objects....
-        ]
-   }
-}
-  
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-___
-
-### Get Custom Strings of a specified user
-
-####Type
-  + GET
-
-####Route
-  + //api.edmdesigner.com/json/customStrings/getCustomStringsOfUser
-
-#### Parameters (you should post):
- * userId {String} the id of the user
-
-####Response
-Http status code 200
-- err {null} null  value
-- the custom string objects as the property names are the id of the custom strings bunch
-
-example: 
-{
-err: null,
-customStringID1: {
-       title: {
-                    en: 'csTitle'
-         },
-        items: [
-            ...items of custom string Objects....
-        ]
-   }
-}
-  
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-___
-
-### Get Custom Strings of a specified group
-
-####Type
-  + GET
-
-####Route
-  + //api.edmdesigner.com/json/customStrings/getCustomStringsOfGroup
-
-#### Parameters (you should post):
- * groupId {String} mongoDb ObjectID of the group
-
-####Response
-Http status code 200
-- err {null} null  value
-- the custom string objects as the property names are the id of the custom strings bunch
-
-example: 
-{
-err: null,
-customStringID1: {
-       title: {
-                    en: 'csTitle'
-         },
-        items: [
-            ...items of custom string Objects....
-        ]
-   }
-}
-  
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-___
-
-### Remove a general Custom Strings by it's id
-
-####Type
-  + DELETE
-
-####Route
-  + //api.edmdesigner.com/json/customStrings/:id
-
-#### Parameters (you should post):
- * :id {String} the id of the custom string bunch
-
-####Response
-Http status code 200
-- id {String} the id of the deleted custom strings bunch
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-___
-
-### Remove a user's Custom Strings by it's id
-
-####Type
-  + DELETE
-
-####Route
-  + //api.edmdesigner.com/json/customStrings/:id/removeFromUser/:user
-
-#### Parameters (you should post):
- * :id {String} the id of the custom string bunch
- * :user {String} the id of the user what you want to remove from
-
-####Response
-Http status code 200
-- id {String} the id of the deleted custom strings bunch
-- userId {Sting} the id of the user what you removed from
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-___
-
-### Remove a group's Custom Strings by it's id
-
-####Type
-  + DELETE
-
-####Route
-  + //api.edmdesigner.com/json/customStrings/:id/removeFromUser/:group
-
-#### Parameters (you should post):
- * :id {String} the id of the custom string bunch
- * :group {String} the MongoDb ObjectId of the group what you want to remove from
-
-####Response
-Http status code 200
-- id {String} the id of the deleted custom strings bunch
-- group {Sting} the id of the group what you removed from
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-___
-
-
-##Authentication
-To authenticate these routes, userId and a token (generated to the userId) are needed. Those to should be sent on the request's query.(somehow like this: ?user=userID&token=token ). Please note that every route need to be authenticated expect the one which generate the token. (//api.edmdesigner.com/api/token)
-
-For example: //api.edmdesginer.com/json/project/list?user=userId&token=123456789
-
-
-
-# API key management
-
-
-## API key - list
-Lists your api keys
-
-#####Type
-  + GET
-
-#####Route
-  + //api.edmdesigner.com/json/apiKey
-  
-#### Parameters
- - time {String/Number} Must have. The current timestamp.
- - email {String} Must have. The email to registered to your account.
- - hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile
- - findObject {Object} Optional. With this object the result can be filtered and modified.
- - findObject.skip {Number} index where from the listing should begin, without limit parameter it will be ingnored
- - findObject.limit {Number} length of the items to be listed, without skip parameter it will be ingnored
- - findObject.select [Array] list of the properties to be listed ["name", "created"]
- - findObject.sort {Object} MongoDb sort object: {property : "asc/desc"}
- 
-####Response:
-An array of your api keys. Every item is an object with this parameters:
-  - _id {String} MongoDB id of the api key
-  - featureSwitch {Object} The features that are available for users belong to this apikey. There is an ever-expanding [list](#feature-switch) of possible features which you can choose from.
-  - name {String} The name of the api key
-  - customData {Object} Th custom informations you saved for the api key
-  - magic {String} the magic word of the api key
-  - galleryUploadRoute {String} the upload route of the api key
-  - galleryDeleteRoute {String} the delete route of the api key
-  - galleryCopyRoute {String} the copy route of the api key
-  - apiKey {String} the id of the api key
-
-Or in case of of limit and skip parameters sent an Object consists of:
-  - totalCount {Number} The length of the full list
-  - result {Array} The list of the api keys, same as above
-
-Or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
-
-## API key - create
-Create new api keys
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/apiKey
-  
-#### Parameters
- - time {String/Number} Must have. The current timestamp.
- - email {String} Must have. The email to registered to your account.
- - hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile
- - items {Array} Must have. An array of the new apiKey object what consists of the following:
- - id: {String} Must have. The id of the api key.
- - name: {String} Optional. The name of the api key.
-
-####Response:
-- created {Array} the list of the created api keys
-- failed {Array} The list of the failed api keys
-- alreadyHave {Array} The list of the api keys what could not be created bacause the keys existed before
-
-
-## API key - update
-Updating skins of existing api key
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/apiKey/:apiKeyId/skin (Where apiKeyId is the id of the api key)
-  
-#### Parameters
- - time {String/Number} Must have. The current timestamp.
- - email {String} Must have. The email to registered to your account.
- - hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile
-
-
-___
-
-#Feature Switch
-You can allow or forbid some features of our application to a group of your users.
-The list of the features you can set at the moment:  
-  - gallery {Object}: contains the features of the gallery
-    - noUpload {Boolean} If you set this parameter true then the users belong to this group cannot use the upload functionality. If you configured the gallery noUploadText (see [gallery config](#configure-api-servers-gallery)) text then it will appear on the upload tab, otherwise a default text will be used.
-    - noUrl {Bollean} If you set this parameter true, then the users of this group cannot use any image not hosted by you. The image from url tab of the gallery will disappear if the feature does not allowed.
-    - limit {Number} The number of images the user can upload. If you do not want to set any limit then leave this parameter undefined. If a user reach the limit, then he won't be able to upload any more image and if you configured the gallery limitReached (see [gallery config](#configure-api-servers-gallery)) text then it will be displayed otherwise a default text will be used.  Please note that the 0 limit and the noUpload are almost equivalent except a different message will appear on the upload tab if you use one or the other.
-
-This list is constantly expanding with time!
-
-___
-
-#Feature configuration
-This is a new development which will be used everywhere from the next api version. Right now it is only used in a few features [texteditor buttons](#wysiwyg-texteditor-buttons).
-It is quite similar to the [feater switch](#feature-switch), but it is a little bit "smarter". Here you can configure the features on four different level. Each level inherits the upper levels configuration but has greater priority.  Basicly the configurationions are merged into each other, but the lower levels always override the inherited configurations, if they have different configuration, but not everything, only the affected settings. The inheritance chain is the following:
-
-apiClient -> apiClientInstance(apiKey) -> group -> user.
-
-For example, we have a configuration named "feature" on apiClient level with value 5. We have to users with different groups, in one of this two groups we override this feature with value 8. So the user who belongs to this group will get a feature configuration with feature 8 (he inherited 5 from the apiClient, but his group overrided it to 8, so in the en he inherited feature 8) while the other user will get feature 5 (he inherited it from the apiClient's feature configuration).
-
-If you want to disable a feature on one of this four levels, you have to give the feature a false value. (it is do not give any value to a feature then that feauter will be inherited from the upper levels, so it is important to give the feature a false value).
-
-For example, we have a configuration named "feature" on apiClient level with value {"number": 5}. We have to users with different groups, in one of this two groups we override this feature with value false. So the user who belongs to this group won't get the feature configuration (he inherited {"number": 5} from the apiClient, but his group overrided it to false, so in the en he does not inherited this feature. this basicly means that this user cannot use the given feature) while the other user will get feature {"number": 5} (he inherited it from the apiClient's feature configuration, so he can use this feature).
-
-___
-
-#JSON document descriptors
-In some cases you - as an integrator - migth want to use the raw document format instead of using the editor and fetch the document from the created project. Some example cases could be when you want to set custom headers and footers to some of your users or you want to create complex or dynamic element.
-
-We can distiguish two main element descriptors, from which a whole document can be composed. These two main types are the containers and the leaf elements.
-
-Every element has its type property. The possible values are the followings: "BOX", "MULTICOLUMN", "ROOT", "TEXT", "TITLE", "IMAGE", "BUTTON and "FULLWIDTH_CONTAINER".
-
-##Containers
-Containers are used to group some elements and define the layout of the project. You can put any kind of elements into containers, so these elements can be other containers and leaf elements as well.
-###Box
-Boxes are great to hold other elements together, give them margins, paddings, borders and/or background.
-Example:
-
-  {
-    type: "BOX",
-    margin: {
-      top: 0,
-      right: 20,
-      bottom: 0,
-      left: 20
-    },
-    padding: {
-      top: 10,
-      right: 10,
-      bottom: 10,
-      left: 10
-    },
-    border: {
-      top: {
-        style: "solid",
-        width: 1,
-        color: "#aabbaa"
-      },
-      right: {
-        style: "dotted",
-        width: 2,
-        color: "#aabbaa"
-      },
-      bottom: {
-        style: "dashed",
-        width: 3,
-        color: "#aabbaa"
-      },
-      left: {
-        style: "none",
-        width: 0,
-        color: "#aabbaa"
-      }
-    },
-    background: {
-      color: "#00aaff",
-      image: {
-        src: "http://startups.hu/images/logos/edmdesigner.png",
-        repeat: "no-repeat",
-        position: "top center"
-      }
-    },
-    children: [
-      //puth the child elements here
-    ]
-  }
-  
-The properties what you can see in the example above, are optional.
-
-###Multicolumn
-Multicolumns are the main elements to create complex layouts. They can have multiple columns (we support max. 5 in our editor) and every columns can have children. Example:
-
-  {
-    type: "MULTICOLUMN",
-    cols: [
-      [
-        //children of the first column
-      ],
-      [
-        //children of the second column
-      ]
-    ]
-  }
-
-###Root
-Every document starts with this elem, as this is the top parent elem. It contains a full width container as a child what has a box inside as a child. It has no other property out of the children field. ({type: "ROOT", ... }) In the near future - when we will introduce the full width containers - it will change a little bit.  
-
-Example:
-
-  {
-    type: "ROOT",
-    children: [
-      {
-        type: "FULLWIDTH_CONTAINER,
-        leftChildren: [
-          type: "BOX",
-          ... any box properties ...
-        ],
-        order: "LTR",
-        twoCell: false
-      }
-    ]
-  }
-
-###Full width container
-The main feature of this element type will be that the background color can be full width, not only 600px as the root element.
-It can only be a direct child of the root, so can be placed only in the highest level of the document structure. A fullwidth container can have 1 cell, or one left cell and one right cells divided from the middle. The cells can have their own background color. The elem can be set "left to right" or "right to left". In case of "left to right" setting the left cells will be ordered on the top if there is no enough room for both in the same line. In case of "right to left" the right cell will do so. If the element is set to be 1 celled, the order property determines that which cell is displayed. The content of the not visible cell always will be stored so will never be lost only not displayed.    
-
-Example:
-
-  {
-    type: "FULLWIDTH_CONTAINER",
-    order: "RTL", (or "LTR")
-    twoCell: "true", (or "false")
-    leftBackgroundColor: "#aaaaaa",
-    rightBackgroundColor: "#FF0000",
-    leftChildren: [
-      ...any element except root and fullwidth container...
-    ],
-    rightChildren: [
-      ...any element except root and fullwidth container...
-    ]
-  }
-
-##Leaf elements
-Leaf elements cannot have any child elements. These elements are typically the content elements.
-
-###Text
-The text element must contain 2 fields: 'text' what can contain html code, but you should not put very complex things in i, and the 'type' with constant 'TEXT'. 
-In our editor we enable the simple text formatting options (bold, italic, underlined) and lists (ul, ol) and some other very simple things like h1, h2, h3.
-The 'linkColor' and 'linkUnderLine' specifies the links styles for those <a> tags what has no inline style. The defaults values can be found in the example below. 
-The 'textStyles' specifies the style for those (non H1, H2, H3) text contents what have no inline specified style. The defaults values can be found in the example below. 
-The 'h1Styles', 'h2Styles' and 'h3Styles' specifies the style for those (H1, H2, H3) tags what have no inline specified style. The defaults values can be found in the example below. 
-The spacing specifies a padding values around the whole text div. The defaults values can be found in the example below. 
-
- Example:
-
-  {
-    text: "yo <i>this</i> is Sparta",
-    type: "TEXT",
-    linkColor: "#5555ff",
-          linkUnderLine: true,
-          textStyles: {
-              lineHeight: 14,
-              color": "#000000",
-              size": 14,
-              family": "arial"
-          },
-           h3Styles: {
-              lineHeight: 32,
-              color": "#000000",
-              size": 32,
-              family": "arial"
-          },
-           h2Styles: {
-              lineHeight: 26,
-              color": "#000000",
-              size": 26,
-              family": "arial"
-          },
-           h1Styles: {
-              lineHeight: 20,
-              color": "#000000",
-              size": 20,
-              family": "arial"
-          },
-    "spacing": {
-                    "left": "5",
-                    "bottom": "5",
-                    "right": "5",
-                    "top": "5"
-                }
-  }
-
-###Title
-Title elements are just like texts, but we enable the users to set only h1, h2 and h3 as formatting.
-
-Example:
-
-  {
-    text: "yo <i>this</i> is Sparta",
-    type: "TITLE",
-    linkColor: "#5555ff",
-          linkUnderLine: true,
-           h3Styles: {
-              lineHeight: 32,
-              color": "#000000",
-              size": 32,
-              family": "arial"
-          },
-           h2Styles: {
-              lineHeight: 26,
-              color": "#000000",
-              size": 26,
-              family": "arial"
-          },
-           h1Styles: {
-              lineHeight: 20,
-              color": "#000000",
-              size": 20,
-              family": "arial"
-          },
-    "spacing": {
-                    "left": "5",
-                    "bottom": "5",
-                    "right": "5",
-                    "top": "5"
-                }
-  }
-
-###Image
-Images are relatively complex elements. Just like boxes, they can have paddings, margins, borders, background color (no background image), but they can't have children. They have their own, special properties as well:
-  - src: the url of the image
-  - altText: the alt text
-  - link: you can wrapp in a link to your image with this propery
-  - originalWidth: the original width of the image
-  - originalHeight: the original height of the image
-  - width: the scaled width of the image (how width should it be in your newsletter)
-  - height: the scaled height of the image (how heigh should it be in your newsletter) - this is a must have property if you want your newsletters to render nice on outlooks
-
-###Button
-Button is relatively complex as well. It can have the following box properties: paddings, margins, borders, backgrouns (color and background image as well). In addition it can have radius. Baically button is a fancy link, so it has the following properties as well:
-  - text: the text what sould appear (it can be a simple html snippet as well)
-  - href: the link.
-  - sizeType: "FIXED" - exact amount of pixels, "FIT_TO_TEXT": the width will be based on the width of the text
-  - width: num of pixels if the sizeType is "FIXED"
-
-___
-
-#Iframe messaging
-The [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb) function will return an iframe. It is possible to communicate with this iframe with the [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method.
-
-###Special elements and features
-There are some speciel elements and functionalities what can be used with iframe messaging. You can configure most of this features in our [dashboard](dashboard.edmdesigner.com). The basic concept behind this feature is that this configurable elements and buttons will post a message (with [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method which was mentioned above) to the parent window (it should be your site). You should handle the message on your side, it does not matter how, and send back the content with the corresponding action name ([see below](#possbile-messages-to-send)). For example: a popup window where the user can take some action, set what kind of content he wants to use, and you should send back this content wiht the right action name.
-
-___
-
-###Wysiwyg texteditor buttons
-You can insert custom strings to the cursor position in the wysiwyg editor. With this feature you can configure texteditor buttons, which will appear in the wysiwyg editor's toolbar. There can be as many different texteditor buttons as you want. Each button can have its own label. If a user clicks one of this buttons, it posts a message to the parent window with [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) native method. This messages can be configured too in our [dashboard](dashboard.edmdesigner.com).  
-The basic usecase of a texteditor button: The user edits one of his text or title, and wants to insert some custom string so he clicks to one of the texteditor buttons. It posts the configured [message](#texteditor-button-message-format) to the parent window (which should be your site) where you should provide an interface where he can choose which custom string he wants to use. The selected string should be posted back with the right [action name](#insert-to-cursor-in-wysiwyg-editor) to our iframe.  
-__Please note that if you want the content to be unchanged/untouched in the generated html code then you should generate that code with the "[generate without sanitizing](#generate-without-sanitizing)" route (instead of the normal [generate](#generate) route. That way the generated code won't be safe enough, so after you replaced your placeholders YOU SHOULD SANITIZE the code (with [google caja](https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer))__
-
-###Texteditor button message format
-When a user clicks a texteditor button, we post you (parent window) a message. This message is a stringified json with two parameters:
-  - action {String} The action name you configured for this type of code elements
-  - content {String} The selected text in the editor (if there is any. It will be null if there is no selected text). Plesae note that the selected text will always be overriden with the content you send in the [repsonse](#insert-to-cursor-in-wysiwyg-editor). If you want to keep the selected text then you should send it back in/with your content.
-
-example: __"{\"action\": \"the action you configured for this texteditor button\", \"content\": \"the selected text or null if there is no selected text\"}"__
-
-###Texteditor button's structure
-A texteditor button configuration has the following parameters:
-  - id : The id/type of the texteditor button. This is what distinguish one button from another.
-  - action : The message our iframe will send to you when a user clicks the texteditor button belonging to this configuration. (You can find how you have to respond to this message [here](#insert-to-cursor-in-wysiwyg-editor)) 
-  - label : The name of the button. This will appear as the label of the button. It is localizable and works quite similar like the [header/footer localization](#localization). Please note that the "en" value is the default value, so it should always be set.
-
-You can configure your texteditor buttons for:
-  * [every instance](dashboard.edmdesigner.com/#textEditorButton/general)
-  * [every user belonging to one instance](dashboard.edmdesigner.com/#textEditorButton/instance)
-  * [a group of user](dashboard.edmdesigner.com/#textEditorButton/group)
-  * [some selected user](dashboard.edmdesigner.com/#textEditorButton/user)
-
-A user inherits a texteditor button settings just like it is explained in the [feature configuration](#feature-configuration) part of the documentation
-
-___
-
-###Possbile messages to send
-List of the events you can send to the iframe (as a message).  
-
-###Save Project
-It is possible to manualy ask the iframe to save the actual (opened) project. As a response the iframe will post a [save result](#save-result) message.  
-The message you need to send: __saveProject__
-
-###Force selected element to be deselected
-It is possible to force the editor to deselect the actual selected element. There won't be any kind of response (from the api iframe) to this message.
-The message you need to send: __loseSelected__
-
-###Insert to cursor in wysiwyg editor
-The response for the incoming messages from [texteditor buttons](#wysiwyg-texteditor-button). You need to post a stringified json as the message string. It should have two properties:
-  - action {String} The name of the action: __InsertToCursor__
-  - content {String} The content (placeholders) the user wants to insert to the cursor 
-
-The message you need to send: __{"action": "InsertToCursor", "content": "your content goes here"}__
-___
-
-###Possible response messages
-List of the events the iframe can send to your application (as a message).
-
-###Save result
-It is the answer for the [save project](#save project) request. It can have to different statuses:  
-In case of success the answer message will be the following: __Save result: success__  
-In case of failure the answer message will be the following: __Save result: failed__  
-
-###Project Loading Started
-The iframe will send you a message at the begining of the project loading.
-The message will be the following: __ProjectLoadingStarted__
-
-###Project Loading Finished
-The iframe will send you a message when the project loading is done. It can have different statuses:
-In case the project loading was succesful, the message will be the following: __ProjectLoadingSuccess__
-In case the project loading failed, the message will be the following: __ProjectLoadingFailed__
-
-
-
-If the language you want to use is not available yet then please contact us with the following email address: info@edmdesigner.com
-
-
 
 #Available Languages
 You can set the localization which the api will use. (if you want to know how, please check the [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb) function!)  
@@ -2901,12 +1684,33 @@ Available languages:
  - English (code: 'en')
  - Hungarian (code: 'hu')
 
-Talk about the iframe src as well!!!
+
+If the language you want to use is not available yet then please contact us with the following email address: info@edmdesigner.com
 
 
-#Example implementations
-  * [Node.js example](https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js)
-  * [PHP example](https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP)
-  * [PHP admin example](https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 
