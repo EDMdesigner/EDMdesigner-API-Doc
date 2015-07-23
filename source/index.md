@@ -1671,11 +1671,16 @@ or it can be an error object:
 
 
 #Available Languages
-You can set the localization which the api will use. (if you want to know how, please check the [edmDesignerApi.openProject](#edmdesignerapiopenprojectprojectid-languagecode-settings-callback-onerrorcb) function!)  
-Available languages:
- - English (code: 'en')
- - Hungarian (code: 'hu')
 
+At the moment we support the following languages:
+
+ - de (German)
+ - en (English)
+ - hu (Hungarian)
+ - it (Italian)
+ - nl (Dutch)
+ - ro (Romanian)
+ - ru (Russian)
 
 If the language you want to use is not available yet then please contact us with the following email address: info@edmdesigner.com
 
