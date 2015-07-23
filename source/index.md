@@ -848,12 +848,28 @@ The callback will be called with an object on which there are two properties:
 
 # Editor iframe
 
-//TODO - talk about the iframe and its query string
-//TODO - talk about the CDN based thing
-//TODO - reference to the previous point
+If you want to open a project in our editor, you just have to put an iframe into your page with the correct src. If you don't want to tinker with creating the correct url manually, then you can use the function defined in the [previous section](#project-open).
+
+Here is a real life example for the src:
+
+**https://api-static.edmdesigner.com/?user=YOURUSERID&projectId=YOURPROJECTID&token=YOURTOKEN&language=en&autosave=1000**
+
+Param | Required | Description
+---|---|---
+user | true | The id of the user.
+projectId | true | The project you want to open.
+token | true | The [access token of the user](#user-level-access-token)
+language | false | The [language](#available-languages) of the editor. (It defaults to "en".)
+autosave | false | The number of milliseconds to spend between the last change and the autosave. If it's 0, then the autosave is disabled. (The default value is 1000 and it cannot be lower than 1000.)
+
+As you can see, that the editor is served from api-static.edmdesigner.com. Everything on this subdomain is static and served by [Amazon's CDN (Cloudfront)](http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront). This means that the editor will load fast all over the world. It makes API calls to our endpoints with build in failover mechanism, so it is very, very robust as well.
 
 
----
+
+
+
+
+
 
 # User handling
 
