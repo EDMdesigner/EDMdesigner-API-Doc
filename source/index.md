@@ -652,52 +652,25 @@ function onErrorCB(error) {
 }
 ```
 
-Generates the bulletproof responsive HTML e-mail based on the projectId.
+Updates the title or/and the description of the specified project. You can add custom informations to this project too.
 
 HTTP | JSONP | JS API
 -----|-------|-------
- | | edmDesignerApi.updateProjectInfo(projectId, data, callback, onErrorCB)
+POST /json/project/updateInfo | GET /jsonp/project/updateInfo | edmDesignerApi.updateProjectInfo(projectId, data, callback, onErrorCB)
+
+
+
 
 ### Parameters:
 
 Field | Type | Required | Description
 ------|------|----------|------------
+data | [Project](#the-project-model) | true | You don't need to set the document field, because that won't be updated if you use this route
+data.override | Boolean | false | If true, then the customData will be overriden with the new one. If false, then it will be merged into the existing one. The default value of it is false.
 
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
-  * data {Object}
-    * data.title {String} The new title of the project
-    * data.description {String} The new description of the project
-    * data.customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
-    * data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
-
-
-
-### Update information
-Updates the title or/and the description of the specified project. You can add custom informations to this project too.
-
-#####Type
-  + POST
-
-#####Route
-  + //api.edmdesigner.com/json/project/updateInfo
-
-#### Parameters (you should post):
-  * projectId {String} /REQUIRED/ The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
-  * title {String} The title of the new project.
-  * description {String} The description of the new project.
-  * customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!
-  * override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
-
-#### Answer:
-  - success {Boolean} It should be true if the update was successful
-
-or it can be an error object:
+### Response:
+{success: true} or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
-
-
-
 
 
 
@@ -728,34 +701,21 @@ Removes a project.
 
 HTTP | JSONP | JS API
 -----|-------|-------
- | | edmDesignerApi.removeProject(projectId, callback, onErrorCB)
+DELETE /json/project/remove/:id | GET /jsonp/project/remove/:id | edmDesignerApi.removeProject(projectId, callback, onErrorCB)
 
 ### Parameters:
 
 Field | Type | Required | Description
 ------|------|----------|------------
+:id | Param in url | true | The id of the project to remove. Example: /json/project/remove/32
 
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
 
-### Remove
-Removes a project.
-
-#####Type
-  + DELETE
-
-#####Route
-  + //api.edmdesigner.com/json/project/remove/:id
-
-#### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
-
-####Response:
+### Response:
 A number, it is 1 if the project was successfully deleted
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
+
 
 
 
@@ -793,32 +753,16 @@ TODO: preview!!!
 
 HTTP | JSONP | JS API
 -----|-------|-------
- | | edmDesignerApi.generateProject(projectId, callback, onErrorCB)
+GET /json/project/generate/:id | GET /jsonp/project/generate/:id | edmDesignerApi.generateProject(projectId, callback, onErrorCB)
 
 ### Parameters:
 
 Field | Type | Required | Description
 ------|------|----------|------------
-
-  * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
+:id | ProjectId | true | The id of the project to generate html from. This parameter is the part of the route.
 
 
-
-### Generate
-Generates the bulletproof responsive HTML e-mail based on the projectId.
-
-#####Type
-  + GET
-
-#####Route
-  + //api.edmdesigner.com/json/project/generate/:id
-
-#### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
-
-####Response
+### Response:
 A bulletproof responsive HTML version of the given template
 
 or it can be an error object:
@@ -826,56 +770,43 @@ or it can be an error object:
 
 
 
-### Generate without sanitizing
-Generates the responsive HTML e-mail based on the projectId. The generated html won't be sanitized. (good for those, who wants to use complex placeholders the normal [generate route](#generate) would erase.
+## Project - generate without sanitizing
+Generates the responsive HTML e-mail based on the projectId. The generated html won't be sanitized. (good for those, who wants to use complex placeholders the normal [generate route](#generate) would erase. You should call this route from your server ONLY! You have to take care about sanitizing if you publish the HTML on the web. We recommend to you to use [Google Caja](https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer).
 
-#####Type
-  + GET
+There is no JSONP version of this route, so it's not reachable from the JS API either.
 
-#####Route
-  + //api.edmdesigner.com/json_v1.0.0/apiKey/:apiKey/user/:userid/project/:projectid/generateWithoutSanitizing
+### Route
+  GET /json_v1.0.0/apiKey/:apiKey/user/:userid/project/:projectid/generateWithoutSanitizing
 
-#### Parameters (in the route):
+### Parameters (in the route):
   * :apiKey {String} The key of the instance the target user belongs to
   * :userId {String} The id of the project's owner. Plesase note that this id should be the same you used for the token generation.
   * :projectid {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
 
-####Response
+### Response
 A not sanitized responsive HTML version of the given template
 
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
 
+
+
+
+
+
+
+
 ## Project - export HTML
 
-See [generate HTML](#project-generate-html).
+Please see [generate HTML](#project-generate-html).
 
 ## Project - preview
 
-See [generate HTML](#project-generate-html).
+To create a preview you only need to use the [generate HTML](#project-generate-html) route as the src attribute of an iframe. If you want to simulate different devices, just set the width of the iframe properly. (Eg. 400px wide for smartphones, 1000px wide for desktop...)
 
+For further info, see [generate HTML](#project-generate-html).
 
-## Project - get title
-Gets the title of the selected project.
-
-//TODO this is a stupid route
-
-#####Type
-  + GET
-
-#####Route
-  + //api.edmdesigner.com/json/project/title/:id
-
-#### Parameters (in the route):
-  * :id {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [/json/project/list](#list-projects) route.
-
-####Response
-Title object:
-  - title {String} The title of the selected project
-
-or it can be an error object:
-  - err Description of the error {String} or an error code {Number}.
 
 ## Project - Open
 
@@ -893,18 +824,11 @@ function onErrorCB(error) {
 }
 ```
 
-Opens a project.
+This function is only a wrapper, which will create a correct iframe src from the params. For detailed information about setting up the iframe's src, please see the [next chapter](#editor-iframe).
 
-//TODO - reference to the next chapter
-
-HTTP | JSONP | JS API
------|-------|-------
- | | edmDesignerApi.openProject(projectId, [languageCode], [settings], callback, onErrorCB)
+**edmDesignerApi.openProject(projectId, [languageCode], [settings], callback, onErrorCB)**
 
 ### Parameters:
-
-Field | Type | Required | Description
-------|------|----------|------------
 
   * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
   * languageCode {String} /Optional/ A two character [ISO 639-1 code](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of a selected language. With this parameter you can choose the language which the opened project will use. You can find the [list of the available languages](#languages) at the end of this page. Default language is english.
@@ -912,6 +836,13 @@ Field | Type | Required | Description
     * autosave {Number} With this property you can set the frequency of the autosave (in millisecond). Please note that the autosave only save the project if there were changes after the last save, with this property you can only set how often should the autosave handler check if there are any kind of changes in the template. If you want to turn off the autosave functionality, then you have to set this property to zero (0). It is possible to manually trigger the saving mechanism with the [save project message](#save-project).
   * callback {Function} A function to be called if the request succeeds
   * onErrorCB {Function} A function to be called if the request fails
+
+The callback will be called with an object on which there are two properties:
+
+ - src: the correct src of the iframe
+ - iframe: an iframe which you can already insert to the dom
+
+
 
 
 
