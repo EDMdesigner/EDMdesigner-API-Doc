@@ -1,5 +1,5 @@
 ---
-title: API Reference - Basics
+title: API Reference - the basics
 
 language_tabs:
   - javascript
@@ -34,7 +34,7 @@ There are two main ways to make requests to our server. The first is when you se
 
 In the latter case you will be able to create most of the integration on the client side. For this purpose we have created a Javascript wrapper with built-in failover between our endpoints. You can find that [here](http://api-static.edmdesigner.com/EDMdesignerAPI.js).
 
-Our API endpoints are the followings:
+**Our API endpoints are the followings:**
 
  - api-a.edmdesigner.com
  - api-b.edmdesigner.com
@@ -59,47 +59,92 @@ We chose PHP as the language for the server side examples, because most of the p
 
 #Authentication
 
-In this chapter you will learn about the authentication and authorization process in our API and also about the different 
+In this chapter you will learn about the authentication and authorization process in our API.
+Basically you will need to generate a user level or admin level access token with which you can make API calls.
+
 
 ## Generating an access token
 
-Should store the token in session info. TTL of a token is one day.
+First of all, you will need an API key and a corresponding magic word to generate an access token. You can manage your API keys and magic words on our dashboard.
 
-403
+Basically you need to HTTP POST from your server to one of our [API endpoints](#making-requests) the followin data to the **/api/token** route:
 
-TODO: FAILOVER HERE AS WELL!!!
+Param | Description
+---|---
+id | one of your API keys
+uid | your user's id
+ip | ipv4 address of your client
+ts | a timestamp (now)
+hash | The hash has to be the string representation of the md5 hash of the concatenation of the API key, the ipv4 address, the timestamp and the magic word: <br/> **hash = md5(API_KEY + ipv4 + timestamp + magic)**
+
+If everything goes well, our server will return a JSON containing a token property which is the access token. If not, then you the response's status code might be 403 or you might receive a JSON with an err property in it.
+
+You might want to save the access token to your user's session for later use. Our tokens are valid for one day, so if your session's lifetime is less or equal to that, then you are good to go. If your session's lifetime is more than that, you will need to regenerate the access tokens from time to time.
+
+It is very important to build-in a failover mechanism to the token generation process as well. So if you don't get proper response from one of our endpoints, you should retry it with the other [endpoints](#making-requests).
+
+It's also extremely important to authorize your users on your server side, so they won't be able to generate access tokens in each other's name.
+
+
+In the following chapters you will see examples for the token generation process.
+
+
 
 ## Using the access token
 
-query string: userId, token
+Once you have an access token, you can make requests to our API endpoints. The only thing you have to do is to add the userId (what you used when you created the token) and the token itself to the query string as a parameter of the HTTP of JSONP request:
 
-403
+**http(s)://api.end.point/request/route?userId=youruserid&token=youraccesstoken**
+
+For exmaple:
+
+https://api-a.edmdesginer.com/json/project/list?user=userId&token=123456789
+
+If you use our [JS API](http://api-static.edmdesigner.com/EDMdesignerAPI.js) then you won't have to manually tinker with concatenating the correct request urls, the JS API module will do it for you. You will just need to call the corresponding functions. (You will find these functions as well later in the documentation.)
+
+The other very good thing about using this JS API is, that the failover mechanism is built-in so you won't need to implement failover manually.
+
+If the token is not valid any more or the userId that you sent is not correct, then the HTTP response's statuc code will be [403](https://en.wikipedia.org/wiki/HTTP_403) and your request won't be served.
 
 ## User level access token
 
 ```javascript
-  //<script src="path_to_your_jquery.js"></script>
-  //<script src="http://api.edmdesigner.com/EDMdesignerAPI.js?route=##handshaking_route##"></script>
-  //<script>
-    initEDMdesignerPlugin("##userId##", function onSuccess(edmDesignerApi) {
-      ...
-    }, function onError(error) {
-      console.log(error);
-    });
-  //</script>
+//First include jQuery somewhere in your page, because our JS API is depending on that
+//Use the JS API from: https://api-static.edmdesigner.com/EDMdesignerAPI.js
+initEDMdesignerPlugin("##handshaking_route##","##userId##", function onSuccess(edmDesignerApi) {
+  //the edmDesignerApi object will contain all the functions which you can use
+}, function onError(error) {
+  console.log(error);
+});
+
+
+//A concrete example with token.php as the handshaking route and templater as the user
+initEDMdesignerPlugin("token.php","templater", function onSuccess(edmDesignerApi) {
+  //the edmDesignerApi object will contain all the functions which you can use
+  //all of the things will happen in the name of the templater user here,
+  //so authorize your users carefully!!!
+}, function onError(error) {
+  console.log(error);
+});
 ```
 
 
 ```php
 //token.php
+//This example does not implement failover mechanism for easier understanding.
+
 <?php
 if ($_POST["userId"]) {
-  $publicId = "TESTAPIKEY";
-  $magic = "TESTMAGICWORD";
+  //here you have to authorize your user!!!
+  //don't let your users to generate access tokens in each other's name
+  // - they could mess up each others' projects
+
+  $publicId = "YOUR_API_KEY";
+  $magic = "YOUR_MAGIC_WORD";
   $ip = $_SERVER["REMOTE_ADDR"];
   $timestamp = time();
   $hash = md5($publicId . $ip . $timestamp . $magic);
-  $url = "http://api-a.edmdesigner.com/api/token"; //could be api-b & api-c as well.
+  $url = "http://api-a.edmdesigner.com/api/token"; //should fail over to api-b & api-c as well.
   $data = array(
         "id"  => $publicId,
         "uid" => $_POST["userId"],
@@ -109,11 +154,11 @@ if ($_POST["userId"]) {
   );
   // use key 'http' even if you send the request to https://...
   $options = array(
-      'http' => array(
-          'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-          'method'  => 'POST',
-          'content' => http_build_query($data),
-      ),
+      "http" => array(
+          "header"  => "Content-type: application/x-www-form-urlencoded\r\n",
+          "method"  => "POST",
+          "content" => http_build_query($data),
+      )
   );
   $context  = stream_context_create($options);
   $result = file_get_contents($url, false, $context);
@@ -122,85 +167,84 @@ if ($_POST["userId"]) {
 ?>
 ```
 
-TODO: refactor the old example!!
+In this section you will see an example for basic user level token generation. This is the basic permission level. With a user level access token you can manage the thing associated to that user, nothing more. There are also admin level calls, which you can read about in the next [section](#admin-level-access-token).
+
+You can follow the whole process in the example on the right. On the [javascript tab](?javascript#user-level-access-token), you can see examples for the [JS API usage](?javascript#user-level-access-token), and on the [php tab](?php#user-level-access-token), you can see a very simple example implementation of the [server side](?php#user-level-access-token) part of the handshaking process. (This is your part of the token generation).
+
+To use our [JS API](https://api-static.edmdesigner.com/EDMdesignerAPI.js), you just have to include it in your page with a script tag. (&lt;script src="https://api-static.edmdesigner.com/EDMdesignerAPI.js"&gt;&lt;/script&gt;) 
+
+By doing this, you will have a global initEDMdesignerPlugin function.
+The first parameter is the route where the JS module will post the userId, which is the second parameter. If your user has rights to generate a token, then you will have to post all the necessary info to our endpoint. In the example, there is no proper authorization, since that depends on your system.
+
+The whole process in the example is the following:
+
+ - the JS API sends the userId to token.php
+ - token.php sends the neccessary info to one of our endpoints
+ - our endpoint responds with a token
+ - JS API will use this token for the subsequent API calls
+
+There is a special user associated to each API key. It's name is templater and its projects are the default projects in the system. It is always existent and cannot be deleted. The [list defaults route](#project-list-defaults) will always respond with the templater's projects. (Our concrete example on the right is generating a token for the templater user.)
+
+
+
+
+
 
 ## Admin level access token
 
-TODO: example
+```javascript
+//First include jQuery somewhere in your page, because our JS API is depending on that
+//Use the JS API from: https://api-static.edmdesigner.com/EDMdesignerAPI.js
+//A concrete example with token.php as the handshaking route and admin as the user
+//Be very careful, authorize your users on the server side very carefully!!!
+initEDMdesignerPlugin("token.php","templater", function onSuccess(edmDesignerApi) {
+  //the edmDesignerApi object will contain all the functions which you can use
+  //you will be able to reach all the admin functionality here!
+  //so authorize your users carefully!!!
+}, function onError(error) {
+  console.log(error);
+});
+```
 
+```php
+<?php
+if ($_POST["userId"]) {
+  //here you have to authorize your user!!!
+  //don't let your users to generate access tokens in each other's name
+  //don't let your users to generate an admin token if they don't have the needed permissions for it!!!
+  // - they could mess up each others' projects
 
+  $publicId = "YOUR_API_KEY";
+  $magic = "YOUR_MAGIC_WORD";
+  $ip = $_SERVER["REMOTE_ADDR"];
+  $timestamp = time();
+  $hash = md5($publicId . $ip . $timestamp . $magic);
+  $url = "http://api-a.edmdesigner.com/api/token"; //should fail over to api-b & api-c as well.
+  $data = array(
+        "id"  => $publicId,
+        "uid" => $_POST["userId"], //which supposed to be "admin"
+        "ip"  => $ip,
+        "ts"  => $timestamp,
+        "hash"  => $hash
+  );
+  // use key 'http' even if you send the request to https://...
+  $options = array(
+      "http" => array(
+          "header"  => "Content-type: application/x-www-form-urlencoded\r\n",
+          "method"  => "POST",
+          "content" => http_build_query($data),
+      )
+  );
+  $context  = stream_context_create($options);
+  $result = file_get_contents($url, false, $context);
+  print($result);
+}
+?>
+```
 
+The generation of an admin level access token is almost the same as generating a regular token. The only difference is that you have to use the string "admin" as the user. This is not an existent user in our system, we just use it to generate an admin level access token.
 
-TODO: subitems for ADMIN and USER tokens!
-
-TODO: the only route where you don't have to send token...
-
-
-
-
-The Handshaking Process...
-
-To implement the handshaking on your server, you need an API_KEY, a magic word (wich is delivered with your API_KEY), your user's IPv4 address and a timestamp. The logic that handles handshaking has to receive the userId too, because it has to be sent to our server as well. Our API implementation automatically sends the userId in a POST HTTP request. You can set this user id by the first parameter of the initEDMdesignerPlugin.
-
-After concatenating the API_KEY, the IPv4 address of your user, the timestamp (as a string) and your magic word, you have to create an md5 hash of the resulting string.
-
-  
-  hash = md5(API_KEY + ipv4 + timestamp + magic)
-
-
-After this, you have to send the API_KEY, the userId, the IPv4 address, the timestamp and the generated md5 hash to our server at api.edmdesigner.com/api/token through HTTP.
-
-If everything goes well, you get back a token, with which your user can be identified.
-
-The only route which does not need a token. Actually this is the one with which you generate your access tokens. Should store them in a session. Tokens are alive for one day - stored in a redis server - their ttl is one day. (Storing them in session is only a good idea if your sessions are alive for less then one day.) We might decrease the ttl, so it's also a good idea to build in a regeneration method for tokens.
-
-
-Initializing the client side api js...
-
-
-First of all, jQuery has to be loaded before you load our API. In the second line you can see a route parameter in the script's src. By that you can tell the script where to look for the handshaking implementation. For example, if you implemented it in your index.php, you have to replace ##handshaking_route## with index.php. The first parameter is a user id from your system. It can be any string. The last parameter is an error callback which will be called in every request if the request fails. This is not required thus you can set an error callback in one of your function calls (see later) and in that case it will be called instead of this one.
-
-
-In the resulting object (edmDesignerApi) you will find some functions through which you can interact with our system.
-
-
-##Authentication
-To authenticate these routes, you need to generate a token to a "fake" user called admin.You should send this token and the admin string on every request's query. (like this: ?user=admint&token=token ).Please note that every route need to be authenticated expect the one which generate the token. (//api.edmdesigner.com/api/token)
-
-Example: //api.edmdesigner.com/json/groups/list?user=admin&token=adminToken
-
-### Create handshaking
-Create the handshaking between PHP and API needs to be done before any further call
-    
-    $url = "http://api.edmdesigner.com/api/token";
-    $data = array(
-      "id"  => $publicId,
-      "uid" => $user,
-      "ip"  => $ip,
-      "ts"  => $timestamp,
-      "hash"  => $hash
-    );
-    
-    $options = array(
-        'http' => array(
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  => 'POST',
-            'content' => http_build_query($data),
-        )
-    );
-
-    $context  = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    
-    $token = json_decode($result, TRUE);
-
-##Authentication
-To authenticate these routes, userId and a token (generated to the userId) are needed. Those to should be sent on the request's query.(somehow like this: ?user=userID&token=token ). Please note that every route need to be authenticated expect the one which generate the token. (//api.edmdesigner.com/api/token)
-
-For example: //api.edmdesginer.com/json/project/list?user=userId&token=123456789
-
-
-
+You have to be very careful with this! Always authorize your users on your side of the handshaking process (token generation).
 
 
 # Models
@@ -231,7 +275,7 @@ module.exports = mongoose.model("Project", projectSchema);
 ```php
 //Switch to the javascript tab to see the original mongoose schema and model of our Projecs.
 ```
-In the following sections you will be reading about requests with which you can make certain operations on projects. These projects have the follwing properties:
+Throughout the documentation you will be reading about requests with which you can make certain operations on projects. These projects have the follwing properties:
 
 Field | Type | Required | Description
 ------|------|----------|------------
@@ -264,15 +308,16 @@ var query = {
   }
 };
 ```
-You can set the parameters of the db search. You need to place your settings object to the query of the get request. Please note that it is an optional feature. If you don't want to use it, call the route without any kind of settings (in the query) and it will send back all of the user projects!
+
+In the documentation there will be several routes with which you can make queries. It basically means that you can set the parameters of the db search. You can place your settings object to the query of the get request.
 
 Field | Type | Required | Description
 ------|------|----------|------------
-find | Object | false | dfdfdf
-select | Array | false | 
-skip | Number | false |
-limit | Number | false |
-sort | Object | false |
+find | Object | false | Please check the [moongoose docs](http://mongoosejs.com/docs/queries.html).
+select | Array | false | Please check the [moongoose docs](http://mongoosejs.com/docs/queries.html).
+skip | Number | false | Please check the [moongoose docs](http://mongoosejs.com/docs/queries.html).
+limit | Number | false | Please check the [moongoose docs](http://mongoosejs.com/docs/queries.html).
+sort | Object | false | Please check the [moongoose docs](http://mongoosejs.com/docs/queries.html).
 
 You can set the parameters of the db search (you have to use the moongose.js query syntax, please check their [documentation](http://mongoosejs.com/docs/guide.html) for more information)
 
