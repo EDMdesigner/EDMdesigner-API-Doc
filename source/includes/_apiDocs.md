@@ -1,6 +1,6 @@
 # Other resources
 
-General info here.
+There are several resources from where you can learn more about EDMdesigner: the official documentation, the tutorials and the example implementations.
 
 
 ## Docs
@@ -15,13 +15,20 @@ Document | Description
 
 
 ## Tutorials
- - later
+
+Tutorial | Description
+---|---
+[The Basics](./tutorialTheBasics.html) | In this tutorial you will learn about our dashboard, the access token generation and the very basic functionalities, like creating and opening projects.
+[Admin Functionalities](./tutorialAdminFunctionalities.html) | The biggest take away of this tutorial that you will see how to create new users in our system, so you will be able to associate one user for each of users in your system.
+[Integration Tutorial - Gallery Configuration](./tutorialGalleryConfig.html) | In this tutorial you will learn about how to set up the gallery properly, how to implement the hooks on your side and you will also learn about the security of these hooks.
 
 
 ## Example implementations
   * [PHP example](https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP)
   * [PHP admin example](https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin)
   * [Node.js example](https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js)
+
+  + python & java stuff
 
 Our PHP examples are very well maintained, but the others are not. Sorry for that.
 
