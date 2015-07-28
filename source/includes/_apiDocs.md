@@ -27,9 +27,10 @@ Tutorial | Description
   * [PHP example](https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP)
   * [PHP admin example](https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin)
   * [Node.js example](https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js)
+  * [Cold Fusion example](https://github.com/EDMdesigner/EDMdesigner-API-Example-ColdFusion) - Thank you Tom Chiverton from Extravision! :)
+  * [Django example](https://github.com/EDMdesigner/EDMDesigner-API-Example-Django) - Thank you Ferenc Vehmann from ZenHeads! :)
 
-  + python & java stuff
 
-Our PHP examples are very well maintained, but the others are not. Sorry for that.
+Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.
 
 
