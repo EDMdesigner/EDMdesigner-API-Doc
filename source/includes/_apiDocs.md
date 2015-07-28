@@ -11,6 +11,7 @@ Document | Description
 [Advanced](./advanced.html) | This documentation covers more advanced topics. Probably you will only need some of these functionalities. <ul><li>Group handling</li><li>String placeholders</li><li>Dynamic data</li><li>Favorite elements' management</li><li>Working with custom data</li><li>Advanced project handling</li><li>API key management</li></ul>
 [postMessage API](./postMessageApi.html) | By reading this documentation you can learn about how to manipulate the editor itself from the client side. Basically this client side API is based on the [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) function with which you can send messages between frames from different domains. <ul><li>Basic messages and responses (eg. manual save)</li><li>Hooking on editor events (eg. using your own gallery instead of the built-in one)</li><li>Dynamic data</li><li>Setting elements' properties</li></ul>
 [Element descriptors](./documentDescriptors.html) | A detailed description of our element types used in projects and favorite elements. We generate all of our outputs based on these JSON descriptors.
+[Migrating to the CDN based editor](./migratingToTheCDNBasedEditor.html) | In this article you will learn about how to migrate from the good old version of the editor to the superfast and robust [CDN based version](http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront).
 
 
 
@@ -24,13 +25,15 @@ Tutorial | Description
 
 
 ## Example implementations
+Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.
+
   * [PHP example](https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP)
   * [PHP admin example](https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin)
   * [Node.js example](https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js)
   * [Cold Fusion example](https://github.com/EDMdesigner/EDMdesigner-API-Example-ColdFusion) - Thank you Tom Chiverton from Extravision! :)
   * [Django example](https://github.com/EDMdesigner/EDMDesigner-API-Example-Django) - Thank you Ferenc Vehmann from ZenHeads! :)
 
+ If you have another example implementation, please let us know, we will fork it and will put a link here.
 
-Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.
 
 
