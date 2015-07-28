@@ -162,6 +162,8 @@ Now, please switch to the [php tab](?php#token-generation-and-the-javascript-api
 
 In the example, $publicId should be your API key and the $magic variable should contain the corresponding magic word, which you can find on the dashboard. Basically you have to send to one of our api end-points your API key (id), userId of your actual user (uid), your server’s ip address (ip), the actual timestamp (ts) and the md5 hash of the concatenation of your API key, your server’s ip address, the actual timestamp and the magic word. If everything goes well, you will receive a json with a token property in it, otherwise you will receive a 403 HTTP status code. The example implementation sends back the fetched token to the client side, so EDMdesignerAPI.js can concatenate it to every request.
 
+If you want to learn more about the access token generation, please read the corresponding part in our [docs](./index.html#generating-an-access-token).
+
 
 ## Create an example project
 
