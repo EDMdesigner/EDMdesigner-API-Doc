@@ -484,6 +484,59 @@ Compared to [list projects](#list-projects), listAndCountProjects' response is a
 
 
 
+
+
+## Project - getOne
+
+Get one project by _id.
+
+```javascript
+initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+  edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
+    edmDesignerApi.getProject(result._id, function(result) {
+      console.log(result);
+      //the result is the whole project
+      // _id {String} The id of the project
+      // title {String} The title of the project.
+      // description {String} Description about the project
+      // createdOn {String} Creation time
+      // lastModified {String} Time of the last modification
+      // document {Object} The json format of the template
+          // usedColors {Array} List of the colors which are used in the template
+         // generalSettings {Object} The default settings of the template
+         // root {Object} The actual structure of the template
+         // header {Object} The header of the template
+         // footer {Object} The footer of the template 
+      // customData {Object} Your custom data
+    });
+  });
+}, onErrorCB);
+
+function onErrorCB(error) {
+  console.log(error);
+}
+```
+
+Get a specified project as json. The result will contain almost every information about the selected project.
+
+HTTP | JSONP | JS API
+-----|-------|-------
+GET /json/project/getProject/:id | GET /jsonp/project/getProject/:id | edmDesignerApi.getProject(projectId, callback, onErrorCB)
+
+### Parameters:
+
+Field | Type | Required | Description
+------|------|----------|------------
+:id | String | true | The id of the project you want to get.
+
+### Response:
+The project as a json.
+
+
+
+
+
+
 ## Project - list defaults
 
 ```javascript
@@ -1129,10 +1182,11 @@ Field | Type | Required | Description
 ------|------|----------|------------
 :id | String | true | The id of the user. (Which was given by you previously at [user creation](#user-create).)
 data | [User](#the-user-model) | true | The new user data
-data.override | Boolean | If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
+data.override | Boolean | false | If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
 
 
-
+### Response:
+The user object.
 
 
 
@@ -1160,75 +1214,26 @@ function onErrorCB(error) {
 }
 ```
 
-### edmDesignerApi.deleteUser(userId, callback, onErrorCB)
-Deletes a specified user
-#### Parameters:
-  * userId {String} The id of the user.
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
+Deletes a specified user.
 
-### Delete user
-Deletes a specified user
+HTTP | JSONP | JS API
+-----|-------|-------
+DELETE /json/user/delete/:id | GET /jsonp/user/delete/:id | edmDesignerApi.deleteUser(userId, callback, onErrorCB)
 
-#####Type
-  + DELETE
+### Parameters:
 
-#####Route
-  + //api.edmdesigner.com/json/user/delete/:id
-  
-#### Parameters (in the route):
-   * :id {String} The id of the user.
+Field | Type | Required | Description
+------|------|----------|------------
+:id | String | true | The id of the user. (Which was given by you previously at [user creation](#user-create).)
 
-####Response:
+### Response:
 User object:
+
   - id {String} The id of the deleted user
 
 Or it can be an error object:
+
   - err Description of the error {String} or an error code {Number}.
-
-
-
-
-
-___
-
-## Project - getOne
-
-```javascript
-initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
-  edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
-    edmDesignerApi.getProject(result._id, function(result) {
-      console.log(result);
-      //the result is the whole project
-      // _id {String} The id of the project
-      // title {String} The title of the project.
-      // description {String} Description about the project
-      // createdOn {String} Creation time
-      // lastModified {String} Time of the last modification
-      // document {Object} The json format of the template
-          // usedColors {Array} List of the colors which are used in the template
-         // generalSettings {Object} The default settings of the template
-         // root {Object} The actual structure of the template
-         // header {Object} The header of the template
-         // footer {Object} The footer of the template 
-      // customData {Object} Your custom data
-    });
-  });
-}, onErrorCB);
-
-function onErrorCB(error) {
-  console.log(error);
-}
-```
-
-###edmDesignerApi.getProject(projectId, callback, onErrorCB)
-Get a specified project as json. The result will contain almost every information about the selected project.
-#### Parameters:
-  * projectId {String}  The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
-  * callback {Function} A function to be called if the request succeeds
-  * onErrorCB {Function} A function to be called if the request fails
-
-
 
 
 
