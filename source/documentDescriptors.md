@@ -15,6 +15,10 @@ search: true
 
 # Overview - element descriptors
 
+<aside class="notice">
+This part of the docs is in-progress.
+</aside>
+
 In some cases you - as an integrator - migth want to use the raw document format instead of using the editor and fetch the document from the created project. Some example cases could be when you want to set custom headers and footers to some of your users or you want to create complex or dynamic element.
 
 We can distiguish two main element descriptors, from which a whole document can be composed. These two main types are the containers and the leaf elements.

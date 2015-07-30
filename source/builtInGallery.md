@@ -16,6 +16,10 @@ search: true
 
 #Gallery handling
 
+<aside class="notice">
+This part of the docs is in-progress.
+</aside>
+
 <aside class="warning">
 We suggest you to use your <a href="./index.html#gallery-handling">own gallery</a> with postMessages.
 </aside>
