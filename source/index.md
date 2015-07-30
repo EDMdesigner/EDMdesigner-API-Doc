@@ -368,7 +368,7 @@ You can set the parameters of the db search (you have to use the moongose.js que
 
 # Project handling
 ```javascript
-initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "TestUser", function(edmDesignerApi) {
   //In the follwing examples we assume that you put the code snippets here,
   //where edmDesignerApi is on the closure.
 }, function onError(error) {
@@ -491,7 +491,7 @@ Compared to [list projects](#list-projects), listAndCountProjects' response is a
 Get one project by _id.
 
 ```javascript
-initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "TestUser", function(edmDesignerApi) {
   edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
     edmDesignerApi.getProject(result._id, function(result) {
       console.log(result);
@@ -690,13 +690,15 @@ or it can be an error object:
 ```javascript
 var templaterProjectId = null;
     
-initEDMdesignerPlugin("templater", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "templater", function(edmDesignerApi) {
   edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
     templaterProjectId = result._id;
   });
 }, onErrorCB);
 
-initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+
+//later somewhere in the code...
+initEDMdesignerPlugin("token.php", "TestUser", function(edmDesignerApi) {
 
   edmDesignerApi.createFromDefaults(templaterProjectId, {title: "createFromDefaults example", description: "Created with createFromDefaults function"}, function(result) {
     //the result is the newly created project's object or error obejct with err property
@@ -738,7 +740,7 @@ or it can be an error object:
 ## Project - update info
 
 ```javascript
-initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "TestUser", function(edmDesignerApi) {
   edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
     edmDesignerApi.updateProjectInfo(result._id, {title: "New title", description: "New description", customData: {foo: "BAR"}}, function(result) {
       //the result is an object with success {Boolean} property or err {String} property.
@@ -783,7 +785,7 @@ data.override | Boolean | false | If true, then the customData will be overriden
 ## Project - remove
 
 ```javascript
-initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "TestUser", function(edmDesignerApi) {
   edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
     edmDesignerApi.removeProject(result._id, function(result) {
       //callback hell...
@@ -831,7 +833,7 @@ or it can be an error object:
 ## Project - generate HTML
 
 ```javascript
-initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "TestUser", function(edmDesignerApi) {
   edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
     edmDesignerApi.generateProject(result._id, function(result) {
       //the result is a robust responsive HTML e-mail code.
@@ -845,10 +847,6 @@ function onErrorCB(error) {
 ```
 
 Generates the bulletproof responsive HTML e-mail based on the projectId.
-
-TODO: preview!!!
-+ insert export menu item
-+ insert preview menu item !!!
 
 HTTP | JSONP | JS API
 -----|-------|-------
@@ -910,7 +908,7 @@ For further info, see [generate HTML](#project-generate-html).
 ## Project - Open
 
 ```javascript
-initEDMdesignerPlugin("TestUser", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "TestUser", function(edmDesignerApi) {
   edmDesignerApi.createProject({title: "test-title", description: "test-desc"}, function(result) {
     edmDesignerApi.openProject(result._id, function(result) {
       $("body").append(result.iframe);
@@ -973,7 +971,7 @@ As you can see, that the editor is served from api-static.edmdesigner.com. Every
 # User handling
 
 ```javascript
-initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "admin", function(edmDesignerApi) {
   edmDesignerApi.listGroups(function(result) {
     //the result is an array, containing your groups
   }, onErrorCB);
@@ -1096,7 +1094,7 @@ Or it can be an error object:
 ## User - get one
 
 ```javascript
-initEDMdesignerPlugin("admin", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "admin", function(edmDesignerApi) {
   edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
   
     edmDesignerApi.getUser(result.id, function(resultUser) {
@@ -1155,7 +1153,7 @@ Or it can be an error object:
 Updates a specified user. The group (which the user belongs) can be changed. You can add custom informations to the user too.
 
 ```javascript
-initEDMdesignerPlugin("admin", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "admin", function(edmDesignerApi) {
   edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
     edmDesignerApi.createGroup({name: "exampleGroup", featureSwitch: {}}, function(resultGroup) {
     
@@ -1198,7 +1196,7 @@ The user object.
 ## User - remove
 
 ```javascript
-initEDMdesignerPlugin("TestAdmin", function(edmDesignerApi) {
+initEDMdesignerPlugin("token.php", "admin", function(edmDesignerApi) {
   edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
   
     edmDesignerApi.deleteUser(result.id, function(resultUser) {
