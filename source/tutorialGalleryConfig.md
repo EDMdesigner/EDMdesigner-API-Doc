@@ -15,12 +15,16 @@ search: true
 ---
 
 #Overview
+
+<aside class="warning">
+We suggest you to use your <a href="./index.html#gallery-handling">own gallery</a> with postMessages.
+</aside>
+
 In my last two tutorial posts I was talking about a basic way to integrate EDMdesigner into an arbitrary web-based system. This time, you will learn about how to configure the gallery to make it work. It won’t take long, I promise.
 
 Also, it's possible to disable our built-in  gallery so you can use your own. I will write about that soon!
 
-If you want to learn more about our gallery handling, please read the related parts in our [docs](./index.html#gallery-handling).
-
+If you want to learn more about our old gallery handling, please read the related parts in our [docs](./builtInGallery.html).
 
 
 
