@@ -329,5 +329,7 @@ Button is relatively complex as well. It can have the following box properties: 
   - width: num of pixels if the sizeType is "FIXED"
 
 
+<!--
 # Complex elements
 Custom types basically.
+-->

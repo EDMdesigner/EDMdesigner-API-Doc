@@ -1,4 +1,18 @@
+---
+title: API Reference - built-in gallery
 
+language_tabs:
+  - php
+
+
+toc_footers:
+  - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
+
+includes:
+  - apiDocs
+
+search: true
+---
 
 #Gallery handling
 
