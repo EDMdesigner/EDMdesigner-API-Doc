@@ -1,0 +1,1300 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>API Reference - Advanced</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["javascript","php"]);
+        });
+      </script>
+  </head>
+
+  <body class="advanced">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="php">php</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="overview-advanced-topics">Overview - advanced topics</h1>
+
+<aside class="notice">
+This part of the docs is in-progress.
+</aside>
+
+<p>Advanced topics.</p>
+
+<h1 id="custom-strings">Custom Strings</h1>
+<pre class="highlight javascript"><code><span class="c1">//Custom String object example:</span>
+<span class="kd">var</span> <span class="nx">customStringsObject</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">id</span><span class="p">:</span> <span class="s2">"validId"</span><span class="p">,</span>
+  <span class="na">title</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">en</span><span class="p">:</span> <span class="s2">"EDM beer"</span>
+  <span class="p">},</span>
+  <span class="na">items</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+       <span class="na">replacer</span><span class="p">:</span> <span class="s2">"##Svijany##"</span><span class="p">,</span>
+       <span class="na">label</span><span class="p">:</span> <span class="s2">"good beer 1"</span>      
+    <span class="p">},</span>
+    <span class="p">{</span>
+       <span class="na">replacer</span><span class="p">:</span> <span class="s2">"##Poutník##"</span><span class="p">,</span>
+       <span class="na">label</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">en</span><span class="p">:</span> <span class="s2">"good beer 2"</span>
+       <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">};</span>
+</code></pre>
+
+<p>The custom strings are an option to provide predefined texts to your users what they can insert while editing text contents.
+You can add custom strings to 
+- all of your users 
+- to specified users
+- or to users of a specified group.</p>
+
+<p>The custom strings can be added by bunch of custom string items. Each bunch contains a title what will be displayed as the label of the drop-down list in the text editor, and an id, what provides the identification. By this id it will be possible to remove the bunch.
+The id can not contain any special characters, the title is a string or a localization object. In case of localization object it what must contain &lsquo;en&rsquo; property.
+Within an item the label property has the same rules.</p>
+
+<h2 id="add-custom-strings-to-all-of-the-users-of-the-apiclientinstance">Add Custom Strings to all of the users of the apiClientInstance</h2>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/add</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>id {String} The identification of the custom strings bunch</li>
+<li>title {String or  localization Object with &#39;en&rsquo; property} the displayed name of the bunch</li>
+<li>items {Array} Array of customStrings Object <a href="#example-of-custom-string-object">see here</a></li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200
+- id {String} the saved custom strings id
+- customStrings {Object} the saved custom stings object
+- overwritten {Boolean} describes if the save updated an existing bunch or created a new one </p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="add-custom-strings-to-specified-users">Add Custom Strings to specified users</h2>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/addToUsers</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>users {Array} Array of the userIds</li>
+<li>id {String} The identification of the custom strings bunch</li>
+<li>title {String or  localization Object with &#39;en&rsquo; property} the displayed name of the bunch</li>
+<li>items {Array} Array of customStrings Object, <a href="#example-of-custom-string-object">see here</a></li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200
+- updatedUsers {Array} list of objects with the property of:
+       - id {String} the user id
+       - updated {Boolean} describes if the save updated an existing bunch or created a new one 
+- id {String} the saved custom strings id
+- customStrings {Object} the saved custom stings object</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="add-custom-strings-to-specified-groups-of-the-apiclientinstance">Add Custom Strings to specified groups of the apiClientInstance</h2>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/addToGroup</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>group {String} MongoDb ObjectId (24 chars length id of the group)</li>
+<li>id {String} The identification of the custom strings bunch</li>
+<li>title {String or  localization Object with &#39;en&rsquo; property} the displayed name of the bunch</li>
+<li>items {Array} Array of customStrings Object, <a href="#example-of-custom-string-object">see here</a></li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200
+- id {String} the saved custom strings id
+- customStrings {Object} the saved custom stings object
+- overwritten {Boolean} describes if the save updated an existing bunch or created a new one </p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="get-custom-strings-of-all-of-the-users-of-the-apiclientinstance">Get Custom Strings of all of the users of the apiClientInstance</h2>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfApiInstance</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<p>no parameters needed</p>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200
+- err {null} null  value
+- the custom string objects as the property names are the id of the custom strings bunch</p>
+
+<p>example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: &#39;csTitle&rsquo;
+         },
+        items: [
+            &hellip;items of custom string Objects&hellip;.
+        ]
+   }
+}</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="get-custom-strings-of-a-specified-user">Get Custom Strings of a specified user</h2>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfUser</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>userId {String} the id of the user</li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200
+- err {null} null  value
+- the custom string objects as the property names are the id of the custom strings bunch</p>
+
+<p>example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: &#39;csTitle&rsquo;
+         },
+        items: [
+            &hellip;items of custom string Objects&hellip;.
+        ]
+   }
+}</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="get-custom-strings-of-a-specified-group">Get Custom Strings of a specified group</h2>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/getCustomStringsOfGroup</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>groupId {String} mongoDb ObjectID of the group</li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200
+- err {null} null  value
+- the custom string objects as the property names are the id of the custom strings bunch</p>
+
+<p>example: 
+{
+err: null,
+customStringID1: {
+       title: {
+                    en: &#39;csTitle&rsquo;
+         },
+        items: [
+            &hellip;items of custom string Objects&hellip;.
+        ]
+   }
+}</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="remove-a-general-custom-strings-by-it-39-s-id">Remove a general Custom Strings by it&rsquo;s id</h2>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>DELETE</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/:id</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>:id {String} the id of the custom string bunch</li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200
+- id {String} the id of the deleted custom strings bunch
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="remove-a-user-39-s-custom-strings-by-it-39-s-id">Remove a user&rsquo;s Custom Strings by it&rsquo;s id</h2>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>DELETE</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/:id/removeFromUser/:user</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>:id {String} the id of the custom string bunch</li>
+<li>:user {String} the id of the user what you want to remove from</li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200
+- id {String} the id of the deleted custom strings bunch
+- userId {Sting} the id of the user what you removed from
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="remove-a-group-39-s-custom-strings-by-it-39-s-id">Remove a group&rsquo;s Custom Strings by it&rsquo;s id</h2>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>DELETE</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/customStrings/:id/removeFromUser/:group</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>:id {String} the id of the custom string bunch</li>
+<li>:group {String} the MongoDb ObjectId of the group what you want to remove from</li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200
+- id {String} the id of the deleted custom strings bunch
+- group {Sting} the id of the group what you removed from
+Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h1 id="group-handling">Group handling</h1>
+
+<p>You have to generate an admin token!</p>
+
+<h2 id="group-list">Group - list</h2>
+
+<h3 id="edmdesignerapi-listgroups-callback-onerrorcb">edmDesignerApi.listGroups(callback, onErrorCB)</h3>
+
+<p>Lists the groups you have</p>
+
+<h4 id="parameters">Parameters:</h4>
+
+<ul>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul>
+
+<h3 id="list-groups">List groups</h3>
+
+<p>Lists the groups you have</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/groups/list
+#### Parameters (optionals):</li>
+<li>skip {Number} index where from the listing should begin, without limit parameter it will be ingnored</li>
+<li>limit {Number} length of the items to be listed, without skip parameter it will be ingnored</li>
+<li>select [Array] list of the properties to be listed [&ldquo;name&rdquo;, &ldquo;created&rdquo;]</li>
+<li>sort {Object} MongoDb sort object: {property : &ldquo;asc/desc&rdquo;}
+####Response:
+An array of your groups. Every group is an object with this parameters:</li>
+<li>_id {String} MongoDB id of the group</li>
+<li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
+<li>name {String} The name of the group</li>
+<li>customData {Object} Th custom informations you saved for the group</li>
+</ul>
+
+<p>Or in case of of limit and skip parameters sent an Object consists of:
+  - totalCount {Number} The length of the full list
+  - result {Array} The list of the groups, same as above</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="group-create">Group - create</h2>
+<pre class="highlight javascript"><code><span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"TestAdmin"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createGroup</span><span class="p">({</span><span class="na">name</span><span class="p">:</span> <span class="s2">"exampleGroup"</span><span class="p">,</span> <span class="na">featureSwitch</span><span class="p">:</span> <span class="p">{</span><span class="na">exampleFeature1</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">exampleFeature3</span><span class="p">:</span> <span class="kc">true</span><span class="p">}},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//the resultGroup is an object with</span>
+    <span class="c1">//name {String} (the new group's name)</span>
+    <span class="c1">//_id  {String} (the new group's id) and</span>
+    <span class="c1">//featureSwitch {Object} (the group's features) properties</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+  <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">onErrorCB</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+
+<h3 id="edmdesignerapi-creategroup-data-callback-onerrorcb">edmDesignerApi.createGroup(data, callback, onErrorCB)</h3>
+
+<p>Creates a new group</p>
+
+<h4 id="parameters">Parameters:</h4>
+
+<ul>
+<li>data {Object}
+
+<ul>
+<li>data.name {String} /REQUIRED/ The name you want to give to the new group</li>
+<li>data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
+<li>data.customData {Object} You can add custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
+</ul></li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul>
+
+<h3 id="create-group">Create group</h3>
+
+<p>Creates a new group</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/groups/create</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>name {String} /REQUIRED/ The name you want to give to the new group</li>
+<li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
+<li>customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>An object containing the MongoDB _id of the newly created group:
+  - _id {String}</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="group-get-one">Group - get one</h2>
+<pre class="highlight javascript"><code><span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"TestAdmin"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createGroup</span><span class="p">({</span><span class="na">name</span><span class="p">:</span> <span class="s2">"exampleGroup"</span><span class="p">,</span> <span class="na">featureSwitch</span><span class="p">:</span> <span class="p">{}},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">getGroup</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">_id</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resultGroup</span><span class="p">)</span> <span class="p">{</span> 
+      <span class="c1">//the resultGroup is an object with</span>
+      <span class="c1">//name {String} (the new group's name)</span>
+      <span class="c1">//_id  {String} (the new group's id) and</span>
+      <span class="c1">//featureSwitch {Object} (the group's features) properties</span>
+      <span class="c1">//customData {Object} The custom infromations you saved for this group</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">resultGroup</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
+
+  <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">onErrorCB</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+
+<h3 id="edmdesignerapi-getgroup-groupid-callback-onerrorcb">edmDesignerApi.getGroup(groupId, callback, onErrorCB)</h3>
+
+<p>Gets a specified group</p>
+
+<h4 id="parameters">Parameters:</h4>
+
+<ul>
+<li>groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It&rsquo;s best if you use the values that you got when you list your groups with the <a href="#edmdesignerapilistgroupscallback-onerrorcb">edmDesignerAPI.listGroups</a> function.</li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul>
+
+<h3 id="get-one-group">Get one group</h3>
+
+<p>Gets a specified group</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/groups/read/:id</li>
+</ul>
+
+<h4 id="parameters-in-the-route">Parameters (in the route):</h4>
+
+<ul>
+<li>id {String} The id of the group. Note that it has to be a valid MongoDB _id. It&rsquo;s best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>A group object:
+  - _id {String} MongoDB id of the group
+  - featureSwitch {Object} The features that are available for users belong to this group.There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.
+  - name {String} The name of the group
+  - customData {Object} The custom informations you saved for this group</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="group-update">Group - update</h2>
+<pre class="highlight javascript"><code><span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"TestAdmin"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createGroup</span><span class="p">({</span><span class="na">name</span><span class="p">:</span> <span class="s2">"exampleGroup"</span><span class="p">,</span> <span class="na">featureSwitch</span><span class="p">:</span> <span class="p">{</span><span class="na">feature1</span><span class="p">:</span> <span class="kc">true</span><span class="p">}},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">updateGroup</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">_id</span><span class="p">,</span> <span class="p">{</span><span class="na">name</span><span class="p">:</span> <span class="s2">"newName"</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resultGroup</span><span class="p">)</span> <span class="p">{</span> 
+      <span class="c1">//the resultGroup is an object with</span>
+      <span class="c1">//success {Boolean} or err {String} property</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">resultGroup</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
+
+  <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
+
+  <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createGroup</span><span class="p">({</span><span class="na">name</span><span class="p">:</span> <span class="s2">"exampleGroup2"</span><span class="p">,</span> <span class="na">featureSwitch</span><span class="p">:</span> <span class="p">{</span><span class="na">feature1</span><span class="p">:</span> <span class="kc">true</span><span class="p">}},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">updateGroup</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">_id</span><span class="p">,</span> <span class="p">{</span><span class="na">featureSwitch</span><span class="p">:</span> <span class="p">{</span><span class="na">feature1</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">newFeature</span><span class="p">:</span> <span class="kc">true</span><span class="p">}},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resultGroup</span><span class="p">)</span> <span class="p">{</span> 
+      <span class="c1">//the resultGroup is an object with</span>
+      <span class="c1">//success {Boolean} or err {String} property</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">resultGroup</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
+
+  <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
+
+  <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createGroup</span><span class="p">({</span><span class="na">name</span><span class="p">:</span> <span class="s2">"exampleGroup3"</span><span class="p">,</span> <span class="na">featureSwitch</span><span class="p">:</span> <span class="p">{</span><span class="na">feature1</span><span class="p">:</span> <span class="kc">true</span><span class="p">}},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">updateGroup</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">_id</span><span class="p">,</span> <span class="p">{</span><span class="na">name</span><span class="p">:</span> <span class="s2">"newExampleName"</span><span class="p">,</span> <span class="na">featureSwitch</span><span class="p">:</span> <span class="p">{</span><span class="na">feature1</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">newFeature</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">customData</span><span class="p">:</span> <span class="p">{</span><span class="na">foo</span><span class="p">:</span> <span class="s2">"BAR"</span><span class="p">}}},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resultGroup</span><span class="p">)</span> <span class="p">{</span> 
+      <span class="c1">//the resultGroup is an object with</span>
+      <span class="c1">//success {Boolean} or err {String} property</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">resultGroup</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
+
+  <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
+
+  <span class="kd">function</span> <span class="nx">onErrorCB</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+
+<h3 id="edmdesignerapi-updategroup-groupid-data-callback-onerrorcb">edmDesignerApi.updateGroup(groupId, data, callback, onErrorCB)</h3>
+
+<p>Updates a specified group&rsquo;s name or the features it provides or both of these two at the same time. You can even add custom informations to the group.</p>
+
+<h4 id="parameters">Parameters:</h4>
+
+<ul>
+<li>groupId {String} The id of the group. Note that it has to be a valid MongoDB _id. It&rsquo;s best if you use the values that you got when you list your groups with the <a href="#edmdesignerapilistgroupscallback-onerrorcb">edmDesignerAPI.listGroups</a> function.</li>
+<li>data {Object}
+
+<ul>
+<li>data.name {String} The name you want to give to the group</li>
+<li>data.featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
+<li>data.customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>data.override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
+</ul></li>
+<li>callback {Function} A function to be called if the request succeeds</li>
+<li>onErrorCB {Function} A function to be called if the request fails</li>
+</ul>
+
+<h3 id="update-one-group">Update one group</h3>
+
+<p>Updates a specified group&rsquo;s name or the features it provides or both of these two at the same time. You can even add custom informations to the group.</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/groups/update</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>_id {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It&rsquo;s best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
+<li>name {String} The name you want to give to the group</li>
+<li>featureSwitch {Object} The features that are available for users belong to this group. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.</li>
+<li>customData {Object} You can upload custom informations to this group. You can save any kind of information. It is up to you, how you want to use it!</li>
+<li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>An object:
+  - success {Boolean} It should be true if the update was successful</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h1 id="feature-switch">Feature Switch</h1>
+
+<p>You can allow or forbid some features of our application to a group of your users.
+The list of the features you can set at the moment:<br>
+  - gallery {Object}: contains the features of the gallery
+    - noUpload {Boolean} If you set this parameter true then the users belong to this group cannot use the upload functionality. If you configured the gallery noUploadText (see <a href="#configure-api-servers-gallery">gallery config</a>) text then it will appear on the upload tab, otherwise a default text will be used.
+    - noUrl {Bollean} If you set this parameter true, then the users of this group cannot use any image not hosted by you. The image from url tab of the gallery will disappear if the feature does not allowed.
+    - limit {Number} The number of images the user can upload. If you do not want to set any limit then leave this parameter undefined. If a user reach the limit, then he won&rsquo;t be able to upload any more image and if you configured the gallery limitReached (see <a href="#configure-api-servers-gallery">gallery config</a>) text then it will be displayed otherwise a default text will be used.  Please note that the 0 limit and the noUpload are almost equivalent except a different message will appear on the upload tab if you use one or the other.</p>
+
+<p>This list is constantly expanding with time!</p>
+
+<h1 id="feature-configuration">Feature configuration</h1>
+
+<p>This is a new development which will be used everywhere from the next api version. Right now it is only used in a few features <a href="#wysiwyg-texteditor-buttons">texteditor buttons</a>.
+It is quite similar to the <a href="#feature-switch">feater switch</a>, but it is a little bit &ldquo;smarter&rdquo;. Here you can configure the features on four different level. Each level inherits the upper levels configuration but has greater priority.  Basicly the configurationions are merged into each other, but the lower levels always override the inherited configurations, if they have different configuration, but not everything, only the affected settings. The inheritance chain is the following:</p>
+
+<p>apiClient -&gt; apiClientInstance(apiKey) -&gt; group -&gt; user.</p>
+
+<p>For example, we have a configuration named &ldquo;feature&rdquo; on apiClient level with value 5. We have to users with different groups, in one of this two groups we override this feature with value 8. So the user who belongs to this group will get a feature configuration with feature 8 (he inherited 5 from the apiClient, but his group overrided it to 8, so in the en he inherited feature 8) while the other user will get feature 5 (he inherited it from the apiClient&rsquo;s feature configuration).</p>
+
+<p>If you want to disable a feature on one of this four levels, you have to give the feature a false value. (it is do not give any value to a feature then that feauter will be inherited from the upper levels, so it is important to give the feature a false value).</p>
+
+<p>For example, we have a configuration named &ldquo;feature&rdquo; on apiClient level with value {&ldquo;number&rdquo;: 5}. We have to users with different groups, in one of this two groups we override this feature with value false. So the user who belongs to this group won&rsquo;t get the feature configuration (he inherited {&ldquo;number&rdquo;: 5} from the apiClient, but his group overrided it to false, so in the en he does not inherited this feature. this basicly means that this user cannot use the given feature) while the other user will get feature {&ldquo;number&rdquo;: 5} (he inherited it from the apiClient&rsquo;s feature configuration, so he can use this feature).</p>
+
+<h1 id="favorite-elements">Favorite elements</h1>
+
+<p>The complex elem is a possible tool to save a BOX or MULITCOLL element with all of it contents to be able to reuse it. This feature is created for make the template editing more fast so more effective.
+A complex elem can binded to a user, to a group of users or to all of the users.
+When a user uses the editor these binding displays all together and can be used all of them.</p>
+
+<p>The administrator of the application can upload complex elems to all of the above possibilities.
+The user of the editor can save complex elems only for him/herself, those will be added to the admin defined items.
+The editor users can also delete those complex elems what are binded to him/herself as a user.</p>
+
+<p>These are the 3 ways to upload complex elems as an admin:
+  - to all your user (<a href="#upload-complex-elems-to-all-users">general complexElems upload</a>) 
+  - to a specified group (<a href="#upload-complex-elems">upload complexElems to group</a>) 
+  - to specified user or users (<a href="#upload-complex-elems-to-specified-users">upload complexElems to user</a>)</p>
+
+<h3 id="structure">Structure</h3>
+
+<p>The representing object for a Complex elem should have the following properties:<br>
+  - doc {Object} /REQUIRED/ it should be a json object (which represent our templates)
+    - type /REQUIRED/ It must be <a href="#box">&ldquo;BOX&rdquo;</a>, <a href="#multicolumn">&ldquo;MULTICOLUMN&rdquo;</a> or <a href="#full-width-container">&ldquo;FULLWIDTH_CONTAINER&rdquo;</a>
+    - generalSettings
+  - id {String} /optional/ this id is what will identify the item for you if you would like to manage it via admin
+  - title {Object} /optional/ it should contains language code - title string pairs. For example: &#39;en&rsquo;: &#39;Green-white complexElem&rsquo;. If you miss to give it, we it will receive a default name. The title will appear on the list of the complex element. If you don&rsquo;t want to use any other localization then please use the &#39;en&rsquo; language code, the default will always be the &#39;en&rsquo; regardless of the actual language!  </p>
+
+<h3 id="localization">Localization</h3>
+
+<p>It is possible to use different localization with the same complex elem but <strong>not required</strong>.
+You can localize the title of the complex elem. The title of a complex elem will appear on the list, where the user will be able to choose from.<br>
+If you want to support more than one language you just have to put the language code - text pair to the title object (see <a href="#structure">structure</a>).
+An example title object: </p>
+
+<p>title: { &#39;en&rsquo;: &#39;example title&rsquo;,
+     &#39;hu&rsquo;: &#39;példa cím&rsquo;
+     /&hellip;
+    }</p>
+
+<h2 id="upload-complex-elems-to-a-group">Upload Complex Elems to a Group</h2>
+
+<p>Upload a list of Complex elems to the specified group. Every user who belongs to this group will be able to use these Complex elems. Please note that every upload will overwrite the previous uploads!<br>
+If you want to know what is a Complex elem, please read the <a href="#complexelements">complexElements</a> part of the documentation!</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/complexElem/addComplexElemToGroup</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>groupId {String} /REQUIRED/ The id of the group. Note that it has to be a valid MongoDB _id. It&rsquo;s best if you use the values that you got when you list your groups with the <a href="#list-groups">/json/groups/list</a> route.</li>
+<li>items {Array} /REQUIRED/ The list of Complex elems which the users of the specified group will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>An object with 3 child objects:
+  - result {Array} list of the complex elems which were successfully added to the group
+  - fails {Array} if some of the items failed it contains the reason, if none of them failed it is null 
+  - err {String} If there is any reason why the whole process failed otherwise null</p>
+
+<h2 id="upload-complex-elems-to-specified-users">Upload Complex elems to specified users</h2>
+
+<p>Upload a list of Complex elems to a specified user or users. Please note that every upload will overwrite the previous uploads!<br>
+If you want to know what a Complex elem is good for, please read the <a href="#complexelements">complexElements</a> part of the documentation!</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/complexElem/addComplexElemToUsers</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.</li>
+<li>items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>An object:
+  - error {String} If the whole process is failed, otherwise null.
+  - fails {Array} If a part of the items failed to insert, if all items inserted, it is null.</p>
+
+<h2 id="upload-complex-elems-to-all-users">Upload Complex elems to all users</h2>
+
+<p>Upload a list of Complex elems to all users. Please note that every upload will overwrite the previous uploads!<br>
+If you want to know what a Complex elem is good for, please read the <a href="#complexelements">complexElements</a> part of the documentation!</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/complexElem/addComplexElems</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>userIds {Array} /REQUIRED/ List of the ids of the users you want to upload the Complex elems.</li>
+<li>items {Array} /REQUIRED/ The list of Complex elems which the selected users will be able to use. <strong>Please note that if you upload a new list, the old list will be overwrited!</strong> If you want to know how a Complex elem object should look like, please read <a href="#structure">this</a> part of the documentation.</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>An object:
+  - error {String} If the whole process is failed, otherwise null.
+  - fails {Array} If a part of the items failed to insert, if all items inserted, it is null.
+  - result {Array} List of all inserted Complex elems</p>
+
+<h1 id="project-handler-admin-routes">Project handler admin routes</h1>
+
+<h2 id="create-to">Create to</h2>
+
+<p>Creates a project/template to a specified user</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/createTo</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>userId {String} /REQUIRED/ The target user&rsquo;s id</li>
+<li>title {String} The title of the new template, if it is not given, then the project&rsquo;s name will be &#39;Untitled&rsquo;</li>
+<li>description {String} Description of the template, by defaullt it is an empty string</li>
+<li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
+<li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>Project object:
+  - _id {String} MongoDB _id of the newly created project</p>
+
+<p>or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="create-from-to">Create from to</h2>
+
+<p>Creates a project/template to a specified user using an another template</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/createFromTo</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>userId {String} /REQUIRED/ The target user&rsquo;s id</li>
+<li>_id {String} /REQUIRED/ The MongoDB _id of the template we want to copy to the target user</li>
+<li>title {String} The title of the new template, if it is not given, then the project&rsquo;s name will be &#39;Untitled&rsquo;</li>
+<li>description {String} Description of the template, by defaullt it is an empty string</li>
+<li>document {Object} An object, which represents a template. By setting this param, you can create new projects based on your prepared custom templates</li>
+<li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>Project object:
+  - _id {String} MongoDB _id of the newly created project</p>
+
+<p>or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="create-from-to-with-images">Create from to with images</h2>
+
+<p>It is quiet similar to the <a href="#create-from-to">create from to route</a>, basic with this route you can do the same thing except, here not only the project will be copied, but the images (which are used in the template) too. If you want to use this route, first you need to implement a <a href="#copy-route">copy route</a> on your server side and <a href="#configure-api-servers-gallery">config</a> it&rsquo;s address to the gallery.</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/createFromToWithImages</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>userId {String} /REQUIRED/ The target user&rsquo;s id</li>
+<li>_id {String} /REQUIRED/ The MongoDB _id of the template we want to copy to the target user</li>
+<li>title {String} The title of the new template, if it is not given, then the project&rsquo;s name will be &#39;Untitled&rsquo;</li>
+<li>description {String} Description of the template, by defaullt it is an empty string</li>
+<li>customData {Object} You can upload custom informations to this project. You can save any kind of information. It is up to you, how you want to use it!</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>Project object:
+  - _id {String} MongoDB _id of the newly created project</p>
+
+<p>or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="get-project">Get Project</h2>
+
+<p>Get a specified project as json. The result will contain almost every information about the selected project.</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/getProject/:id</li>
+</ul>
+
+<h4 id="parameters-in-the-route">Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the target project</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>Project object:
+  - _id {String} MongoDB _id of the newly created project
+  - title {String} The title of the project.
+  - description {String} Description about the project
+  - createdOn {String} Creation time
+  - lastModified {String} Time of the last modification
+  - document {Object} The json format of the template
+    - usedColors {Array} List of the colors which are used in the template
+    - generalSettings {Object} The default settings of the template
+    - root {Object} The actual structure of the template
+    - header {Object} The header of the template
+    - footer {Object} The footer of the template 
+  - customData {Object} Your custom data</p>
+
+<p>or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="set-project">Set Project</h2>
+
+<p>Sets the root of a selected user&rsquo;s selected project&rsquo;s document. </p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/project/setProject</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>userId {String} /REQUIRED/ the id of the user whose project you want to update</li>
+<li>projectId {Sring} /REQUIRED/ the id of the project you want to update</li>
+<li>documentRoot {Object} /REQUIRED/ The EDM template json you want to set to the selected project. It should start with <a href="#root">Root</a> elem</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>Success object:
+  - success {boolean}</p>
+
+<p>or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="download-as-zip">Download as Zip</h2>
+
+<p>It is possible to export your template as a zip. </p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com//json_v1.0.0/apiKey/:apiKey/user/:user/project/:project/downloadAsZip</li>
+</ul>
+
+<h4 id="parameters-in-the-route">Parameters (in the route):</h4>
+
+<ul>
+<li>apiKey {String} the key of the instance the selected user belongs to.</li>
+<li>user {Sring}  the id of the user</li>
+<li>project {String} the id of the project you want to download</li>
+</ul>
+
+<h4 id="configuration">Configuration</h4>
+
+<p>You can set which files you want to have in your exported zip and how you want to export them. To set some configuration you need to put a config json to the data property in the query part of your request. Your config json should have the following properties:
+  - needHtml {Boolean} if it is false then there will be no template.html in your exported zip
+  - needJson {Boolean} if it is false then there will be no project.json in your exported zip
+  - withoutSanitizing {Boolean} if it is true then the template.html won&rsquo;t be sanitized.</p>
+
+<p>Example:
+  - the config json: {&ldquo;config&rdquo;: {&ldquo;needHtml&rdquo;: true, &ldquo;needJson&rdquo;: false, &ldquo;withoutSanitizing&rdquo;: false} }
+  - example request: //api.edmdesigner.com/json_v1.0.0/apiKey/yourapikey/user/youruserid/project/projectId/downloadAsZip?user=admin&amp;token=adminToken&amp;data={&ldquo;config&rdquo;: {&ldquo;needHtml&rdquo;: true, &ldquo;needJson&rdquo;: false, &ldquo;withoutSanitizing&rdquo;: false} }</p>
+
+<h4 id="response">Response:</h4>
+
+<p>A zip which can contain the followings (it depends on the configuration, by default it will contain everything):
+  - template.html {file} The html code of the template. It can be a sanitized version or not, it depends of your configuration. By default it will be sanitized.
+  - project.json {file} The json version of the project.
+  - images folder with the images of the template.
+Please note that every images source (href, src, etc.) in the json and html file are replaced with the paths of the images in the images folder.</p>
+
+<h1 id="custom-data">Custom Data</h1>
+
+<p>If you want to save any kind of plus information for some of your data you can do it with using the customData field
+You can save custom informations to:<br>
+  - yourself /apiClientInstance/ (<a href="#add-custom-data-to-yourself">addCustomData</a>)
+  - users (update user <a href="#update-user">server side</a> or <a href="#edmdesignerapiupdateuseruserid-data-callback-onerrorcb">client side</a>)
+  - groups (update group <a href="#update-one-group">server side</a> or <a href="#edmdesignerapiupdategroupgroupid-data-callback-onerrorcb">client side</a>)
+  - project (update project <a href="#update-information">server side</a> or <a href="#edmdesignerapiupdateprojectinfoprojectid-data-callback-onerrorcb">client side</a>)  </p>
+
+<h2 id="add-custom-data-to-yourself">Add Custom Data to yourself</h2>
+
+<p>You can save any kind of custom information to your apiClientInstance database entry</p>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/general/saveCustomData</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>customData {Object} The custom informations you want to save</li>
+<li>override {Boolean} If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>Http status code 200</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="get-my-custom-data">Get my custom data</h2>
+
+<p>You can get the custom informations you previously saved for yourself</p>
+
+<h4 id="type">Type</h4>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h4 id="route">Route</h4>
+
+<ul>
+<li>//api.edmdesigner.com/json/general/getMyCustomData</li>
+</ul>
+
+<h4 id="response">Response</h4>
+
+<p>An object containing your custom data
+  - customData {Object} The custom informations you saved for yourself</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h1 id="api-key-management">API key management</h1>
+
+<h2 id="api-key-list">API key - list</h2>
+
+<p>Lists your api keys</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/apiKey</li>
+</ul>
+
+<h4 id="parameters">Parameters</h4>
+
+<ul>
+<li>time {String/Number} Must have. The current timestamp.</li>
+<li>email {String} Must have. The email to registered to your account.</li>
+<li>hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile</li>
+<li>findObject {Object} Optional. With this object the result can be filtered and modified.</li>
+<li>findObject.skip {Number} index where from the listing should begin, without limit parameter it will be ingnored</li>
+<li>findObject.limit {Number} length of the items to be listed, without skip parameter it will be ingnored</li>
+<li>findObject.select [Array] list of the properties to be listed [&ldquo;name&rdquo;, &ldquo;created&rdquo;]</li>
+<li>findObject.sort {Object} MongoDb sort object: {property : &ldquo;asc/desc&rdquo;}</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>An array of your api keys. Every item is an object with this parameters:
+  - _id {String} MongoDB id of the api key
+  - featureSwitch {Object} The features that are available for users belong to this apikey. There is an ever-expanding <a href="#feature-switch">list</a> of possible features which you can choose from.
+  - name {String} The name of the api key
+  - customData {Object} Th custom informations you saved for the api key
+  - magic {String} the magic word of the api key
+  - galleryUploadRoute {String} the upload route of the api key
+  - galleryDeleteRoute {String} the delete route of the api key
+  - galleryCopyRoute {String} the copy route of the api key
+  - apiKey {String} the id of the api key</p>
+
+<p>Or in case of of limit and skip parameters sent an Object consists of:
+  - totalCount {Number} The length of the full list
+  - result {Array} The list of the api keys, same as above</p>
+
+<p>Or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<h2 id="api-key-create">API key - create</h2>
+
+<p>Create new api keys</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/apiKey</li>
+</ul>
+
+<h4 id="parameters">Parameters</h4>
+
+<ul>
+<li>time {String/Number} Must have. The current timestamp.</li>
+<li>email {String} Must have. The email to registered to your account.</li>
+<li>hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile</li>
+<li>items {Array} Must have. An array of the new apiKey object what consists of the following:</li>
+<li>id: {String} Must have. The id of the api key.</li>
+<li>name: {String} Optional. The name of the api key.</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<ul>
+<li>created {Array} the list of the created api keys</li>
+<li>failed {Array} The list of the failed api keys</li>
+<li>alreadyHave {Array} The list of the api keys what could not be created bacause the keys existed before</li>
+</ul>
+
+<h2 id="api-key-update">API key - update</h2>
+
+<p>Updating skins of existing api key</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/apiKey/:apiKeyId/skin (Where apiKeyId is the id of the api key)</li>
+</ul>
+
+<h4 id="parameters">Parameters</h4>
+
+<ul>
+<li>time {String/Number} Must have. The current timestamp.</li>
+<li>email {String} Must have. The email to registered to your account.</li>
+<li>hash {String} Must have. A concatated string as the following: md5(email + timestamp + your global magic word) You can check your global magic word at https://dashboard.edmdesigner.com/#profile</li>
+</ul>
+
+          <h1 id="other-resources">Other resources</h1>
+
+<p>There are several resources from where you can learn more about EDMdesigner: the official documentation, the tutorials and the example implementations.</p>
+
+<h2 id="docs">Docs</h2>
+
+<table><thead>
+<tr>
+<th>Document</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="./">Basics</a></td>
+<td>This documentation covers the very basics of the integration, like:<ul><li>generating an access token</li><li>making API calls</li><li>managing and opening projects</li><li>managing users</li><li>gallery handling</li></ul></td>
+</tr>
+<tr>
+<td><a href="advanced.html">Advanced</a></td>
+<td>This documentation covers more advanced topics. Probably you will only need some of these functionalities. <ul><li>Group handling</li><li>String placeholders</li><li>Dynamic data</li><li>Favorite elements&rsquo; management</li><li>Working with custom data</li><li>Advanced project handling</li><li>API key management</li></ul></td>
+</tr>
+<tr>
+<td><a href="postMessageApi.html">postMessage API</a></td>
+<td>By reading this documentation you can learn about how to manipulate the editor itself from the client side. Basically this client side API is based on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postMessage</a> function with which you can send messages between frames from different domains. <ul><li>Basic messages and responses (eg. manual save)</li><li>Hooking on editor events (eg. using your own gallery instead of the built-in one)</li><li>Dynamic data</li><li>Setting elements&rsquo; properties</li></ul></td>
+</tr>
+<tr>
+<td><a href="documentDescriptors.html">Element descriptors</a></td>
+<td>A detailed description of our element types used in projects and favorite elements. We generate all of our outputs based on these JSON descriptors.</td>
+</tr>
+<tr>
+<td><a href="builtInGallery.html">Old built-in gallery</a></td>
+<td>Don&rsquo;t use it. Use the new postMessage based solution.</td>
+</tr>
+<tr>
+<td><a href="migratingToTheCDNBasedEditor.html">Migrating to the CDN based editor</a></td>
+<td>In this article you will learn about how to migrate from the good old version of the editor to the superfast and robust <a href="http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront">CDN based version</a>.</td>
+</tr>
+</tbody></table>
+
+<h2 id="tutorials">Tutorials</h2>
+
+<table><thead>
+<tr>
+<th>Tutorial</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="tutorialTheBasics.html">The Basics</a></td>
+<td>In this tutorial you will learn about our dashboard, the access token generation and the very basic functionalities, like creating and opening projects.</td>
+</tr>
+<tr>
+<td><a href="tutorialAdminFunctionalities.html">Admin Functionalities</a></td>
+<td>The biggest take away of this tutorial that you will see how to create new users in our system, so you will be able to associate one user for each of users in your system.</td>
+</tr>
+<tr>
+<td><a href="tutorialGalleryConfig.html">Old Built-in Gallery Configuration</a></td>
+<td>In this tutorial you will learn about how to set up the gallery properly, how to implement the hooks on your side and you will also learn about the security of these hooks.</td>
+</tr>
+</tbody></table>
+
+<h2 id="example-implementations">Example implementations</h2>
+
+<p>Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.</p>
+
+<ul>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP">PHP example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin">PHP admin example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js">Node.js example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-ColdFusion">Cold Fusion example</a> - Thank you Tom Chiverton from Extravision! :)</li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-Django">Django example</a> - Thank you Ferenc Vehmann from ZenHeads! :)</li>
+</ul>
+
+<p>If you have another example implementation, please let us know, we will fork it and will put a link here.</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="php">php</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

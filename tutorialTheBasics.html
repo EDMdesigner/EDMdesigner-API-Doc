@@ -1,0 +1,334 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Integration Tutorial - the basics</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["html","php"]);
+        });
+      </script>
+  </head>
+
+  <body class="tutorialTheBasics">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="html">html</a>
+              <a href="#" data-language-name="php">php</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="overview">Overview</h1>
+
+<p>In this article you can read about the basic functionalities of EDMdesigner’s dashboard, the basics of the API’s authentication and authorization, and you will be able to use some basic functionalities related to users and projects, including opening a template in the editor.</p>
+
+<p>In the following few tutorial posts I will talk about integrating EDMdesigner into an arbitrary web-based system. I will provide simple and very typical use-cases, with which you will encounter very likely. By reading the tutorial posts, you will be able to create a basic integration with gallery handling, using built-in templates, customizing your workflow with custom data and you will be able to use admin related actions. Also, you will be familiar with our dashboard, since in lot of cases it’s more handy to use that.</p>
+
+<p>In this article I will talk about how to start the integration. You will learn about:</p>
+
+<ul>
+<li>some of the basic functionalities of our dashboard</li>
+<li>the basic concepts of token generation</li>
+<li>you will be able list the projects of a user</li>
+<li>and finally our app will be able open those projects.</li>
+</ul>
+
+<h1 id="get-access-to-our-dashboard">Get access to our dashboard</h1>
+
+<p>That is the first and most important thing. At the moment, you need to write an email to support ~AT~ edmdesigner.com or more preferably to roland ~AT~ edmdesigner.com and we will create an API user for you. Later, we will enable users to register.</p>
+
+<h1 id="create-an-api-key">Create an API key</h1>
+
+<p>Although you will have an API key by default, I suggest you to create one for development purposes, this way there won’t be dummy data under your real API key. When you log in to the dashboard, you will see the following screen:</p>
+
+<p><a href="./images/dashboard01.png" target="_blank"><img src="./images/dashboard01.png" /></a></p>
+
+<p>Your API keys will be listed by default, which you can always reach when you click on “Api instances” in the menu on the left hand side. As you can see, there are a few API keys under my account. You can create as many keys as you want. During these articles, I will use API_GY. I suggest you to create an API key for development purposes. Its name can be YOUR_COMPANY_DEV or something based on that pattern.</p>
+
+<h1 id="the-magic-word">The magic word</h1>
+
+<p>When you have your brand new API key, the next most important thing is to have the corresponding magic word. You can find it under the “Magic word” menu item on the left. The magic word will be used to generate a token which is the basis of authorization in our API.</p>
+
+<p><a href="./images/dashboard02.png" target="_blank"><img src="./images/dashboard02.png" /></a></p>
+
+<p>On this view, you also can regenerate your magic word, which I already did, so don’t even try to mess with my API key&hellip; ;)</p>
+
+<h1 id="users-and-the-“templater”-user">Users and the “templater” user</h1>
+
+<p>The next thing is to check out the users. By default, there is a special user associated to every API key, and its name is “templater”. You can’t delete this user, because this is the way to create default (or built-in) templates. If this user has templates, every other user in the system are able to create new templates based on these. This way you can provide some predefined templates to your users and they don’t have to start always from scratch.</p>
+
+<p><a href="./images/dashboard03.png" target="_blank"><img src="./images/dashboard03.png" /></a></p>
+
+<p>As you can see, “templater” is the only user which is associated to API_GY at the moment. You can create new users on this view, I suggest you to create a user which name is “test”. I will use that user name as well in my examples. User names must be unique per API key, so later it is suggested to use your users database id or their email address or something else which is unique.</p>
+
+<p>As you can see it is possible to upload templates to users. (See the upload template button next to each users.) The templates are in a special JSON format, which is defined by us. Also, you can download templates in this format, so if you want to copy a template to a user you can do it by downloading from one and uploading it to another user.</p>
+
+<p>Also, it is possible to purchase templates from us, and you can even order very, very custom templates which we can prepare for you.
+If you have reached this point, then everything is set up to start to play around with the API and start coding! In the code examples on the server side I will use PHP, since – almost – everyone can at least read that language. The client side part of the code will always be in a script tag. You just need to copy them into your html file to play around a little bit. (You might always want to overwrite the preveious example.)</p>
+
+<p>You can switch between the html and the php parts of the example by clicking on the corresponding tabs on the right hand side at the top of the page.</p>
+
+<p><strong>Coding time!</strong></p>
+
+<h1 id="token-generation-and-the-javascript-api">Token generation and the Javascript API</h1>
+<pre class="highlight html"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"path_to_your_jquery"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="c">&lt;!-- at the moment, our JS API depends on jQuery... --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://api-static.edmdesigner.com/EDMdesignerAPI.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre>
+<pre class="highlight php"><code>//token.php
+<span class="cp">&lt;?php</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"userId"</span><span class="p">])</span> <span class="p">{</span>
+    <span class="nv">$publicId</span> <span class="o">=</span> <span class="s2">"YOUR_DEV_API_KEY"</span><span class="p">;</span>
+    <span class="nv">$magic</span> <span class="o">=</span> <span class="s2">"YOUR_MAGIC_WORD"</span><span class="p">;</span>
+
+    <span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s2">"REMOTE_ADDR"</span><span class="p">];</span>
+    <span class="nv">$timestamp</span> <span class="o">=</span> <span class="nb">time</span><span class="p">();</span>
+
+    <span class="nv">$hash</span> <span class="o">=</span> <span class="nb">md5</span><span class="p">(</span><span class="nv">$publicId</span> <span class="o">.</span> <span class="nv">$ip</span> <span class="o">.</span> <span class="nv">$timestamp</span> <span class="o">.</span> <span class="nv">$magic</span><span class="p">);</span>
+
+    <span class="nv">$url</span> <span class="o">=</span> <span class="s2">"http://api-a.edmdesigner.com/api/token"</span><span class="p">;</span> <span class="c1">//In real life, you should implement
+</span>    <span class="c1">//a fail over mechanism to api-b.edmdesigner.com and api-c.edmdesigner.com
+</span>
+    <span class="c1">//Also, make some authorization based on data in your session,
+</span>    <span class="c1">//because there is a chance that someone tries to be tricky.
+</span>    <span class="c1">//For example you might want to prevent most of your users
+</span>    <span class="c1">//to edit templater's projects...
+</span>
+    <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s2">"id"</span>    <span class="o">=&gt;</span> <span class="nv">$publicId</span><span class="p">,</span>
+        <span class="s2">"uid"</span>   <span class="o">=&gt;</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s2">"userId"</span><span class="p">],</span>
+        <span class="s2">"ip"</span>    <span class="o">=&gt;</span> <span class="nv">$ip</span><span class="p">,</span>
+        <span class="s2">"ts"</span>    <span class="o">=&gt;</span> <span class="nv">$timestamp</span><span class="p">,</span>
+        <span class="s2">"hash"</span>  <span class="o">=&gt;</span> <span class="nv">$hash</span>
+    <span class="p">);</span>
+
+    <span class="c1">// use key 'http' even if you send the request to https://...
+</span>    <span class="nv">$options</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s2">"http"</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s2">"header"</span>  <span class="o">=&gt;</span> <span class="s2">"Content-type: application/x-www-form-urlencoded</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">,</span>
+            <span class="s2">"method"</span>  <span class="o">=&gt;</span> <span class="s2">"POST"</span><span class="p">,</span>
+            <span class="s2">"content"</span> <span class="o">=&gt;</span> <span class="nb">http_build_query</span><span class="p">(</span><span class="nv">$data</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">);</span>
+
+    <span class="nv">$context</span>  <span class="o">=</span> <span class="nb">stream_context_create</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">$context</span><span class="p">);</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+
+<p>The easiest and the fastest way of integration is to use our <a href="http://api-static.edmdesigner.com/EDMdesignerAPI.js">Javascript API</a>, which you can reach at https://api-static.edmdesigner.com/EDMdesignerAPI.js. This endpoint (api-static.edmdesigner.com) points to Amazon&rsquo;s CDN (Cloudfront), so it should be super fast to download the JS API from all over the world. It is dependent on jQuery, so you should include that previously.</p>
+
+<p>If you have the JS API script included, then you will have function called initEDMdesignerPlugin. (Sorry for the naming, it is not really a plugin.) This function has three parameters.</p>
+<pre class="highlight html"><code><span class="nt">&lt;script&gt;</span>
+    <span class="c1">//you can take a look at token.php if you change to the php tab</span>
+    <span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"token.php"</span><span class="p">,</span> <span class="s2">"templater"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">//actual calls on edmApi's functions... eg. listing, opening projects, etc.</span>
+    <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Param</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>route</td>
+<td>This is where you implemented your part of the token generation. You can see an example for that if you change to the php tab.</td>
+</tr>
+<tr>
+<td>userId</td>
+<td>The id of the user you want to use. In the example we try the built-in templater user.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td>The callback which is called when everything was fine with the token generation. The param of this function is an object with the reachable API functionalities as functions.</td>
+</tr>
+</tbody></table>
+
+<p>The initEDMdesignerPlugin function will send a HTTP POST request to the route which you gave as first parameter. If everything goes well the result should be the token with which will be sent with every request to the API server. In the example we generated an access token for the templater user.</p>
+
+<p>A very good thing in the JS API is that there is a built-in failover mechanism. It means that if one of our end-points is not reachable for whatever reason, then it will retry the request using the next end-point. If you don&rsquo;t use our JS API, you should implement the fail over mechanism by yourself. Also, on the server side it&rsquo; is highly recommended as well, although in our example it&rsquo;s not implemented. (We wanted to keep our examples as simple as possible for easier understanding.) At the moment we have the following API end-points:</p>
+
+<ul>
+<li>api-a.edmdesigner.com</li>
+<li>api-b.edmdesigner.com</li>
+<li>api-c.edmdesigner.com</li>
+</ul>
+
+<p>In the example, we generate an access token for the &ldquo;templater&rdquo; user. This means that if you call the functions on the edmDesignerApi object, than you will act in the name of the templater user. This user&rsquo;s projects will be the built-in templates in the system. By assingning projects to this user, you can provide a default set of projects to your users.</p>
+
+<p>Now, please switch to the <a href="?php#token-generation-and-the-javascript-api">php tab</a> and take a look at the example implementation of the token generation. You should implement something like this on your server side.</p>
+
+<p>In the example, $publicId should be your API key and the $magic variable should contain the corresponding magic word, which you can find on the dashboard. Basically you have to send to one of our api end-points your API key (id), userId of your actual user (uid), your server’s ip address (ip), the actual timestamp (ts) and the md5 hash of the concatenation of your API key, your server’s ip address, the actual timestamp and the magic word. If everything goes well, you will receive a json with a token property in it, otherwise you will receive a 403 HTTP status code. The example implementation sends back the fetched token to the client side, so EDMdesignerAPI.js can concatenate it to every request.</p>
+
+<p>If you want to learn more about the access token generation, please read the corresponding part in our <a href="./#generating-an-access-token">docs</a>.</p>
+
+<h2 id="create-an-example-project">Create an example project</h2>
+<pre class="highlight html"><code><span class="nt">&lt;script&gt;</span>
+    <span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"token.php"</span><span class="p">,</span> <span class="s2">"templater"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createProject</span><span class="p">(</span><span class="kd">function</span><span class="p">({</span><span class="na">title</span><span class="p">:</span> <span class="s2">"test-title"</span><span class="p">,</span> <span class="na">description</span><span class="p">:</span> <span class="s2">"test-desc"</span><span class="p">,</span> <span class="na">document</span><span class="p">:</span> <span class="p">{}},</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">_id</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">},</span> <span class="kd">function</span> <span class="nx">onErrorCB</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span> <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+<pre class="highlight php"><code>//Please switch back to the html tab.
+</code></pre>
+
+<p>Now you can try to create an empty project to the “templater” user with the following code snippet:</p>
+
+<h2 id="list-the-projects">List the projects</h2>
+<pre class="highlight html"><code><span class="nt">&lt;script&gt;</span>
+    <span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"token.php"</span><span class="p">,</span> <span class="s2">"templater"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">listProjects</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">},</span> <span class="kd">function</span> <span class="nx">onErrorCB</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span> <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+
+<p>You can check out on the dashboard if the project is really created or not. Also, you can break into the callback of initEDMdesignerPlugin with the debugger and check out what kind of functions are there on the edmApi object. An other way to check out if new projects are really created to the “templater” user is to change the code snippet above to the following one:</p>
+
+<h2 id="use-a-different-user">Use a different user</h2>
+<pre class="highlight html"><code><span class="nt">&lt;script&gt;</span>
+    <span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"token.php"</span><span class="p">,</span> <span class="s2">"test"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">getDefaultTemplates</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">//the result is an array, containing your default projects</span>
+        <span class="p">},</span> <span class="kd">function</span> <span class="nx">onErrorCB</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span> <span class="p">});</span>
+    <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+
+<p>By now, you have probably figured out that you can call the initEDMdesignerPlugin function with other user names as well, for example with the one you previously created on dashboard. In my case it’s “test”. You can call all the functions with this user just like you did with “templater”. One very good feature of the “templater” user is that its projects are accessible for all of the users associated with the actual api key. It is possible with the <a href="./#project-list-defaults">getDefaultTemplates</a> function. This way it’s very easy to create a new template based on one of the “templater” user’s templates with the <a href="./#project-create-from-defaults">createFromDefaults</a> function.</p>
+
+<h2 id="open-a-project-in-editor">Open a project in editor</h2>
+<pre class="highlight html"><code><span class="nt">&lt;script&gt;</span>
+    <span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"token.php"</span><span class="p">,</span> <span class="s2">"test"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createProject</span><span class="p">({</span><span class="na">title</span><span class="p">:</span> <span class="s2">"test-title"</span><span class="p">,</span> <span class="na">description</span><span class="p">:</span> <span class="s2">"test-desc"</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">openProject</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">_id</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"body"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">iframe</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+    <span class="p">},</span> <span class="kd">function</span> <span class="nx">onErrorCB</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span> <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+
+<p>The very last thing is to open a project. Once you have the _id of the project what you want to open, then it’s easy as a pie. In the code example we create a project and we open it immediately.</p>
+
+<p>In the example, we directly append an iframe provided by the result object to the end of the body. It is not the only way, there is an src property as well on the result object, making it handy to set the same property of an existing iframe in your dom. You can learn more about the editor&rsquo;s iframe in our <a href="./#editor-iframe">docs</a>.</p>
+
+          <h1 id="other-resources">Other resources</h1>
+
+<p>There are several resources from where you can learn more about EDMdesigner: the official documentation, the tutorials and the example implementations.</p>
+
+<h2 id="docs">Docs</h2>
+
+<table><thead>
+<tr>
+<th>Document</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="./">Basics</a></td>
+<td>This documentation covers the very basics of the integration, like:<ul><li>generating an access token</li><li>making API calls</li><li>managing and opening projects</li><li>managing users</li><li>gallery handling</li></ul></td>
+</tr>
+<tr>
+<td><a href="advanced.html">Advanced</a></td>
+<td>This documentation covers more advanced topics. Probably you will only need some of these functionalities. <ul><li>Group handling</li><li>String placeholders</li><li>Dynamic data</li><li>Favorite elements&rsquo; management</li><li>Working with custom data</li><li>Advanced project handling</li><li>API key management</li></ul></td>
+</tr>
+<tr>
+<td><a href="postMessageApi.html">postMessage API</a></td>
+<td>By reading this documentation you can learn about how to manipulate the editor itself from the client side. Basically this client side API is based on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postMessage</a> function with which you can send messages between frames from different domains. <ul><li>Basic messages and responses (eg. manual save)</li><li>Hooking on editor events (eg. using your own gallery instead of the built-in one)</li><li>Dynamic data</li><li>Setting elements&rsquo; properties</li></ul></td>
+</tr>
+<tr>
+<td><a href="documentDescriptors.html">Element descriptors</a></td>
+<td>A detailed description of our element types used in projects and favorite elements. We generate all of our outputs based on these JSON descriptors.</td>
+</tr>
+<tr>
+<td><a href="builtInGallery.html">Old built-in gallery</a></td>
+<td>Don&rsquo;t use it. Use the new postMessage based solution.</td>
+</tr>
+<tr>
+<td><a href="migratingToTheCDNBasedEditor.html">Migrating to the CDN based editor</a></td>
+<td>In this article you will learn about how to migrate from the good old version of the editor to the superfast and robust <a href="http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront">CDN based version</a>.</td>
+</tr>
+</tbody></table>
+
+<h2 id="tutorials">Tutorials</h2>
+
+<table><thead>
+<tr>
+<th>Tutorial</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="tutorialTheBasics.html">The Basics</a></td>
+<td>In this tutorial you will learn about our dashboard, the access token generation and the very basic functionalities, like creating and opening projects.</td>
+</tr>
+<tr>
+<td><a href="tutorialAdminFunctionalities.html">Admin Functionalities</a></td>
+<td>The biggest take away of this tutorial that you will see how to create new users in our system, so you will be able to associate one user for each of users in your system.</td>
+</tr>
+<tr>
+<td><a href="tutorialGalleryConfig.html">Old Built-in Gallery Configuration</a></td>
+<td>In this tutorial you will learn about how to set up the gallery properly, how to implement the hooks on your side and you will also learn about the security of these hooks.</td>
+</tr>
+</tbody></table>
+
+<h2 id="example-implementations">Example implementations</h2>
+
+<p>Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.</p>
+
+<ul>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP">PHP example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin">PHP admin example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js">Node.js example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-ColdFusion">Cold Fusion example</a> - Thank you Tom Chiverton from Extravision! :)</li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-Django">Django example</a> - Thank you Ferenc Vehmann from ZenHeads! :)</li>
+</ul>
+
+<p>If you have another example implementation, please let us know, we will fork it and will put a link here.</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="html">html</a>
+                <a href="#" data-language-name="php">php</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Integration Tutorial - the basics</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["html","php"]);
+        });
+      </script>
+  </head>
+
+  <body class="migratingToTheCDNBasedEditor">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="html">html</a>
+              <a href="#" data-language-name="php">php</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="overview">Overview</h1>
+
+<p>This documentation is about how to migrate from the good old version of our editor to the new <a href="http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront">CDN based version</a>. There are only a few things you need to change. We will go through these steps in this documentation.</p>
+
+<p>Probably you used one of the following API endpoints:</p>
+
+<ul>
+<li>api.edmdesigner.com</li>
+<li>api-virginia.edmdesigner.com</li>
+<li>api-ireland.edmdesigner.com</li>
+<li>api-sydney.edmdesigner.com</li>
+</ul>
+
+<p>Instead of the above, you will need to use the following endpoints:</p>
+
+<ul>
+<li>api-a.edmdesigner.com</li>
+<li>api-b.edmdesigner.com</li>
+<li>api-c.edmdesigner.com</li>
+</ul>
+
+<p>The best thing to do is to build-in a fail over mechanism into your API calls, so if the call at the first endpoint was not successful, then you retry the call with the second endpoint and if that fails you retry with the third.</p>
+
+<p>Besides that, we started to host all of our static content on Amazon S3, so we can accelerate it with Amazon&rsquo;s CDN (Cloudfront).</p>
+
+<p>This basically means that the JS API will be found at api-static.edmdesigner.com/EDMdesignerAPI.js instead of the api endpoints. Also, when you open the editor, the src of it should also point to api-static.edmdesigner.com</p>
+
+<p>Please continue reading for the details in a step-by-step fashion.</p>
+
+<h1 id="javascript-api">Javascript API</h1>
+<pre class="highlight html"><code><span class="c">&lt;!-- Previously you had to include the JS API like this: --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://api.edmdesigner.com/EDMdesignerAPI.js?route=token.php"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"YOUR_USER_ID"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//in the old version you added the route to the query string</span>
+    <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+
+<p>There are a few differences between initializing the new js api and the previous version.</p>
+<pre class="highlight html"><code><span class="c">&lt;!-- And this is the new way to use it: --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://api-static.edmdesigner.com/EDMdesignerAPI.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"token.php"</span><span class="p">,</span> <span class="s2">"templater"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//in the new version you call the init function with the route as the first param</span>
+    <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+
+</code></pre>
+
+<p>The previous version is here:</p>
+
+<p><strong>http(s)://api.edmdesigner.com/EDMdesignerAPI.js?route=testRoute.xyz</strong></p>
+
+<p>The new version can be found here:</p>
+
+<p><strong>http(s)://api-static.edmdesigner.com/EDMdesignerAPI.js</strong></p>
+
+<p>Again, api-static is pointing to Amazon&rsquo;s CDN, so it is very fast from all over the world.</p>
+
+<p>As you can see the main difference is that in the old version you had to send a route variable in the query string. That is the route where your part of the token generation can be found, we print it into the js on the server side.</p>
+
+<p>In the new version, you don&rsquo;t have to send anything in the query param. Instead of that, you have to give the route as the first parameter of the init function. The new version of this js also has failover functionality built-in. As you can see at the very beginning of the script, it uses three different endpoints, as mentioned previously:</p>
+
+<ul>
+<li>api-a.edmdesigner.com</li>
+<li>api-b.edmdesigner.com</li>
+<li>api-c.edmdesigner.com</li>
+</ul>
+
+<h1 id="editor-iframe-src">Editor iframe src</h1>
+<pre class="highlight html"><code><span class="c">&lt;!-- The old way --&gt;</span>
+<span class="nt">&lt;iframe</span> <span class="na">src=</span><span class="s">"https://api.edmdesigner.com/?user=YOUR_USER_ID&amp;projectId=YOUR_PROJECT_ID&amp;token=YOUR_TOKEN&amp;language=en&amp;autosave=1000"</span><span class="nt">&gt;&lt;/iframe&gt;</span>
+
+<span class="c">&lt;!-- The new way --&gt;</span>
+<span class="nt">&lt;iframe</span> <span class="na">src=</span><span class="s">"https://api-static.edmdesigner.com/?user=YOUR_USER_ID&amp;projectId=YOUR_PROJECT_ID&amp;token=YOUR_TOKEN&amp;language=en&amp;autosave=1000"</span><span class="nt">&gt;&lt;/iframe&gt;</span>
+</code></pre>
+
+<p>The src of the editor&rsquo;s iframe also should point to api-static.edmdesigner.com, so if you build the src manuall, then please read the corresponding <a href="./#editor-iframe">documentation</a>. The new CDN based version of the editor also has built-in failover.
+(Also, the src of the iframe also should point to api-static.edmdesigner.com)</p>
+
+<p>If you use the openProject function of the JS API, then the src what you get will be correct automatically.</p>
+
+<h1 id="token-generation">Token generation</h1>
+<pre class="highlight html"><code><span class="c">&lt;!-- Please switch to the php tab! --&gt;</span>
+</code></pre>
+<pre class="highlight php"><code><span class="cp">&lt;?php</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"userId"</span><span class="p">])</span> <span class="p">{</span>
+    <span class="nv">$publicId</span> <span class="o">=</span> <span class="s2">"YOUR_DEV_API_KEY"</span><span class="p">;</span>
+    <span class="nv">$magic</span> <span class="o">=</span> <span class="s2">"YOUR_MAGIC_WORD"</span><span class="p">;</span>
+
+    <span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s2">"REMOTE_ADDR"</span><span class="p">];</span>
+    <span class="nv">$timestamp</span> <span class="o">=</span> <span class="nb">time</span><span class="p">();</span>
+
+    <span class="nv">$hash</span> <span class="o">=</span> <span class="nb">md5</span><span class="p">(</span><span class="nv">$publicId</span> <span class="o">.</span> <span class="nv">$ip</span> <span class="o">.</span> <span class="nv">$timestamp</span> <span class="o">.</span> <span class="nv">$magic</span><span class="p">);</span>
+
+    <span class="nv">$url</span> <span class="o">=</span> <span class="s2">"http://api-a.edmdesigner.com/api/token"</span><span class="p">;</span> <span class="c1">//previously it was one of the following values:
+</span>    <span class="c1">//api.edmdesigner.com
+</span>    <span class="c1">//api-virginia.edmdesigner.com
+</span>    <span class="c1">//api-ireland.edmdesigner.com
+</span>    <span class="c1">//api-sydney.edmdesigner.com
+</span>
+    <span class="c1">//The new available values are:
+</span>    <span class="c1">//api-a.edmdesigner.com
+</span>    <span class="c1">//api-b.edmdesigner.com
+</span>    <span class="c1">//api-c.edmdesigner.com
+</span>    <span class="c1">//YOU SHOULD IMPLEMENT FAILOVER MECHANISM BETWEEN THE NEW ENDPOINTS IN PRODUCTION!
+</span>
+    <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s2">"id"</span>    <span class="o">=&gt;</span> <span class="nv">$publicId</span><span class="p">,</span>
+        <span class="s2">"uid"</span>   <span class="o">=&gt;</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s2">"userId"</span><span class="p">],</span>
+        <span class="s2">"ip"</span>    <span class="o">=&gt;</span> <span class="nv">$ip</span><span class="p">,</span>
+        <span class="s2">"ts"</span>    <span class="o">=&gt;</span> <span class="nv">$timestamp</span><span class="p">,</span>
+        <span class="s2">"hash"</span>  <span class="o">=&gt;</span> <span class="nv">$hash</span>
+    <span class="p">);</span>
+
+    <span class="c1">// use key 'http' even if you send the request to https://...
+</span>    <span class="nv">$options</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s2">"http"</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s2">"header"</span>  <span class="o">=&gt;</span> <span class="s2">"Content-type: application/x-www-form-urlencoded</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">,</span>
+            <span class="s2">"method"</span>  <span class="o">=&gt;</span> <span class="s2">"POST"</span><span class="p">,</span>
+            <span class="s2">"content"</span> <span class="o">=&gt;</span> <span class="nb">http_build_query</span><span class="p">(</span><span class="nv">$data</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">);</span>
+
+    <span class="nv">$context</span>  <span class="o">=</span> <span class="nb">stream_context_create</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">$context</span><span class="p">);</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+
+<p>You have to change your endpoints everywhere you make API calls from your server side. There is at least one point on your server side where you make an API call, and this point is the token generation, since it&rsquo;s a must-have to implement. Here, the only difference is the same, you have to use the new API endpoints instead of the old ones, just like it was described previously.</p>
+
+<h1 id="basic-skinning">Basic skinning</h1>
+
+<p>Unfortunately the Basic Skinning on our dashboard won&rsquo;t be working with the CDN based editor.</p>
+
+<p><a href="./images/dashboard05.png" target="_blank"><img src="./images/dashboard05.png" /></a></p>
+
+<p>We are planning to reintroduce this feature a little bit differently. You will be able to pick from predefined - and well tested - colorsets and you will be able to pick different layouts for the editor as well.</p>
+
+          <h1 id="other-resources">Other resources</h1>
+
+<p>There are several resources from where you can learn more about EDMdesigner: the official documentation, the tutorials and the example implementations.</p>
+
+<h2 id="docs">Docs</h2>
+
+<table><thead>
+<tr>
+<th>Document</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="./">Basics</a></td>
+<td>This documentation covers the very basics of the integration, like:<ul><li>generating an access token</li><li>making API calls</li><li>managing and opening projects</li><li>managing users</li><li>gallery handling</li></ul></td>
+</tr>
+<tr>
+<td><a href="advanced.html">Advanced</a></td>
+<td>This documentation covers more advanced topics. Probably you will only need some of these functionalities. <ul><li>Group handling</li><li>String placeholders</li><li>Dynamic data</li><li>Favorite elements&rsquo; management</li><li>Working with custom data</li><li>Advanced project handling</li><li>API key management</li></ul></td>
+</tr>
+<tr>
+<td><a href="postMessageApi.html">postMessage API</a></td>
+<td>By reading this documentation you can learn about how to manipulate the editor itself from the client side. Basically this client side API is based on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postMessage</a> function with which you can send messages between frames from different domains. <ul><li>Basic messages and responses (eg. manual save)</li><li>Hooking on editor events (eg. using your own gallery instead of the built-in one)</li><li>Dynamic data</li><li>Setting elements&rsquo; properties</li></ul></td>
+</tr>
+<tr>
+<td><a href="documentDescriptors.html">Element descriptors</a></td>
+<td>A detailed description of our element types used in projects and favorite elements. We generate all of our outputs based on these JSON descriptors.</td>
+</tr>
+<tr>
+<td><a href="builtInGallery.html">Old built-in gallery</a></td>
+<td>Don&rsquo;t use it. Use the new postMessage based solution.</td>
+</tr>
+<tr>
+<td><a href="migratingToTheCDNBasedEditor.html">Migrating to the CDN based editor</a></td>
+<td>In this article you will learn about how to migrate from the good old version of the editor to the superfast and robust <a href="http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront">CDN based version</a>.</td>
+</tr>
+</tbody></table>
+
+<h2 id="tutorials">Tutorials</h2>
+
+<table><thead>
+<tr>
+<th>Tutorial</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="tutorialTheBasics.html">The Basics</a></td>
+<td>In this tutorial you will learn about our dashboard, the access token generation and the very basic functionalities, like creating and opening projects.</td>
+</tr>
+<tr>
+<td><a href="tutorialAdminFunctionalities.html">Admin Functionalities</a></td>
+<td>The biggest take away of this tutorial that you will see how to create new users in our system, so you will be able to associate one user for each of users in your system.</td>
+</tr>
+<tr>
+<td><a href="tutorialGalleryConfig.html">Old Built-in Gallery Configuration</a></td>
+<td>In this tutorial you will learn about how to set up the gallery properly, how to implement the hooks on your side and you will also learn about the security of these hooks.</td>
+</tr>
+</tbody></table>
+
+<h2 id="example-implementations">Example implementations</h2>
+
+<p>Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.</p>
+
+<ul>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP">PHP example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin">PHP admin example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js">Node.js example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-ColdFusion">Cold Fusion example</a> - Thank you Tom Chiverton from Extravision! :)</li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-Django">Django example</a> - Thank you Ferenc Vehmann from ZenHeads! :)</li>
+</ul>
+
+<p>If you have another example implementation, please let us know, we will fork it and will put a link here.</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="html">html</a>
+                <a href="#" data-language-name="php">php</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

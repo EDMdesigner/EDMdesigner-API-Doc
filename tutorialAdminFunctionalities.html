@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Integration Tutorial - admin functionalities</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["html","php"]);
+        });
+      </script>
+  </head>
+
+  <body class="tutorialAdminFunctionalities">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="html">html</a>
+              <a href="#" data-language-name="php">php</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="overview">Overview</h1>
+
+<p>In this post you will read about how to create users programmatically and you will get some advice how to associate your users to EDMdesigner’s users.</p>
+
+<p>In the previous <a href="tutorialTheBasics.html">tutorial post</a> I was talking about the very basics of using EDMdesigner’s API. This time I will be talking about topics, with which it’s already possible to really integrate EDMdesigner into your system, meaning that there will be direct association between your users in your database and EDMdesigner users.</p>
+
+<h1 id="create-edmdesigner-users-for-all-of-your-users">Create EDMdesigner users for all of your users</h1>
+
+<p>One way to do it is that you create an initialization script which creates EDMdesigner users for all of your users in your database. For this, you should create users in our system when you create a new user in yours, so if a user registers to your system, then a user should be created in our system as well. To provide one to one relationship between the users in your and in our system, the user name of EDMdesigner users should be the user id of your users,  their e-mail address or something else which is unique per API key. The important thing is that based on the user name you provided to our system, you can find out which is that user in your system.</p>
+
+<h1 id="create-users-on-the-fly">Create users on the fly</h1>
+
+<p>An other way could be to check if the actual user ever used EDMdesigner and if not, you can register that user on the fly. I think it’s easier to implement, and that extra checking is nothing compared to the ease of the implementation.
+Since there are several ways to implement it actually, I will only focus on creating users from code, nothing else, so I won’t talk about concrete implementations.</p>
+
+<h1 id="admin-level-access-token">Admin level access token</h1>
+<pre class="highlight html"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"path_to_your_jquery"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="c">&lt;!-- at the moment, our JS API depends on jQuery... --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://api-static.edmdesigner.com/EDMdesignerAPI.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="c1">//you can take a look at token.php if you change to the php tab</span>
+    <span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"token.php"</span><span class="p">,</span> <span class="s2">"admin"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">//actual calls on edmApi's admin functions... eg. listing, createing users, etc.</span>
+      <span class="c1">//USE THE JS API with admin level access token only on administrative interfaces</span>
+      <span class="c1">//don't forget to check on the server side if your user has the necessarry priviledges</span>
+    <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+<pre class="highlight php"><code>//token.php
+<span class="cp">&lt;?php</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"userId"</span><span class="p">])</span> <span class="p">{</span>
+    <span class="nv">$publicId</span> <span class="o">=</span> <span class="s2">"YOUR_DEV_API_KEY"</span><span class="p">;</span>
+    <span class="nv">$magic</span> <span class="o">=</span> <span class="s2">"YOUR_MAGIC_WORD"</span><span class="p">;</span>
+
+    <span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s2">"REMOTE_ADDR"</span><span class="p">];</span>
+    <span class="nv">$timestamp</span> <span class="o">=</span> <span class="nb">time</span><span class="p">();</span>
+
+    <span class="nv">$hash</span> <span class="o">=</span> <span class="nb">md5</span><span class="p">(</span><span class="nv">$publicId</span> <span class="o">.</span> <span class="nv">$ip</span> <span class="o">.</span> <span class="nv">$timestamp</span> <span class="o">.</span> <span class="nv">$magic</span><span class="p">);</span>
+
+    <span class="nv">$url</span> <span class="o">=</span> <span class="s2">"http://api-a.edmdesigner.com/api/token"</span><span class="p">;</span> <span class="c1">//In real life, you should implement
+</span>    <span class="c1">//a fail over mechanism to api-b.edmdesigner.com and api-c.edmdesigner.com
+</span>
+    <span class="c1">//Also, make some authorization based on data in your session,
+</span>    <span class="c1">//because there is a chance that someone tries to be tricky.
+</span>    <span class="c1">//For example you might want to prevent most of your users
+</span>    <span class="c1">//to edit templater's projects...
+</span>
+
+    <span class="c1">// !!!IMPORTANT!!!
+</span>    <span class="c1">// if ($_POST["userId"] == "admin") -&gt; DO NOT FORGET TO CHECK
+</span>    <span class="c1">// IF YOUR USER HAS ADMIN PRIVILEDGES!!!
+</span>
+    <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s2">"id"</span>    <span class="o">=&gt;</span> <span class="nv">$publicId</span><span class="p">,</span>
+        <span class="s2">"uid"</span>   <span class="o">=&gt;</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s2">"userId"</span><span class="p">],</span>
+        <span class="s2">"ip"</span>    <span class="o">=&gt;</span> <span class="nv">$ip</span><span class="p">,</span>
+        <span class="s2">"ts"</span>    <span class="o">=&gt;</span> <span class="nv">$timestamp</span><span class="p">,</span>
+        <span class="s2">"hash"</span>  <span class="o">=&gt;</span> <span class="nv">$hash</span>
+    <span class="p">);</span>
+
+    <span class="c1">// use key 'http' even if you send the request to https://...
+</span>    <span class="nv">$options</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s2">"http"</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s2">"header"</span>  <span class="o">=&gt;</span> <span class="s2">"Content-type: application/x-www-form-urlencoded</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">,</span>
+            <span class="s2">"method"</span>  <span class="o">=&gt;</span> <span class="s2">"POST"</span><span class="p">,</span>
+            <span class="s2">"content"</span> <span class="o">=&gt;</span> <span class="nb">http_build_query</span><span class="p">(</span><span class="nv">$data</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">);</span>
+
+    <span class="nv">$context</span>  <span class="o">=</span> <span class="nb">stream_context_create</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">$context</span><span class="p">);</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+
+<p>The first thing you have to do, is to create an “admin token”. This is a special kind of token which is used for admin (or superuser) functionalities. These are: creating, updating, removing users, managing groups, etc. Now, I will concentrate only on user creation. The token creation is very similar to what we saw in the last post but in this case we have to send a “admin”  as the username to our token generator route. This “admin” user is non-existent in our DB – not like “templater” , which is existent -, it’s only used to make difference between admin and normal user functionalities. This also means that you can’t create a user with this name in our system.</p>
+
+<p>It is very, very important that you make sure that only your administrators can create admin token. You have to check in your session that the actual user of yours have rights to use the admin functionalities in our API.</p>
+
+<p>If you use the Javascript API, then do it only on administrative interfaces, where it’s sure that only your admins can use it.</p>
+
+<h1 id="making-api-calls-from-your">Making API calls from your</h1>
+<pre class="highlight html"><code>//Please switch to the php tab
+</code></pre>
+<pre class="highlight php"><code>//createUserExample.php
+//you can also use cURL if you want to.
+<span class="cp">&lt;?php</span>
+<span class="c1">//in production you should failover to api-b.edmdesigner.com and api-c.edmdesigner.com
+</span><span class="nv">$url</span> <span class="o">=</span> <span class="s2">"http://api-a.edmdesigner.com/json/user/create?user=admin&amp;token=YOUR_ADMIN_TOKEN"</span><span class="p">;</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s2">"id"</span> <span class="o">=&gt;</span> <span class="s2">"USER_ID_FROM_YOUR_SYSTEM"</span><span class="p">);</span>
+
+<span class="c1">// use key 'http' even if you send the request to https://...
+</span><span class="nv">$options</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s2">"http"</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s2">"header"</span>  <span class="o">=&gt;</span> <span class="s2">"Content-type: application/x-www-form-urlencoded</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">,</span>
+        <span class="s2">"method"</span>  <span class="o">=&gt;</span> <span class="s2">"POST"</span><span class="p">,</span>
+        <span class="s2">"content"</span> <span class="o">=&gt;</span> <span class="nb">http_build_query</span><span class="p">(</span><span class="nv">$data</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">);</span>
+<span class="nv">$context</span>  <span class="o">=</span> <span class="nb">stream_context_create</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">$context</span><span class="p">);</span>
+
+<span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+
+<p>There are cases when you need deeper integration – eg. when a user registers, you register it to EDMdesigner as well. In these cases you should make the API calls from your server side.</p>
+
+<p>The Javascript API works with JSONP calls, which has it’s limitations. From the server side you can call the JSON versions of the routes. Also, there are some extra routes which you can call from the server side but not with JSONP. These routes are usually dangerous to call from the client side, since there should be some post processing on the result. An example for this is when you call our HTML generator without sanitizing. It can be useful when you have some kind of query language and based on that you fetch info from your own DB just before sending. If our sanitizer would replace the queries that you inserted into the template, probably you would go crazy. This means that you have to take care about sanitizing the final result.</p>
+
+<p>So from the server side routes we will use the one with which you can create a new user. Basically you have to post some data to the following route:</p>
+
+<p><strong>//api.edmdesigner.com/json/user/create?user=admin&amp;token=YOUR_ADMIN_TOKEN</strong></p>
+
+<p>The only required thing you should post is the id, which can be the userId in your system. This way you can create a one-to-one association between your and our users. You will be able to reach this user’s functionalities with this id you gave.
+One very useful thing is that you can associate customData to every user (and to every projects as well). This way you can customize the way you integrate EDMdesigner into your system even better. You have to post a customData field when you create your user, which you will reach and modify later.</p>
+
+<p>Please check out our PHP example for <a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin">admin functionalities on GitHub</a>.</p>
+
+<p>If you want to learn more about the access token generation, please read the corresponding part in our <a href="./#generating-an-access-token">docs</a>.</p>
+
+          <h1 id="other-resources">Other resources</h1>
+
+<p>There are several resources from where you can learn more about EDMdesigner: the official documentation, the tutorials and the example implementations.</p>
+
+<h2 id="docs">Docs</h2>
+
+<table><thead>
+<tr>
+<th>Document</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="./">Basics</a></td>
+<td>This documentation covers the very basics of the integration, like:<ul><li>generating an access token</li><li>making API calls</li><li>managing and opening projects</li><li>managing users</li><li>gallery handling</li></ul></td>
+</tr>
+<tr>
+<td><a href="advanced.html">Advanced</a></td>
+<td>This documentation covers more advanced topics. Probably you will only need some of these functionalities. <ul><li>Group handling</li><li>String placeholders</li><li>Dynamic data</li><li>Favorite elements&rsquo; management</li><li>Working with custom data</li><li>Advanced project handling</li><li>API key management</li></ul></td>
+</tr>
+<tr>
+<td><a href="postMessageApi.html">postMessage API</a></td>
+<td>By reading this documentation you can learn about how to manipulate the editor itself from the client side. Basically this client side API is based on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postMessage</a> function with which you can send messages between frames from different domains. <ul><li>Basic messages and responses (eg. manual save)</li><li>Hooking on editor events (eg. using your own gallery instead of the built-in one)</li><li>Dynamic data</li><li>Setting elements&rsquo; properties</li></ul></td>
+</tr>
+<tr>
+<td><a href="documentDescriptors.html">Element descriptors</a></td>
+<td>A detailed description of our element types used in projects and favorite elements. We generate all of our outputs based on these JSON descriptors.</td>
+</tr>
+<tr>
+<td><a href="builtInGallery.html">Old built-in gallery</a></td>
+<td>Don&rsquo;t use it. Use the new postMessage based solution.</td>
+</tr>
+<tr>
+<td><a href="migratingToTheCDNBasedEditor.html">Migrating to the CDN based editor</a></td>
+<td>In this article you will learn about how to migrate from the good old version of the editor to the superfast and robust <a href="http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront">CDN based version</a>.</td>
+</tr>
+</tbody></table>
+
+<h2 id="tutorials">Tutorials</h2>
+
+<table><thead>
+<tr>
+<th>Tutorial</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="tutorialTheBasics.html">The Basics</a></td>
+<td>In this tutorial you will learn about our dashboard, the access token generation and the very basic functionalities, like creating and opening projects.</td>
+</tr>
+<tr>
+<td><a href="tutorialAdminFunctionalities.html">Admin Functionalities</a></td>
+<td>The biggest take away of this tutorial that you will see how to create new users in our system, so you will be able to associate one user for each of users in your system.</td>
+</tr>
+<tr>
+<td><a href="tutorialGalleryConfig.html">Old Built-in Gallery Configuration</a></td>
+<td>In this tutorial you will learn about how to set up the gallery properly, how to implement the hooks on your side and you will also learn about the security of these hooks.</td>
+</tr>
+</tbody></table>
+
+<h2 id="example-implementations">Example implementations</h2>
+
+<p>Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.</p>
+
+<ul>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP">PHP example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin">PHP admin example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js">Node.js example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-ColdFusion">Cold Fusion example</a> - Thank you Tom Chiverton from Extravision! :)</li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-Django">Django example</a> - Thank you Ferenc Vehmann from ZenHeads! :)</li>
+</ul>
+
+<p>If you have another example implementation, please let us know, we will fork it and will put a link here.</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="html">html</a>
+                <a href="#" data-language-name="php">php</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

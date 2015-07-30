@@ -1,0 +1,528 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>API Reference - built-in gallery</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["php"]);
+        });
+      </script>
+  </head>
+
+  <body class="builtInGallery">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="php">php</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="gallery-handling">Gallery handling</h1>
+
+<aside class="notice">
+This part of the docs is in-progress.
+</aside>
+
+<aside class="warning">
+We suggest you to use your <a href="./index.html#gallery-handling">own gallery</a> with postMessages.
+</aside>
+
+<p>If you want to host the uploaded images yourself and want to use your other hosted images as well, then there are a few routes to fulfil this functionality.</p>
+
+<p>Basic operations: The user uploads an image in the api to our server, which uploads it to the given server. This requires you to implement an upload route on your server and <a href="#configure-api-servers-gallery">configure</a> our server (you have to do the configuration only once). The user can delete the images as well, so there should be an delete route on your server (it should be in the <a href="#configure-api-servers-gallery">gallery configuration</a>) .</p>
+
+<p>We will create a md5 hash from a timestamp and your magic word (The right order of the string concatenation: timestam + magic word). This two (the hash and the timestamp) will be sent to you in each of our requests (in the query). You recreate the hash in your server side and compare the two hashes. With this method you can ensure that the request really came from us.</p>
+
+<h2 id="upload-route">Upload route</h2>
+
+<p>You should implement a route on your server which we can use for image upload.</p>
+
+<p>Type: POST</p>
+
+<p>We will upload the images as the following. There will be &ldquo;userId&rdquo;, &ldquo;hash&rdquo; and &ldquo;time&rdquo; fields in the query of the request:
+  - The &ldquo;userId&rdquo; will contain the id of the user (who wants to upload the image).
+  - The &ldquo;hash&rdquo; will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (the right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us. 
+  - The &ldquo;time&rdquo; will be the timestamp we used for creating the hash </p>
+
+<p>The image will be uplaoded as a file (the field name will be &ldquo;file&rdquo;) and there will be another field &ldquo;userId&rdquo;, it will contain the same data as the query field &ldquo;userId&rdquo;. There is a third field, called &ldquo;originalFileName&rdquo; which contains the name of the original file before the user started to upload it.<br>
+Please note that if you use php on your server side then checking the content-tpye of the uploaded image with the $_Files[&ldquo;file&rdquo;][&ldquo;type&rdquo;] is not possible (it will be Application/octet-stream) but if you use our hash to authenticate us, then you do not have to worry about the uploaded file. We will make sure that it will be what it has to be.</p>
+
+<p>If you progress our request by php, reading our sent data may need a special way like the example below: </p>
+
+<p>$json = file_get_contents(&ldquo;php://input&rdquo;);
+  $values = json_decode($json, true);</p>
+
+<p>$someValue = $values[&ldquo;someValue&rdquo;];</p>
+
+<p>Further info about this issue can be read in this article: 
+http://stackoverflow.com/questions/11990767/post-empty-when-curling-json</p>
+
+<p>The response to our post request should be a json object. The object should have the following properties:
+  * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
+  * secure_url {String} Http secure version og the image url
+  * thumb_url {String} An url where the thumbnail version of the image is available (Tha gallery can work a lot faster if you can provide a thumbnail)
+  * name {String} The name of the image. If it is not given then we will you the last segment of the url
+  * width {Number} The original width of the image (It can save a lot of process if you can provide this information)
+  * height {Number} The original height of the image (It can save a lot of process if you can provide this information)</p>
+
+<p>Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:
+  * err</p>
+
+<p>For example:<br>
+  var error = {
+    err: &ldquo;Not my user!&rdquo;
+  };</p>
+
+<h2 id="delete-route">Delete route</h2>
+
+<p>You should implement a route on your server side which we can use for deleting images.</p>
+
+<p>Type: POST</p>
+
+<p>There will be &ldquo;hash&rdquo; and &ldquo;time&rdquo; fields in the query of the request:
+  - The &ldquo;hash&rdquo; will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (the right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us.
+  - The &ldquo;time&rdquo; will be the timestamp we used for creating the hash </p>
+
+<p>We will post an object with two parameters:
+  * url {String} The url of the deleted image
+  * userId {String} The id of the user who deleted the image.</p>
+
+<p>If you progress our request by php, reading our sent data may need a special way like the example below: </p>
+
+<p>$json = file_get_contents(&ldquo;php://input&rdquo;);
+  $values = json_decode($json, true);</p>
+
+<p>$someValue = $values[&ldquo;someValue&rdquo;];</p>
+
+<p>Further info about this issue can be read in this article: 
+http://stackoverflow.com/questions/11990767/post-empty-when-curling-json</p>
+
+<p>Your response to our post request should be 200. (HTTP status code)<br>
+Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:
+  * err</p>
+
+<p>For example:<br>
+  var error = {
+    err: &ldquo;Not my user!&rdquo;
+  };</p>
+
+<h2 id="copy-route">Copy route</h2>
+
+<p>IF you want to copy a project from a user to an other and want to copy the images (which are used in the project) too, you need to use the <a href="#creat-from-to-with-images">create from to with images route</a>. This route will collect the urls of the images (which you host) of the project and send it to you. After that you should make a copy of this images to the target user and sent us back the parameters of this new images.</p>
+
+<p>Type: POST  </p>
+
+<p>There will be &ldquo;hash&rdquo; and &ldquo;time&rdquo; fields in the query of the request:
+  - The &ldquo;hash&rdquo; will be a string we use for authenticate ourself. We concatenate timestamp with your magic word (he right order of the concatenation: timestam + magicword) and create an md5 hash from it. With this hash you can ensure that the request came from us. 
+  - The &ldquo;time&rdquo; will be the timestamp we used for creating the hash </p>
+
+<p>We will post an object whit the following parameters:
+  * urls {Array} It contains the urls of the images which are used in the template
+  * from_userId {String} The id of the users from who we want to copy the template to the target user
+  * target_userId {String} The id of the user who will get the new template. (This user needs the new urls)</p>
+
+<p>If you progress our request by php, reading our sent data may need a special way like the example below: </p>
+
+<p>$json = file_get_contents(&ldquo;php://input&rdquo;);
+  $values = json_decode($json, true);</p>
+
+<p>$someValue = $values[&ldquo;someValue&rdquo;];</p>
+
+<p>Further info about this issue can be read in this article: 
+http://stackoverflow.com/questions/11990767/post-empty-when-curling-json</p>
+
+<p>Your response to our post request should be an object. The object should have an &ldquo;urls&rdquo; property which should be another object. This object should have the following &ldquo;key - value&rdquo; pairs: the old url (which you get from the urls array we sent with the post request) should be the key and the value should be the parameters of the new image (like the one you need to send beack in the <a href="#upload-route">upload route</a>:
+  * url {String} /REQUIRED/ The url where the newly uploaded image can be found.
+  * secure_url {String} Http secure version og the image url
+  * thumb_url {String} An url where the thumbnail version of the image is available (Tha gallery can work a lot faster if you can provide a thumbnail)
+  * name {String} The name of the image. If it is not given then we will you the last segment of the url
+  * width {Number} The original width of the image (It can save a lot of process if you can provide this information)
+  * height {Number} The original height of the image (It can save a lot of process if you can provide this information)</p>
+
+<p>For example: 
+If we uploaded the following array: [&ldquo;www.foo.bar&rdquo;, &ldquo;http://test.com/image.jpg&rdquo;] then your asnwer should be something like this object:</p>
+
+<p>var answer = { 
+    urls: {
+      &ldquo;www.foo.bar&rdquo;: {
+        url: &ldquo;www.copy.of.foo.bar&rdquo;
+      },
+      &ldquo;http://test.com/image.jpg&rdquo;: {
+        url: &ldquo;http://test.com/copyimage.jpg&rdquo;,
+        secure_url: &ldquo;https://test.com/copyimage.jpg&rdquo;,
+        thumb_url: &ldquo;http://test.com/thumb/copyimage.jpg&rdquo;,
+        name: &ldquo;copyimage.jpg&rdquo;,
+        width: 600,
+        height: 200
+      }
+    }
+  };</p>
+
+<p>Or if you want to response with some kind of error (for example an error message), then you have to send an error object with the following property:
+  * err</p>
+
+<p>For example:<br>
+  var error = {
+    err: &ldquo;Not my user!&rdquo;
+  };</p>
+
+<h2 id="configure-api-server-39-s-gallery">Configure api server&rsquo;s gallery</h2>
+
+<p>Configure the api&rsquo;s gallery.</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/config</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>uploadRoute {String} /REQUIRED/ The <a href="#upload-route">route</a> which we can use for uploading the images. (This route should be implemented on your server.)</li>
+<li>deleteRoute {String} /REQUIRED/ The <a href="#delete-route">route</a> which we can use for deleting the images. (This route should be implemented on your server.)</li>
+<li>copyRoute {String} The <a href="#copy-route">route</a> which we can use for the <a href="#create-from-to-width-images">create from to width images route</a> (If you want to use this functionality, you need to implement this route on your server)</li>
+<li>noUploadText {Object} It contains the language code (see <a href="#available-languages">available languages</a>) - html(string) pairs. The given content will be displayed if the upload is not allowed. </li>
+<li>limitReached {Object} It contains the language code (see <a href="#available-languages">available languages</a>) - html(string) pairs. The given content will be displayed if a user reached the upload limit. It is not required to impose a limit on the upload. If you want to know how you can set the limit, please read the <a href="#feature-switch">feature switch</a> chapter.</li>
+<li>noUrl {Boolean} With this boolean you can forbid the image handling from absolute urls. If you set this parameter true, then none of your users will be able to use images from absoulte url.</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>The data you posted:
+  - uploadRoute {String}
+  - deleteRoute {String}
+  - copyRoute {String}
+  - noUploadText {Object}
+  - limitReached {Object}
+  - noUrl {Boolean}
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<hr>
+
+<h2 id="get-configuration">Get configuration</h2>
+
+<p>Gets the configuration of the api gallery.</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/config</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>Config object: 
+  - uploadRoute {String} The <a href="#upload-route">route</a> you set for the uploading or nothing if you not configured our server yet.
+  - deleteRoute {String} The <a href="#delete-route">route</a> you set for the deleting or nothing if you not configured our server yet.
+  - copyRoute {String} The <a href="#copy-route">route</a> you set for the <a href="#create-from-to-width-images">create from to width images route</a> (only if you previously set it)
+  - noUploadText {Object} (only if you previously set it in)
+  - limitReached {Object} (only if you previously set it)
+  - noUrl {Boolean} (only if you previously set it true)</p>
+
+<p>or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<!--
+___
+
+##Set the galleryStamper's url
+Sets the url of the galleryStamper. If this mode is enabled, the API call this route for image stamping, e.g. in case of video play icon.
+
+#####Type
+  + POST
+
+#####Route
+  + //api.edmdesigner.com/json/gallery/galleryStamperUrl
+
+#### Parameters (you should post):
+  - url {String} The url to set.
+
+####Response:
+Config object: 
+  - url {String} The set url
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+##Get the galleryStamper's url
+Gets the url of the galleryStamper. If this mode is enabled, the API call this route for image stamping, e.g. in case of video play icon.
+
+#####Type
+  + GET
+
+#####Route
+  + //api.edmdesigner.com/json/gallery/galleryStamperUrl
+
+####Response:
+Config object: 
+  - url {String} The set url
+
+or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.
+
+___
+
+-->
+
+<h2 id="list-images">List images</h2>
+
+<p>Lists all images of a specified user</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>GET</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/list/:id</li>
+</ul>
+
+<h4 id="parameters-optionals">Parameters (optionals):</h4>
+
+<ul>
+<li>skip {Number} index where from the listing should begin, without limit parameter it will be ingnored</li>
+<li>limit {Number} length of the items to be listed, without skip parameter it will be ingnored</li>
+<li>select [Array] list of the properties to be listed [&ldquo;name&rdquo;, &ldquo;created&rdquo;]</li>
+<li>sort {Object} MongoDb sort object: {property : &ldquo;asc/desc&rdquo;}</li>
+</ul>
+
+<h4 id="parameters-in-the-route">Parameters (in the route):</h4>
+
+<ul>
+<li>:id {String} The id of the target user</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>Array of urls</p>
+
+<p>Or in case of of limit and skip parameters sent an Object consists of:
+  - totalCount {Number} The length of the full list
+  - result {Array} The list of the urls, same as above</p>
+
+<p>or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<hr>
+
+<h2 id="add-images">Add images</h2>
+
+<p>Add one or more images to one or more specified users</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>POST</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/add</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>images {Array} /REQUIRED/ should contain the images you want to give to the users. Every image should be an object with the following parameters:
+
+<ul>
+<li>url {String} /REQUIRED/ The url of the images (you probably host)</li>
+<li>secure_url {String} Http secure version og the image url</li>
+<li>thumb_url {String} An url where the thumbnail version of the image is available (Tha gallery can work a lot faster if you can provide a thumbnail)</li>
+<li>name {String} The name of the image. If it is not given then we will you the last segment of the url</li>
+<li>width {Number} The original width of the image (It can save a lot of process if you can provide this information)</li>
+<li>height {Number} The original height of the image (It can save a lot of process if you can provide this information)</li>
+</ul></li>
+<li>users {Array} /REQUIRED/ should contain the ids of the users<br></li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>Three different array:
+  - added {Array} contains the image user pairs which were successfully created. An object in this array looks like this:
+    - image {Object} One image from the posted images array
+    - users {Array} An array containing the ids of the users whose get the image successfully
+  - alreadyHave {Array} contains the image user pairs where the user alread had the given image. An object in this array looks like this:
+    - image {Object} One image from the posted images array
+    - users {Array} An array containing the ids of the users whose already had this image
+  - failed {Array} contains the image user pairs where the adding the image to the given users failed. An object in this array looks like this:
+    - image {Object} One image from the posted images array
+    - users {Array} An array containing the ids of the users whose cannot get the image because of somekind of error
+    - error {String} Description of the error</p>
+
+<p>or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+<hr>
+
+<h2 id="delete-images">Delete images</h2>
+
+<p>Delete one or more images from one or more specified users</p>
+
+<h5 id="type">Type</h5>
+
+<ul>
+<li>DELETE</li>
+</ul>
+
+<h5 id="route">Route</h5>
+
+<ul>
+<li>//api.edmdesigner.com/json/gallery/delete</li>
+</ul>
+
+<h4 id="parameters-you-should-post">Parameters (you should post):</h4>
+
+<ul>
+<li>images {Array} /REQUIRED/ should contain the urls of the images you want to remove from the given users.</li>
+<li>users {Array} /REQUIRED/ should contain the ids of the users.</li>
+</ul>
+
+<h4 id="response">Response:</h4>
+
+<p>Three different array:
+  - deleted {Array} contains the image user pairs where the image was successfully deleted. An object in this array looks like this:
+    - image {Object} One image from the posted images array
+      - url {String} The url of the image 
+    - users {Array} An array containing the ids of the users whose
+  - dontHave {Array} contains the image user pairs where the user doesn&rsquo;t have the given image. An object in this array looks like this:
+    - image {Object} One image from the posted images array
+      - url {String} The url of the image 
+    - users {Array} An array containing the ids of the users whose doesn&rsquo;t have this image
+  - failed {Array} contains the image user pairs where the deleting the image from the given users failed. An object in this array looks like this:
+    - image {Object} One image from the posted images array
+    - users {Array} An array containing the ids of the users whose image cannot be deleted because of somekind of error
+    - error {String} Description of the error</p>
+
+<p>or it can be an error object:
+  - err Description of the error {String} or an error code {Number}.</p>
+
+          <h1 id="other-resources">Other resources</h1>
+
+<p>There are several resources from where you can learn more about EDMdesigner: the official documentation, the tutorials and the example implementations.</p>
+
+<h2 id="docs">Docs</h2>
+
+<table><thead>
+<tr>
+<th>Document</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="./">Basics</a></td>
+<td>This documentation covers the very basics of the integration, like:<ul><li>generating an access token</li><li>making API calls</li><li>managing and opening projects</li><li>managing users</li><li>gallery handling</li></ul></td>
+</tr>
+<tr>
+<td><a href="advanced.html">Advanced</a></td>
+<td>This documentation covers more advanced topics. Probably you will only need some of these functionalities. <ul><li>Group handling</li><li>String placeholders</li><li>Dynamic data</li><li>Favorite elements&rsquo; management</li><li>Working with custom data</li><li>Advanced project handling</li><li>API key management</li></ul></td>
+</tr>
+<tr>
+<td><a href="postMessageApi.html">postMessage API</a></td>
+<td>By reading this documentation you can learn about how to manipulate the editor itself from the client side. Basically this client side API is based on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postMessage</a> function with which you can send messages between frames from different domains. <ul><li>Basic messages and responses (eg. manual save)</li><li>Hooking on editor events (eg. using your own gallery instead of the built-in one)</li><li>Dynamic data</li><li>Setting elements&rsquo; properties</li></ul></td>
+</tr>
+<tr>
+<td><a href="documentDescriptors.html">Element descriptors</a></td>
+<td>A detailed description of our element types used in projects and favorite elements. We generate all of our outputs based on these JSON descriptors.</td>
+</tr>
+<tr>
+<td><a href="builtInGallery.html">Old built-in gallery</a></td>
+<td>Don&rsquo;t use it. Use the new postMessage based solution.</td>
+</tr>
+<tr>
+<td><a href="migratingToTheCDNBasedEditor.html">Migrating to the CDN based editor</a></td>
+<td>In this article you will learn about how to migrate from the good old version of the editor to the superfast and robust <a href="http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront">CDN based version</a>.</td>
+</tr>
+</tbody></table>
+
+<h2 id="tutorials">Tutorials</h2>
+
+<table><thead>
+<tr>
+<th>Tutorial</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="tutorialTheBasics.html">The Basics</a></td>
+<td>In this tutorial you will learn about our dashboard, the access token generation and the very basic functionalities, like creating and opening projects.</td>
+</tr>
+<tr>
+<td><a href="tutorialAdminFunctionalities.html">Admin Functionalities</a></td>
+<td>The biggest take away of this tutorial that you will see how to create new users in our system, so you will be able to associate one user for each of users in your system.</td>
+</tr>
+<tr>
+<td><a href="tutorialGalleryConfig.html">Old Built-in Gallery Configuration</a></td>
+<td>In this tutorial you will learn about how to set up the gallery properly, how to implement the hooks on your side and you will also learn about the security of these hooks.</td>
+</tr>
+</tbody></table>
+
+<h2 id="example-implementations">Example implementations</h2>
+
+<p>Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.</p>
+
+<ul>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP">PHP example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin">PHP admin example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js">Node.js example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-ColdFusion">Cold Fusion example</a> - Thank you Tom Chiverton from Extravision! :)</li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-Django">Django example</a> - Thank you Ferenc Vehmann from ZenHeads! :)</li>
+</ul>
+
+<p>If you have another example implementation, please let us know, we will fork it and will put a link here.</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="php">php</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

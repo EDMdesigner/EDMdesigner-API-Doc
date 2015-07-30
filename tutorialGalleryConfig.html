@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Integration Tutorial - gallery configuration</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["php"]);
+        });
+      </script>
+  </head>
+
+  <body class="tutorialGalleryConfig">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="php">php</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="overview">Overview</h1>
+
+<aside class="warning">
+We suggest you to use your <a href="./index.html#gallery-handling">own gallery</a> with postMessages.
+</aside>
+
+<p>In my last two tutorial posts I was talking about a basic way to integrate EDMdesigner into an arbitrary web-based system. This time, you will learn about how to configure the gallery to make it work. It won’t take long, I promise.</p>
+
+<p>Also, it&rsquo;s possible to disable our built-in  gallery so you can use your own. I will write about that soon!</p>
+
+<p>If you want to learn more about our old gallery handling, please read the related parts in our <a href="builtInGallery.html">docs</a>.</p>
+
+<h1 id="gallery-hook-configuration">Gallery hook configuration</h1>
+
+<p>We do not store the images of our partners on our server side. If someone uploads an image to our gallery, we immediately upload it to our partner’s server. It means that there has to be an upload hook to be given on our side. There are two ways to configure it. The first option happens on the dashboard, but you can do it programmatically through our API as well.</p>
+
+<p><a href="./images/dashboard04.png" target="_blank"><img src="./images/dashboard04.png" /></a></p>
+
+<p>On the screenshot above you can see the part of our dashboard on which you can configure the hooks and some other things as well. The two most important ones are the upload and the delete hooks. Without them, the gallery cannot be functional. If you want to implement copy functionality, then you should set up a copy hook as well. There are three other things that you can set up here. The first two are messages that will appear if someone reached the limit what you can set up in their groups, so I will talk about those in a separate post. The last option is that you can forbid your users to set urls of the images from anywhere. This way you can force your users to use only those pictures which are hosted by you. It can be useful if you don’t want your email to be spammy. (If there are lot of different domains referenced in your email, that is generally bad for your spam score.)</p>
+
+<p>You might want to configure your gallery programatically. It is useful when you create a system or plugin or whatever that you want to set up on different domains. If you include gallery setup in your install script, that will save you a lot of time. You can do it via our API. You need to generate an admin token on your server side and you can call the gallery config routes.</p>
+
+<h1 id="upload-hook">Upload hook</h1>
+<pre class="highlight php"><code><span class="cp">&lt;?php</span>
+<span class="c1">//ini_set('display_errors',1);
+//ini_set('display_startup_errors',1);
+//error_reporting(-1);
+</span><span class="k">require_once</span> <span class="nb">dirname</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"/../../includes/config.php"</span><span class="p">;</span>
+<span class="k">require_once</span> <span class="nb">dirname</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"/utils.php"</span><span class="p">;</span>
+<span class="nb">header</span><span class="p">(</span><span class="s2">"Content-type: application/json;charset=utf-8"</span><span class="p">);</span>
+<span class="k">function</span> <span class="nf">printError</span><span class="p">(</span><span class="nv">$msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">print</span> <span class="s2">"{\"</span><span class="nx">err\</span><span class="s2">": </span><span class="se">\"</span><span class="s2">"</span> <span class="o">.</span> <span class="nv">$msg</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\"</span><span class="s2">}"</span><span class="p">;</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"file"</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nx">printError</span><span class="p">(</span><span class="s2">"File input is needed."</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">//security check
+</span><span class="nv">$hash</span> <span class="o">=</span> <span class="nv">$_REQUEST</span><span class="p">[</span><span class="s2">"hash"</span><span class="p">];</span>
+<span class="nv">$time</span> <span class="o">=</span> <span class="nv">$_REQUEST</span><span class="p">[</span><span class="s2">"time"</span><span class="p">];</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">checkHookSecurity</span><span class="p">(</span><span class="nv">$hash</span><span class="p">,</span> <span class="nv">$time</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">printError</span><span class="p">(</span><span class="s2">"Security error."</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"file"</span><span class="p">][</span><span class="s2">"size"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">5000000</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">printError</span><span class="p">(</span><span class="s2">"File size is too large."</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"file"</span><span class="p">][</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">printError</span><span class="p">(</span><span class="s2">"Upload error, error code: "</span> <span class="o">.</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"file"</span><span class="p">][</span><span class="s2">"error"</span><span class="p">]);</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span><span class="p">(</span><span class="s2">"upload/"</span> <span class="o">.</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"file"</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nx">printError</span><span class="p">(</span><span class="s2">"File already exists."</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">//$contentType = mime_content_type($_FILES["file"]);
+//$finfo = new finfo(FILEINFO_MIME_TYPE);
+</span><span class="nv">$extension</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">getImageType</span><span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"file"</span><span class="p">][</span><span class="s2">"tmp_name"</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$extension</span> <span class="o">=</span> <span class="s2">"."</span> <span class="o">.</span> <span class="nx">getImageType</span><span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"file"</span><span class="p">][</span><span class="s2">"tmp_name"</span><span class="p">]);</span>
+<span class="p">}</span>
+<span class="nv">$userId</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">"userId"</span><span class="p">]</span> <span class="o">===</span> <span class="s2">"templater"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$userId</span> <span class="o">=</span> <span class="s2">"templater"</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nv">$userId</span> <span class="o">=</span> <span class="nb">explode</span><span class="p">(</span><span class="s2">" - "</span><span class="p">,</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">"userId"</span><span class="p">]);</span>
+    <span class="nv">$userId</span> <span class="o">=</span> <span class="nv">$userId</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="nv">$dirName</span> <span class="o">=</span> <span class="nb">dirname</span><span class="p">(</span><span class="nb">dirname</span><span class="p">(</span><span class="nb">dirname</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">)))</span> <span class="o">.</span> <span class="s2">"/temp/user/"</span> <span class="o">.</span> <span class="nv">$userId</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">file_exists</span><span class="p">(</span><span class="nv">$dirName</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nb">mkdir</span><span class="p">(</span><span class="nv">$dirName</span><span class="p">,</span> <span class="mo">0755</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nv">$savedFileName</span> <span class="o">=</span> <span class="s2">"img_"</span> <span class="o">.</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100000000</span><span class="p">);</span>
+<span class="nb">move_uploaded_file</span><span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"file"</span><span class="p">][</span><span class="s2">"tmp_name"</span><span class="p">],</span> <span class="nv">$dirName</span> <span class="o">.</span> <span class="s2">"/"</span> <span class="o">.</span> <span class="nv">$savedFileName</span> <span class="o">.</span> <span class="nv">$extension</span><span class="p">);</span>
+<span class="k">echo</span> <span class="s2">"{\"</span><span class="nx">url\</span><span class="s2">": </span><span class="se">\"</span><span class="s2">"</span> <span class="o">.</span> <span class="nx">SENDSTUDIO_APPLICATION_URL</span> <span class="o">.</span> <span class="s2">"/admin/temp/user/"</span> <span class="o">.</span> <span class="nv">$userId</span> <span class="o">.</span> <span class="s2">"/"</span> <span class="o">.</span> <span class="nv">$savedFileName</span> <span class="o">.</span> <span class="nv">$extension</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\"</span><span class="s2">}"</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+
+<p>The example on the right hand side is a real life example from our addon for Interspire Email Marketer (IEM). I think it&rsquo;s quite self explanatory if you take a look at the code, but let me emphasise two things:</p>
+
+<ul>
+<li>The first is that you have to set the content type to <strong>application/json</strong> as you can see at the beginning of the file.
+
+<ul>
+<li>Also, it means that the response has to be a valid JSON.</li>
+</ul></li>
+<li>The second thing is the <a href="#gallery-hook-security">checkHookSecurity</a> function. You should implement something similar, otherwise others will be able to upload random content to your server.</li>
+</ul>
+
+<p>Check the original file from our <a href="https://github.com/EDMdesigner/IEM-EDMdesigner-Addon/blob/master/edmdesigner/UploadImage.php">IEM addon</a>.</p>
+
+<h1 id="delete-hook">Delete hook</h1>
+<pre class="highlight php"><code><span class="cp">&lt;?php</span>
+<span class="c1">//ini_set('display_errors',1);
+//ini_set('display_startup_errors',1);
+//error_reporting(-1);
+</span><span class="k">require_once</span> <span class="nb">dirname</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"/../../includes/config.php"</span><span class="p">;</span>
+<span class="k">require_once</span> <span class="nb">dirname</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"/utils.php"</span><span class="p">;</span>
+<span class="nb">header</span><span class="p">(</span><span class="s2">"Content-type: application/json;charset=utf-8"</span><span class="p">);</span>
+<span class="k">function</span> <span class="nf">printError</span><span class="p">(</span><span class="nv">$err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">print</span> <span class="s1">'{"err": '</span> <span class="o">.</span> <span class="nv">$err</span> <span class="o">.</span> <span class="s1">'}'</span><span class="p">;</span>
+    <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nv">$json</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="s2">"php://input"</span><span class="p">);</span>
+<span class="nv">$values</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$json</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nv">$values</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">printError</span><span class="p">(</span><span class="s2">"Null "</span> <span class="o">.</span> <span class="nv">$json</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="s2">"url"</span><span class="p">])</span> <span class="o">||</span> <span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="s2">"userId"</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nx">printError</span><span class="p">(</span><span class="s2">"Could not delete resource. 0"</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nv">$hash</span> <span class="o">=</span> <span class="nv">$values</span><span class="p">[</span><span class="s2">"hash"</span><span class="p">];</span>
+<span class="nv">$time</span> <span class="o">=</span> <span class="nv">$values</span><span class="p">[</span><span class="s2">"time"</span><span class="p">];</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">checkHookSecurity</span><span class="p">(</span><span class="nv">$hash</span><span class="p">,</span> <span class="nv">$time</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">printError</span><span class="p">(</span><span class="s2">"Security error."</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nv">$path</span> <span class="o">=</span> <span class="nb">str_replace</span><span class="p">(</span><span class="nx">SENDSTUDIO_APPLICATION_URL</span> <span class="o">.</span> <span class="s2">"/admin"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="nv">$values</span><span class="p">[</span><span class="s2">"url"</span><span class="p">],</span> <span class="nv">$count</span><span class="p">);</span>
+<span class="nv">$path</span> <span class="o">=</span> <span class="nb">dirname</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"/../../"</span> <span class="o">.</span> <span class="nv">$path</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">unlink</span><span class="p">(</span><span class="nv">$path</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">"{\"</span><span class="nx">success\</span><span class="s2">": true}"</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">printError</span><span class="p">(</span><span class="s2">"Could not delete resource. 1"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">http_response_code</span><span class="p">(</span><span class="mi">404</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+
+<p>The rules that you have to follow are almost the same as in the case of the <a href="#upload-hook">upload hook</a>.</p>
+
+<ul>
+<li>You have to set the content type to <strong>applicatin/json</strong> and send a valid JSON as response.</li>
+<li>Also, you have to implement the <a href="#gallery-hook-security">checkHookSecurity</a> function.</li>
+</ul>
+
+<p>Check the original file from our <a href="https://github.com/EDMdesigner/IEM-EDMdesigner-Addon/blob/master/edmdesigner/DeleteImage.php">IEM addon</a>.</p>
+
+<h1 id="gallery-hook-security">Gallery hook security</h1>
+<pre class="highlight php"><code>//utils.php
+//check out the checkHookSecurity calls in the previous examples!
+<span class="cp">&lt;?php</span>
+<span class="k">function</span> <span class="nf">checkHookSecurity</span><span class="p">(</span><span class="nv">$hash</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$magic</span> <span class="o">=</span> <span class="nx">getApiKeyAndMagic</span><span class="p">();</span>
+    <span class="nv">$magic</span> <span class="o">=</span> <span class="nv">$magic</span><span class="p">[</span><span class="s2">"EDMdesignerMagic"</span><span class="p">];</span>
+    <span class="k">return</span> <span class="nb">strcmp</span><span class="p">(</span><span class="nb">md5</span><span class="p">(</span><span class="nv">$time</span> <span class="o">.</span> <span class="nv">$magic</span><span class="p">),</span> <span class="nv">$hash</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+
+<p>When we send requests to the hooks that you provided, we send a userId, a hash and a timestamp. The hash is the md5 hash of the concatenation of your magic word and the timestamp we send. This way you can make sure that <strong>we</strong> sent the request and you can send back 403 or an error message if someone is trying with some nasty things.</p>
+
+<p>Check the original file from our <a href="https://github.com/EDMdesigner/IEM-EDMdesigner-Addon/blob/master/edmdesigner/utils.php#L184">IEM addon</a>.</p>
+
+<p>If you want to learn more about our gallery handling, please read the related parts in our <a href="./#gallery-handling">docs</a>.</p>
+
+          <h1 id="other-resources">Other resources</h1>
+
+<p>There are several resources from where you can learn more about EDMdesigner: the official documentation, the tutorials and the example implementations.</p>
+
+<h2 id="docs">Docs</h2>
+
+<table><thead>
+<tr>
+<th>Document</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="./">Basics</a></td>
+<td>This documentation covers the very basics of the integration, like:<ul><li>generating an access token</li><li>making API calls</li><li>managing and opening projects</li><li>managing users</li><li>gallery handling</li></ul></td>
+</tr>
+<tr>
+<td><a href="advanced.html">Advanced</a></td>
+<td>This documentation covers more advanced topics. Probably you will only need some of these functionalities. <ul><li>Group handling</li><li>String placeholders</li><li>Dynamic data</li><li>Favorite elements&rsquo; management</li><li>Working with custom data</li><li>Advanced project handling</li><li>API key management</li></ul></td>
+</tr>
+<tr>
+<td><a href="postMessageApi.html">postMessage API</a></td>
+<td>By reading this documentation you can learn about how to manipulate the editor itself from the client side. Basically this client side API is based on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postMessage</a> function with which you can send messages between frames from different domains. <ul><li>Basic messages and responses (eg. manual save)</li><li>Hooking on editor events (eg. using your own gallery instead of the built-in one)</li><li>Dynamic data</li><li>Setting elements&rsquo; properties</li></ul></td>
+</tr>
+<tr>
+<td><a href="documentDescriptors.html">Element descriptors</a></td>
+<td>A detailed description of our element types used in projects and favorite elements. We generate all of our outputs based on these JSON descriptors.</td>
+</tr>
+<tr>
+<td><a href="builtInGallery.html">Old built-in gallery</a></td>
+<td>Don&rsquo;t use it. Use the new postMessage based solution.</td>
+</tr>
+<tr>
+<td><a href="migratingToTheCDNBasedEditor.html">Migrating to the CDN based editor</a></td>
+<td>In this article you will learn about how to migrate from the good old version of the editor to the superfast and robust <a href="http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront">CDN based version</a>.</td>
+</tr>
+</tbody></table>
+
+<h2 id="tutorials">Tutorials</h2>
+
+<table><thead>
+<tr>
+<th>Tutorial</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="tutorialTheBasics.html">The Basics</a></td>
+<td>In this tutorial you will learn about our dashboard, the access token generation and the very basic functionalities, like creating and opening projects.</td>
+</tr>
+<tr>
+<td><a href="tutorialAdminFunctionalities.html">Admin Functionalities</a></td>
+<td>The biggest take away of this tutorial that you will see how to create new users in our system, so you will be able to associate one user for each of users in your system.</td>
+</tr>
+<tr>
+<td><a href="tutorialGalleryConfig.html">Old Built-in Gallery Configuration</a></td>
+<td>In this tutorial you will learn about how to set up the gallery properly, how to implement the hooks on your side and you will also learn about the security of these hooks.</td>
+</tr>
+</tbody></table>
+
+<h2 id="example-implementations">Example implementations</h2>
+
+<p>Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.</p>
+
+<ul>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP">PHP example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-PHP-Admin">PHP admin example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-Node.js">Node.js example</a></li>
+<li><a href="https://github.com/EDMdesigner/EDMdesigner-API-Example-ColdFusion">Cold Fusion example</a> - Thank you Tom Chiverton from Extravision! :)</li>
+<li><a href="https://github.com/EDMdesigner/EDMDesigner-API-Example-Django">Django example</a> - Thank you Ferenc Vehmann from ZenHeads! :)</li>
+</ul>
+
+<p>If you have another example implementation, please let us know, we will fork it and will put a link here.</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="php">php</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
