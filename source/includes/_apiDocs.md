@@ -1,9 +1,14 @@
-# Other resources
 
-There are several resources from where you can learn more about EDMdesigner: the official documentation, the tutorials and the example implementations.
+# Tutorials
+
+Tutorial | Description
+---|---
+[The Basics](./tutorialTheBasics.html) | In this tutorial you will learn about our dashboard, the access token generation and the very basic functionalities, like creating and opening projects.
+[Admin Functionalities](./tutorialAdminFunctionalities.html) | The biggest take away of this tutorial that you will see how to create new users in our system, so you will be able to associate one user for each of users in your system.
+[Old Built-in Gallery Configuration](./tutorialGalleryConfig.html) | In this tutorial you will learn about how to set up the gallery properly, how to implement the hooks on your side and you will also learn about the security of these hooks.
 
 
-## Docs
+# Other documentations
 
 Document | Description
 ---|---
@@ -15,17 +20,7 @@ Document | Description
 [Migrating to the CDN based editor](./migratingToTheCDNBasedEditor.html) | In this article you will learn about how to migrate from the good old version of the editor to the superfast and robust [CDN based version](http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront).
 
 
-
-## Tutorials
-
-Tutorial | Description
----|---
-[The Basics](./tutorialTheBasics.html) | In this tutorial you will learn about our dashboard, the access token generation and the very basic functionalities, like creating and opening projects.
-[Admin Functionalities](./tutorialAdminFunctionalities.html) | The biggest take away of this tutorial that you will see how to create new users in our system, so you will be able to associate one user for each of users in your system.
-[Old Built-in Gallery Configuration](./tutorialGalleryConfig.html) | In this tutorial you will learn about how to set up the gallery properly, how to implement the hooks on your side and you will also learn about the security of these hooks.
-
-
-## Example implementations
+# Example implementations
 Our PHP examples are very well maintained, but the others are probably not up-to-date. Still, they can be a good starting point, but you might want to take a look at the PHP examples as well in the meanwhile.
 
   * [PHP example](https://github.com/EDMdesigner/EDMdesigner-API-Example-PHP)
