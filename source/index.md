@@ -94,7 +94,7 @@ In the following chapters you will see examples for the token generation process
 
 Once you have an access token, you can make requests to our API endpoints. The only thing you have to do is to add the userId (what you used when you created the token) and the token itself to the query string as a parameter of the HTTP of JSONP request:
 
-**http(s)://api.end.point/request/route?userId=youruserid&token=youraccesstoken**
+**http(s)://api.end.point/request/route?user=youruserid&token=youraccesstoken**
 
 For exmaple:
 
