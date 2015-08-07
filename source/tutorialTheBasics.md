@@ -170,10 +170,10 @@ If you want to learn more about the access token generation, please read the cor
 ```html
 <script>
     initEDMdesignerPlugin("token.php", "templater", function(edmDesignerApi) {
-        edmDesignerApi.createProject(function({title: "test-title", description: "test-desc", document: {}}, result) {
+        edmDesignerApi.createProject({title: "test-title", description: "test-desc", document: {}}, function(result) {
             console.log(result._id);
         });
-    }, function onErrorCB(error) { console.log(error); });
+    }, function onErrorCB(error) {console.log(error);});
 </script>
 ```
 
