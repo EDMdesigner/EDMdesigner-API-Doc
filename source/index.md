@@ -26,6 +26,8 @@ With an API key and the corresponding "magic word" you can generate an access to
 
 At a certain point your users will open our editor. When the editor's iframe is opened, you will be able to modify its behaviour through our [postMessage API](./postMessageApi.html). That's the client side of our API. The whole code (js, css and html as well) of the editor is [served with Amazon's CDN (Cloudfront)](http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront) so it should load super fast from all over the world.
 
+If you are feeling confused or stuck during the process, check out [Tutorials](#tutorials).
+
 
 
 #Making requests
@@ -48,7 +50,7 @@ There are some API requests, which are not reachable via a JSONP call. This is b
 
 It might happen that you try to make extremely lot of API calls, especially when something is messed up with your integration. If it happens, then after a while we will send back a response with [429](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429) status code and won't serve your requests for a while. So integrate carefully, and don't try to send too many requests. (Our API is [rate limited](https://en.wikipedia.org/wiki/Rate_limiting).)
 
-At the moment, our [JS API](http://api-static.edmdesigner.com/EDMdesignerAPI.js)'s dependence is jQuery. It's only because of the convenient ajax requests, but probably we will change it to native ajax in the near future.
+At the moment, our [JS API](http://api-static.edmdesigner.com/EDMdesignerAPI.js)'s dependence is [jQuery](https://jquery.com/) (v1.3 or later). It's only because of the convenient ajax requests, but probably we will change it to native ajax in the near future. 
 
 We suggest you to use the [JS API](http://api-static.edmdesigner.com/EDMdesignerAPI.js) as much as it's possible.
 
@@ -67,7 +69,7 @@ Basically you will need to generate a user level or admin level access token wit
 
 First of all, you will need an API key and a corresponding magic word to generate an access token. You can manage your API keys and magic words on our dashboard.
 
-Basically you need to HTTP POST from your server to one of our [API endpoints](#making-requests) the followin data to the **/api/token** route:
+Basically you need to HTTP POST from your server to one of our [API endpoints](#making-requests) the following data to the **/api/token** route:
 
 Param | Description
 ---|---
@@ -104,7 +106,7 @@ If you use our [JS API](http://api-static.edmdesigner.com/EDMdesignerAPI.js) the
 
 The other very good thing about using this JS API is, that the failover mechanism is built-in so you won't need to implement failover manually.
 
-If the token is not valid any more or the userId that you sent is not correct, then the HTTP response's statuc code will be [403](https://en.wikipedia.org/wiki/HTTP_403) and your request won't be served.
+If the token is not valid any more or the userId that you sent is not correct, then the HTTP response's status code will be [403](https://en.wikipedia.org/wiki/HTTP_403) and your request won't be served.
 
 ## User level access token
 
@@ -179,7 +181,7 @@ The first parameter is the route where the JS module will post the userId, which
 The whole process in the example is the following:
 
  - the JS API sends the userId to token.php
- - token.php sends the neccessary info to one of our endpoints
+ - token.php sends the necessary info to one of our endpoints
  - our endpoint responds with a token
  - JS API will use this token for the subsequent API calls
 
@@ -275,7 +277,7 @@ module.exports = mongoose.model("Project", projectSchema);
 ```php
 //Switch to the javascript tab to see the original mongoose schema and model of our Projecs.
 ```
-Throughout the documentation you will be reading about requests with which you can make certain operations on projects. Read more about project management [here](#project-handling). These projects have the follwing properties:
+Throughout the documentation you will be reading about requests with which you can make certain operations on projects. Read more about project management [here](#project-handling). These projects have the following properties:
 
 Field | Type | Required | Description
 ------|------|----------|------------
@@ -285,7 +287,7 @@ title | String | true | The title of the project.
 description | String | false | Optional extra information.
 createdOn | Date | false | The time when the project was created at.
 lastModified | Date | false | The time when the project was modified for the last time.
-document | Mixed | false | The document descriptor object. Learn more about it. TODO LINK
+document | Mixed | false | The document descriptor object. Read more about [here](documentDescriptors.html).
 customData | Mixed | false | A custom object in which you can put extra info of the project. For example if it's a template or a campaign.
 
 
@@ -329,7 +331,7 @@ Field | Type | Required | Description
 ------|------|----------|------------
 id | String | true | This will be the id of the user, so you must make it sure, that it's unique per API key. We suggest you to use the userId from your system.
 group | ObjectId | true | A reference to the user's group. (Autogenerated.)
-createdTime | Date | false | The time when the project was created at.
+createdTime | Date | false | The time when the user was created at.
 customData | Mixed | false | A custom object in which you can put extra info of the user.
 
 
@@ -369,7 +371,7 @@ You can set the parameters of the db search (you have to use the moongose.js que
 # Project handling
 ```javascript
 initEDMdesignerPlugin("token.php", "TestUser", function(edmDesignerApi) {
-  //In the follwing examples we assume that you put the code snippets here,
+  //In the following examples we assume that you put the code snippets here,
   //where edmDesignerApi is on the closure.
 }, function onError(error) {
   console.log(error);
@@ -530,7 +532,7 @@ Field | Type | Required | Description
 :id | String | true | The id of the project you want to get.
 
 ### Response:
-The project as a json.
+The project as a json. Read more about the project model [here](#the-project-model).
 
 
 
@@ -546,7 +548,7 @@ edmDesignerApi.getDefaultTemplates(function(result) {
   console.log(error);
 });
 ```
-You can get the default templates povided by your templater user by calling this funciton. It means that if you have a user called templater, this route will result its projects. (Every API key has an associated templater user by default.)
+You can get the default templates provided by your templater user by calling this function. It means that if you have a user called templater, this route will result its projects. (Every API key has an associated templater user by default.)
 
 HTTP | JSONP | JS API
 -----|-------|-------
@@ -611,7 +613,9 @@ The result object has an _id field with is the id of the new project. (This is a
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.
 
-!!!!JSONP LIMITATIONS!!!
+There are limitations of the JSONP technique you should know about. One limitation is that the client browser will always issue HTTP GET requests to the server, and another is that HTTP error status codes cannot be used to inform the client of the success or failure of an operation.
+
+This is because if the server’s response has a status code other than 200 OK, the client will not load the received Javascript code, and the callback function will never be called. Read more about JSONP [here](https://en.wikipedia.org/wiki/JSONP).
 
 
 
@@ -654,7 +658,7 @@ or it can be an error object:
 ```javascript
 var projectId = "#somehow you have to set the projectId.";
 edmDesignerApi.createFromOwn(projectId, {title: "createFromOwn example", description: "Created with createFromOwn function"}, function(result) {
-  //the result is the newly created project's object or error obejct with err property
+  //the result is the newly created project's object or error object with err property
 });
 ```
 
@@ -701,7 +705,7 @@ initEDMdesignerPlugin("token.php", "templater", function(edmDesignerApi) {
 initEDMdesignerPlugin("token.php", "TestUser", function(edmDesignerApi) {
 
   edmDesignerApi.createFromDefaults(templaterProjectId, {title: "createFromDefaults example", description: "Created with createFromDefaults function"}, function(result) {
-    //the result is the newly created project's object or error obejct with err property
+    //the result is the newly created project's object or error object with err property
   });
 
 function onErrorCB(error) {
@@ -767,7 +771,7 @@ POST /json/project/updateInfo | GET /jsonp/project/updateInfo | edmDesignerApi.u
 Field | Type | Required | Description
 ------|------|----------|------------
 data | [Project](#the-project-model) | true | You don't need to set the document field, because that won't be updated if you use this route
-data.override | Boolean | false | If true, then the customData will be overriden with the new one. If false, then it will be merged into the existing one. The default value of it is false.
+data.override | Boolean | false | If true, then the customData will be overridden with the new one. If false, then it will be merged into the existing one. The default value of it is false.
 
 ### Response:
 {success: true} or it can be an error object:
@@ -1180,7 +1184,7 @@ Field | Type | Required | Description
 ------|------|----------|------------
 :id | String | true | The id of the user. (Which was given by you previously at [user creation](#user-create).)
 data | [User](#the-user-model) | true | The new user data
-data.override | Boolean | false | If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
+data.override | Boolean | false | If it is true then the customData will be overridden with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.
 
 
 ### Response:
@@ -1200,7 +1204,7 @@ initEDMdesignerPlugin("token.php", "admin", function(edmDesignerApi) {
   edmDesignerApi.createUser({id: "exampleUserId"}, function(result) {
   
     edmDesignerApi.deleteUser(result.id, function(resultUser) {
-      //the resultUser is an object with an id propert
+      //the resultUser is an object with an id property
       console.log(resultUser);
     }, onErrorCB);
   
@@ -1282,10 +1286,10 @@ Basically there are two ways to use gallery in our editor:
 We suggest you to use your own gallery for several reasons:
 
  - The first is that if you use our built-in gallery, then the images first will be uploaded to our server and then we post it to your server which you set up on the dashboard. This way the upload speeds can be slower radically.
- - The second reason is that you have to keep our and your gallery in sycnhron, which is probably takes much more time then using your already existing gallery from your own system.
+ - The second reason is that you have to keep our and your gallery in synchron, which is probably takes much more time then using your already existing gallery from your own system.
 
 
- If you want to use your own gallery, then we have to disable the gallery for your API keys. If you want this, just drop an email to support _AT_ edmdesigner.com. (Later, you will be able to set it on the dasboard...)
+ If you want to use your own gallery, then we have to disable the gallery for your API keys. If you want this, just drop an email to support _AT_ edmdesigner.com. (Later, you will be able to set it on the dashboard...)
 
  When the gallery is disabled, you can hook on editor events which we send through parent.postMessage. In the example on the right hand side (javascript tab) we hook on every image and background related edit event. What we do is basically we immediately set the src property or the background src whenever we get an "edit" or "editBackground" event. We do it with the setProps action. You have to send back the _dynId of the element, so the editor will update the property of the same element the user started to edit.
 
