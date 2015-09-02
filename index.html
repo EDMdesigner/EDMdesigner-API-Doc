@@ -54,6 +54,8 @@
 
 <p>At a certain point your users will open our editor. When the editor&rsquo;s iframe is opened, you will be able to modify its behaviour through our <a href="postMessageApi.html">postMessage API</a>. That&rsquo;s the client side of our API. The whole code (js, css and html as well) of the editor is <a href="http://edmdesigner.com/blog/update-edmdesigner-uses-amazon-cloudfront">served with Amazon&rsquo;s CDN (Cloudfront)</a> so it should load super fast from all over the world.</p>
 
+<p>If you are feeling confused or stuck during the process, check out <a href="#tutorials">Tutorials</a>.</p>
+
 <h1 id="making-requests">Making requests</h1>
 
 <p>There are two main ways to make requests to our server. The first is when you send a simple HTTP request to one of our API endpoints, the second is when you send a <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a> request.</p>
@@ -76,7 +78,7 @@
 
 <p>It might happen that you try to make extremely lot of API calls, especially when something is messed up with your integration. If it happens, then after a while we will send back a response with <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429">429</a> status code and won&rsquo;t serve your requests for a while. So integrate carefully, and don&rsquo;t try to send too many requests. (Our API is <a href="https://en.wikipedia.org/wiki/Rate_limiting">rate limited</a>.)</p>
 
-<p>At the moment, our <a href="http://api-static.edmdesigner.com/EDMdesignerAPI.js">JS API</a>&rsquo;s dependence is jQuery. It&rsquo;s only because of the convenient ajax requests, but probably we will change it to native ajax in the near future.</p>
+<p>At the moment, our <a href="http://api-static.edmdesigner.com/EDMdesignerAPI.js">JS API</a>&rsquo;s dependence is <a href="https://jquery.com/">jQuery</a> (v1.3 or later). It&rsquo;s only because of the convenient ajax requests, but probably we will change it to native ajax in the near future. </p>
 
 <p>We suggest you to use the <a href="http://api-static.edmdesigner.com/EDMdesignerAPI.js">JS API</a> as much as it&rsquo;s possible.</p>
 
@@ -91,7 +93,7 @@ Basically you will need to generate a user level or admin level access token wit
 
 <p>First of all, you will need an API key and a corresponding magic word to generate an access token. You can manage your API keys and magic words on our dashboard.</p>
 
-<p>Basically you need to HTTP POST from your server to one of our <a href="#making-requests">API endpoints</a> the followin data to the <strong>/api/token</strong> route:</p>
+<p>Basically you need to HTTP POST from your server to one of our <a href="#making-requests">API endpoints</a> the following data to the <strong>/api/token</strong> route:</p>
 
 <table><thead>
 <tr>
@@ -145,7 +147,7 @@ Basically you will need to generate a user level or admin level access token wit
 
 <p>The other very good thing about using this JS API is, that the failover mechanism is built-in so you won&rsquo;t need to implement failover manually.</p>
 
-<p>If the token is not valid any more or the userId that you sent is not correct, then the HTTP response&rsquo;s statuc code will be <a href="https://en.wikipedia.org/wiki/HTTP_403">403</a> and your request won&rsquo;t be served.</p>
+<p>If the token is not valid any more or the userId that you sent is not correct, then the HTTP response&rsquo;s status code will be <a href="https://en.wikipedia.org/wiki/HTTP_403">403</a> and your request won&rsquo;t be served.</p>
 
 <h2 id="user-level-access-token">User level access token</h2>
 <pre class="highlight javascript"><code><span class="c1">//First include jQuery somewhere in your page, because our JS API is depending on that</span>
@@ -216,7 +218,7 @@ The first parameter is the route where the JS module will post the userId, which
 
 <ul>
 <li>the JS API sends the userId to token.php</li>
-<li>token.php sends the neccessary info to one of our endpoints</li>
+<li>token.php sends the necessary info to one of our endpoints</li>
 <li>our endpoint responds with a token</li>
 <li>JS API will use this token for the subsequent API calls</li>
 </ul>
@@ -302,7 +304,7 @@ The first parameter is the route where the JS module will post the userId, which
 <pre class="highlight php"><code>//Switch to the javascript tab to see the original mongoose schema and model of our Projecs.
 </code></pre>
 
-<p>Throughout the documentation you will be reading about requests with which you can make certain operations on projects. Read more about project management <a href="#project-handling">here</a>. These projects have the follwing properties:</p>
+<p>Throughout the documentation you will be reading about requests with which you can make certain operations on projects. Read more about project management <a href="#project-handling">here</a>. These projects have the following properties:</p>
 
 <table><thead>
 <tr>
@@ -352,7 +354,7 @@ The first parameter is the route where the JS module will post the userId, which
 <td>document</td>
 <td>Mixed</td>
 <td>false</td>
-<td>The document descriptor object. Learn more about it. TODO LINK</td>
+<td>The document descriptor object. Read more about <a href="documentDescriptors.html">here</a>.</td>
 </tr>
 <tr>
 <td>customData</td>
@@ -413,7 +415,7 @@ It&rsquo;s best if you create a user in our system at the first time when your u
 <td>createdTime</td>
 <td>Date</td>
 <td>false</td>
-<td>The time when the project was created at.</td>
+<td>The time when the user was created at.</td>
 </tr>
 <tr>
 <td>customData</td>
@@ -487,7 +489,7 @@ It&rsquo;s best if you create a user in our system at the first time when your u
 
 <h1 id="project-handling">Project handling</h1>
 <pre class="highlight javascript"><code><span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"token.php"</span><span class="p">,</span> <span class="s2">"TestUser"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">//In the follwing examples we assume that you put the code snippets here,</span>
+  <span class="c1">//In the following examples we assume that you put the code snippets here,</span>
   <span class="c1">//where edmDesignerApi is on the closure.</span>
 <span class="p">},</span> <span class="kd">function</span> <span class="nx">onError</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
@@ -704,7 +706,7 @@ It&rsquo;s best if you create a user in our system at the first time when your u
 
 <h3 id="response">Response:</h3>
 
-<p>The project as a json.</p>
+<p>The project as a json. Read more about the project model <a href="#the-project-model">here</a>.</p>
 
 <h2 id="project-list-defaults">Project - list defaults</h2>
 <pre class="highlight javascript"><code><span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">getDefaultTemplates</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
@@ -714,7 +716,7 @@ It&rsquo;s best if you create a user in our system at the first time when your u
 <span class="p">});</span>
 </code></pre>
 
-<p>You can get the default templates povided by your templater user by calling this funciton. It means that if you have a user called templater, this route will result its projects. (Every API key has an associated templater user by default.)</p>
+<p>You can get the default templates provided by your templater user by calling this function. It means that if you have a user called templater, this route will result its projects. (Every API key has an associated templater user by default.)</p>
 
 <table><thead>
 <tr>
@@ -836,7 +838,9 @@ It&rsquo;s best if you create a user in our system at the first time when your u
 or it can be an error object:
   - err Description of the error {String} or an error code {Number}.</p>
 
-<p>!!!!JSONP LIMITATIONS!!!</p>
+<p>There are limitations of the JSONP technique you should know about. One limitation is that the client browser will always issue HTTP GET requests to the server, and another is that HTTP error status codes cannot be used to inform the client of the success or failure of an operation.</p>
+
+<p>This is because if the server’s response has a status code other than 200 OK, the client will not load the received Javascript code, and the callback function will never be called. Read more about JSONP <a href="https://en.wikipedia.org/wiki/JSONP">here</a>.</p>
 
 <h2 id="project-duplicate">Project - duplicate</h2>
 <pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">projectId</span> <span class="o">=</span> <span class="s2">"#somehow you have to set the projectId."</span><span class="p">;</span>
@@ -890,7 +894,7 @@ or it can be an error object:
 <h2 id="project-create-from-own">Project - create from own</h2>
 <pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">projectId</span> <span class="o">=</span> <span class="s2">"#somehow you have to set the projectId."</span><span class="p">;</span>
 <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createFromOwn</span><span class="p">(</span><span class="nx">projectId</span><span class="p">,</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="s2">"createFromOwn example"</span><span class="p">,</span> <span class="na">description</span><span class="p">:</span> <span class="s2">"Created with createFromOwn function"</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">//the result is the newly created project's object or error obejct with err property</span>
+  <span class="c1">//the result is the newly created project's object or error object with err property</span>
 <span class="p">});</span>
 </code></pre>
 
@@ -954,7 +958,7 @@ or it can be an error object:
 <span class="nx">initEDMdesignerPlugin</span><span class="p">(</span><span class="s2">"token.php"</span><span class="p">,</span> <span class="s2">"TestUser"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">edmDesignerApi</span><span class="p">)</span> <span class="p">{</span>
 
   <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createFromDefaults</span><span class="p">(</span><span class="nx">templaterProjectId</span><span class="p">,</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="s2">"createFromDefaults example"</span><span class="p">,</span> <span class="na">description</span><span class="p">:</span> <span class="s2">"Created with createFromDefaults function"</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">//the result is the newly created project's object or error obejct with err property</span>
+    <span class="c1">//the result is the newly created project's object or error object with err property</span>
   <span class="p">});</span>
 
 <span class="kd">function</span> <span class="nx">onErrorCB</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
@@ -1058,7 +1062,7 @@ or it can be an error object:
 <td>data.override</td>
 <td>Boolean</td>
 <td>false</td>
-<td>If true, then the customData will be overriden with the new one. If false, then it will be merged into the existing one. The default value of it is false.</td>
+<td>If true, then the customData will be overridden with the new one. If false, then it will be merged into the existing one. The default value of it is false.</td>
 </tr>
 </tbody></table>
 
@@ -1557,7 +1561,7 @@ or it can be an error object:
 <td>data.override</td>
 <td>Boolean</td>
 <td>false</td>
-<td>If it is true then the customData will be overrided with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</td>
+<td>If it is true then the customData will be overridden with the newly given data, if it is false then the newly given customData will be merged with the previous ones. By default it is false.</td>
 </tr>
 </tbody></table>
 
@@ -1570,7 +1574,7 @@ or it can be an error object:
   <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">createUser</span><span class="p">({</span><span class="na">id</span><span class="p">:</span> <span class="s2">"exampleUserId"</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="nx">edmDesignerApi</span><span class="p">.</span><span class="nx">deleteUser</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resultUser</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">//the resultUser is an object with an id propert</span>
+      <span class="c1">//the resultUser is an object with an id property</span>
       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">resultUser</span><span class="p">);</span>
     <span class="p">},</span> <span class="nx">onErrorCB</span><span class="p">);</span>
 
@@ -1678,10 +1682,10 @@ or it can be an error object:
 
 <ul>
 <li>The first is that if you use our built-in gallery, then the images first will be uploaded to our server and then we post it to your server which you set up on the dashboard. This way the upload speeds can be slower radically.</li>
-<li>The second reason is that you have to keep our and your gallery in sycnhron, which is probably takes much more time then using your already existing gallery from your own system.</li>
+<li>The second reason is that you have to keep our and your gallery in synchron, which is probably takes much more time then using your already existing gallery from your own system.</li>
 </ul>
 
-<p>If you want to use your own gallery, then we have to disable the gallery for your API keys. If you want this, just drop an email to support <em>AT</em> edmdesigner.com. (Later, you will be able to set it on the dasboard&hellip;)</p>
+<p>If you want to use your own gallery, then we have to disable the gallery for your API keys. If you want this, just drop an email to support <em>AT</em> edmdesigner.com. (Later, you will be able to set it on the dashboard&hellip;)</p>
 
 <p>When the gallery is disabled, you can hook on editor events which we send through parent.postMessage. In the example on the right hand side (javascript tab) we hook on every image and background related edit event. What we do is basically we immediately set the src property or the background src whenever we get an &ldquo;edit&rdquo; or &ldquo;editBackground&rdquo; event. We do it with the setProps action. You have to send back the _dynId of the element, so the editor will update the property of the same element the user started to edit.</p>
 
