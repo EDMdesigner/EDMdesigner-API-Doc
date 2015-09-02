@@ -1324,9 +1324,20 @@ At the moment we support the following languages:
  - nl (Dutch)
  - ro (Romanian)
  - ru (Russian)
+ - pt-br (Portuguese (Brazil))
 
 If the language you want to use is not available yet then please contact us with the following email address: info@edmdesigner.com
 
+
+
+
+#Supported browsers
+
+ - Internet Explorer 10+
+ - Google Chrome 33+
+ - Mozilla Firefox 27+
+ - Opera 19+
+ - Safari 5+
 
 
 
