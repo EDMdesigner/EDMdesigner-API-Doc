@@ -932,7 +932,7 @@ This function is only a wrapper, which will create a correct iframe src from the
 ### Parameters:
 
   * projectId {String} The id of the project. Note that it has to be a valid MongoDB _id. It's best if you use the values that you got when you list the projects of the user with the [edmDesignerAPI.listProjects](#edmdesignerapilistprojectscallback-onerrorcb) function.
-  * languageCode {String} /Optional/ A two character [ISO 639-1 code](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of a selected language. With this parameter you can choose the language which the opened project will use. You can find the [list of the available languages](#languages) at the end of this page. Default language is english.
+  * languageCode {String} /Optional/ A two character [ISO 639-1 code](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of a selected language. With this parameter you can choose the language which the opened project will use. You can find the [list of the available languages](#available-languages) at the end of this page. Default language is english.
   * settings {Object} /Optional/ With this object, it is possible to set some basic settings:
     * autosave {Number} With this property you can set the frequency of the autosave (in millisecond). Please note that the autosave only save the project if there were changes after the last save, with this property you can only set how often should the autosave handler check if there are any kind of changes in the template. If you want to turn off the autosave functionality, then you have to set this property to zero (0). It is possible to manually trigger the saving mechanism with the [save project message](#save-project).
   * callback {Function} A function to be called if the request succeeds
@@ -1324,7 +1324,7 @@ At the moment we support the following languages:
  - nl (Dutch)
  - ro (Romanian)
  - ru (Russian)
- - pt-br (Portuguese (Brazil))
+ - pt-BR (Portuguese (Brazil))
 
 If the language you want to use is not available yet then please contact us with the following email address: info@edmdesigner.com
 
