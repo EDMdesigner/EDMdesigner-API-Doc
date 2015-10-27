@@ -1319,14 +1319,17 @@ At the moment we support the following languages:
 
  - de (German)
  - en (English)
+ - fr (French)
  - es (Spanish)
  - hu (Hungarian)
  - it (Italian)
  - nl (Dutch)
+ - pl (Polish)
  - pt (Portuguese)
- - pt-BR (Portuguese (Brazil))
+ - pt-BR (Portuguese [Brazilian])
  - ro (Romanian)
  - ru (Russian)
+ - zh-HANS (Chinese [Simplified])
 
 If the language you want to use is not available yet then please contact us with the following email address: info@edmdesigner.com
 
