@@ -874,7 +874,7 @@ or it can be an error object:
 
 
 ##Download as Zip
-It is possible to export your template as a zip. 
+It is possible to export your template as a zip. You can use a simple user level token.
 
 #####Type
   + GET
@@ -895,7 +895,7 @@ You can set which files you want to have in your exported zip and how you want t
  
 Example:
   - the config json: {"config": {"needHtml": true, "needJson": false, "withoutSanitizing": false} }
-  - example request: //api.edmdesigner.com/json_v1.0.0/apiKey/yourapikey/user/youruserid/project/projectId/downloadAsZip?user=admin&token=adminToken&data={"config": {"needHtml": true, "needJson": false, "withoutSanitizing": false} }
+  - example request: //api.edmdesigner.com/json_v1.0.0/apiKey/yourapikey/user/youruserid/project/projectId/downloadAsZip?user=youruserid&token=youruserleveltoken&data={"config": {"needHtml": true, "needJson": false, "withoutSanitizing": false} }
 
 ####Response:
 A zip which can contain the followings (it depends on the configuration, by default it will contain everything):
