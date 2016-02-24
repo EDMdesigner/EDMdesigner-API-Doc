@@ -1289,7 +1289,7 @@ We suggest you to use your own gallery for several reasons:
  - The second reason is that you have to keep our and your gallery in synchron, which is probably takes much more time then using your already existing gallery from your own system.
 
 
- If you want to use your own gallery, then we have to disable the gallery for your API keys. If you want this, just drop an email to support _AT_ edmdesigner.com. (Later, you will be able to set it on the dashboard...)
+ If you want to use your own gallery, then we have to disable the gallery for your API keys. Log in to the [dashboard](https://dashboard.edmdesigner.com/login) and go to editor settings. At the runtime modifiers part, you can disable the built-in gallery. Be careful, try it first with one of your test api keys. 
 
  When the gallery is disabled, you can hook on editor events which we send through parent.postMessage. In the example on the right hand side (javascript tab) we hook on every image and background related edit event. What we do is basically we immediately set the src property or the background src whenever we get an "edit" or "editBackground" event. We do it with the setProps action. You have to send back the _dynId of the element, so the editor will update the property of the same element the user started to edit.
 
