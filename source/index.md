@@ -1300,6 +1300,49 @@ If you still want to use our built-in gallery, you can read its [docs](./builtIn
 
 
 
+# Code element handling
+
+```javascript
+var placeholderJson = { type: "BOX", ... }
+
+window.addEventListener("message", function(event) {
+  var msg = {};
+
+  try {
+    msg = JSON.parse(event.data);
+  } catch(e) {
+    return; // do nothing
+  }
+
+  if (msg.action === "edit" && msg.elementJson.subType === "CODE") {
+    event.source.postMessage(JSON.stringify({
+      _dynId: msg._dynId,
+      action: "setProps",
+      props: {
+        customData: { code: "YOUR CODE", disabledCode: false },
+        root: placeholderJson
+      }
+    }), event.origin);
+  }
+}, false);
+```
+
+With the Code element, you can insert custom code into your templates.
+
+### Properties:
+
+Field | Type | Required | Description
+------|------|----------|------------
+customData | object | true | Options for the Code element
+root | object | false | You can overwrite the Code element's placeholder with a Template JSON object. The root element's type has to be [BOX](./documentDescriptors.html#box) or [MULTICOLUMN](./documentDescriptors.html#multicolumn)
+
+### customData properties:
+
+Field | Type | Required | Description
+------|------|----------|------------
+code | string | true | Your custom code, which will be inserted into the template by default
+disabledCode | boolean | false | If you set this option true the exported template will include the placeholder instead of your custom code
+
 
 
 
