@@ -1693,6 +1693,81 @@ or it can be an error object:
 
 <p>If you still want to use our built-in gallery, you can read its <a href="builtInGallery.html">docs</a> and a <a href="tutorialGalleryConfig.html">tutorial</a> about it.</p>
 
+<h1 id="code-element-handling">Code element handling</h1>
+<pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">placeholderJson</span> <span class="o">=</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="s2">"BOX"</span><span class="p">,</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"message"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="p">{};</span>
+
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="nx">msg</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span> <span class="c1">// do nothing</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">"edit"</span> <span class="o">&amp;&amp;</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">elementJson</span><span class="p">.</span><span class="nx">subType</span> <span class="o">===</span> <span class="s2">"CODE"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">postMessage</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+      <span class="na">_dynId</span><span class="p">:</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">_dynId</span><span class="p">,</span>
+      <span class="na">action</span><span class="p">:</span> <span class="s2">"setProps"</span><span class="p">,</span>
+      <span class="na">props</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">customData</span><span class="p">:</span> <span class="p">{</span> <span class="na">code</span><span class="p">:</span> <span class="s2">"YOUR CODE"</span><span class="p">,</span> <span class="na">disabledCode</span><span class="p">:</span> <span class="kc">false</span> <span class="p">},</span>
+        <span class="na">root</span><span class="p">:</span> <span class="nx">placeholderJson</span>
+      <span class="p">}</span>
+    <span class="p">}),</span> <span class="nx">event</span><span class="p">.</span><span class="nx">origin</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+</code></pre>
+
+<p>With the Code element, you can insert custom code into your templates.</p>
+
+<h3 id="properties">Properties:</h3>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>customData</td>
+<td>object</td>
+<td>true</td>
+<td>Options for the Code element</td>
+</tr>
+<tr>
+<td>root</td>
+<td>object</td>
+<td>false</td>
+<td>You can overwrite the Code element&rsquo;s placeholder with a Template JSON object. The root element&rsquo;s type has to be <a href="documentDescriptors.html#box">BOX</a> or <a href="documentDescriptors.html#multicolumn">MULTICOLUMN</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="customdata-properties">customData properties:</h3>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code</td>
+<td>string</td>
+<td>true</td>
+<td>Your custom code, which will be inserted into the template by default</td>
+</tr>
+<tr>
+<td>disabledCode</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you set this option true the exported template will include the placeholder instead of your custom code</td>
+</tr>
+</tbody></table>
+
 <h1 id="available-languages">Available Languages</h1>
 
 <p>At the moment we support the following languages:</p>
