@@ -1344,9 +1344,35 @@ code | string | true | Your custom code, which will be inserted into the templat
 disabledCode | boolean | false | If you set this option true the exported template will include the placeholder instead of your custom code
 
 
+# Header script
 
+```javascript
+window.addEventListener("message", function(event) {
+  try {
+    var msg = JSON.parse(event.data);
+  } catch(e) {
+    return; // do nothing
+  }
 
+  if (msg.action === "editHeaderScript") {
+    event.source.postMessage(JSON.stringify({
+      _dynId: msg._dynId,
+      action: "setProps",
+      props: {
+        headerScript: "<script>console.log('Hello')</script>"
+      }
+    }), event.origin);
+  }
+}, false);
+```
 
+With Header script, you can insert any valid HTML code into the template's `<head>` tag. For example you can use this feature to place JavaScript code wrapped up in a `<script>` tag. (But do not forget that majority of email softwares will sanitize `<script>` tags)
+
+### Properties:
+
+Field | Type | Required | Description
+------|------|----------|------------
+headerScript | string | true | valid-HTML code
 
 
 
