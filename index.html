@@ -1788,7 +1788,7 @@ or it can be an error object:
 <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
 </code></pre>
 
-<p>With a Header script, you can insert a <code class="prettyprint">&lt;script&gt;</code> tag with your custom JavaScript code into the <code class="prettyprint">&lt;head&gt;</code> tag</p>
+<p>With Header script, you can insert any valid HTML code into the template&rsquo;s <code class="prettyprint">&lt;head&gt;</code> tag. For example you can use this feature to place JavaScript code wrapped up in a <code class="prettyprint">&lt;script&gt;</code> tag. (But do not forget that majority of email softwares will sanitize <code class="prettyprint">&lt;script&gt;</code> tags)</p>
 
 <h3 id="properties">Properties:</h3>
 
@@ -1804,7 +1804,7 @@ or it can be an error object:
 <td>headerScript</td>
 <td>string</td>
 <td>true</td>
-<td>JavaScript code inside a script tag</td>
+<td>valid-HTML code</td>
 </tr>
 </tbody></table>
 
