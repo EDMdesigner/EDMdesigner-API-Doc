@@ -1768,6 +1768,46 @@ or it can be an error object:
 </tr>
 </tbody></table>
 
+<h1 id="header-script">Header script</h1>
+<pre class="highlight javascript"><code><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"message"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span> <span class="c1">// do nothing</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">"editHeaderScript"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">postMessage</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+      <span class="na">_dynId</span><span class="p">:</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">_dynId</span><span class="p">,</span>
+      <span class="na">action</span><span class="p">:</span> <span class="s2">"setProps"</span><span class="p">,</span>
+      <span class="na">props</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">headerScript</span><span class="p">:</span> <span class="s2">"&lt;script&gt;console.log('Hello')&lt;/script&gt;"</span>
+      <span class="p">}</span>
+    <span class="p">}),</span> <span class="nx">event</span><span class="p">.</span><span class="nx">origin</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+</code></pre>
+
+<p>With a Header script, you can insert a <code class="prettyprint">&lt;script&gt;</code> tag with your custom JavaScript code into the <code class="prettyprint">&lt;head&gt;</code> tag</p>
+
+<h3 id="properties">Properties:</h3>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>headerScript</td>
+<td>string</td>
+<td>true</td>
+<td>JavaScript code inside a script tag</td>
+</tr>
+</tbody></table>
+
 <h1 id="available-languages">Available Languages</h1>
 
 <p>At the moment we support the following languages:</p>
