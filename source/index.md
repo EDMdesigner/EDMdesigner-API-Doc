@@ -1366,13 +1366,13 @@ window.addEventListener("message", function(event) {
 }, false);
 ```
 
-With a Header script, you can insert a `<script>` tag with your custom JavaScript code into the `<head>` tag
+With Header script, you can insert any valid HTML code into the template's `<head>` tag. For example you can use this feature to place JavaScript code wrapped up in a `<script>` tag. (But do not forget that majority of email softwares will sanitize `<script>` tags)
 
 ### Properties:
 
 Field | Type | Required | Description
 ------|------|----------|------------
-headerScript | string | true | JavaScript code inside a script tag
+headerScript | string | true | valid-HTML code
 
 
 
